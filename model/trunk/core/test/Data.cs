@@ -45,8 +45,9 @@ namespace Landis.Test
             string buildDir = Path.GetDirectoryName(configDir);
             string solutionRoot = Path.GetDirectoryName(buildDir);
  
-            // The module's data dir = SOLUTION_ROOT/test/MODULE/data
-            string testDir = Path.Combine(solutionRoot, "test");
+            // The module's data dir = SOLUTION_ROOT/core/test/MODULE/data
+            string coreDir = Path.Combine(solutionRoot, "core");
+            string testDir = Path.Combine(coreDir, "test");
             string moduleDir = Path.Combine(testDir, moduleDirName);
             directory = Path.Combine(moduleDir, "data");
 

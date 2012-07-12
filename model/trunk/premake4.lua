@@ -35,7 +35,7 @@ buildDir = "build"
 
 -- ==========================================================================
 
-solution "LANDIS-II_core"
+solution "LANDIS-II"
 
   language "C#"    -- by default, Premake uses "Any CPU" for platform
   framework "3.5"
@@ -52,13 +52,13 @@ solution "LANDIS-II_core"
     targetdir ( buildDir .. "/Release" )
  
   -- The core's API (referenced by LANDIS-II extensions)
-  project "Landis_Core"
-    location "src"
+  project "Core"
+    location "core/src"
     kind "SharedLib"
     targetname "Landis.Core"
     files {
       "SharedAssemblyInfo.cs",
-      "src/*.cs"
+      "core/src/*.cs"
     }
     links {
       "System",
@@ -69,16 +69,16 @@ solution "LANDIS-II_core"
     }
 
   -- The core's implementation
-  project "Landis_Core_Implementation"
-    location "src/Implementation"
+  project "Core_Implementation"
+    location "core/src/Implementation"
     kind "SharedLib"
     targetname "Landis.Core.Implementation"
     files {
       "SharedAssemblyInfo.cs",
-      "src/Implementation/**.cs"
+      "core/src/Implementation/**.cs"
     }
     links {
-      "Landis_Core",
+      "Core",
       "System",
       "System.Core",
       thirdPartyLibs["FLEL"],
@@ -88,18 +88,18 @@ solution "LANDIS-II_core"
     }
 
   -- Unit tests for Species module
-  project "Landis_Species_Tests"
-    location "test/species"
+  project "Species_Tests"
+    location "core/test/species"
     kind "SharedLib"
     targetname "Landis.Species.Tests"
     files {
       "SharedAssemblyInfo.cs",
-      "test/Data.cs",
-      "test/species/**.cs"
+      "core/test/Data.cs",
+      "core/test/species/**.cs"
     }
     links {
-      "Landis_Core",
-      "Landis_Core_Implementation",
+      "Core",
+      "Core_Implementation",
       "nunit.framework",
       "System",
       "System.Core",
@@ -107,18 +107,18 @@ solution "LANDIS-II_core"
     }
 
   -- Unit tests for Ecoregions module
-  project "Landis_Ecoregions_Tests"
-    location "test/ecoregions"
+  project "Ecoregions_Tests"
+    location "core/test/ecoregions"
     kind "SharedLib"
     targetname "Landis.Ecoregions.Tests"
     files {
       "SharedAssemblyInfo.cs",
-      "test/Data.cs",
-      "test/ecoregions/**.cs"
+      "core/test/Data.cs",
+      "core/test/ecoregions/**.cs"
     }
     links {
-      "Landis_Core",
-      "Landis_Core_Implementation",
+      "Core",
+      "Core_Implementation",
       "nunit.framework",
       "System",
       "System.Core",

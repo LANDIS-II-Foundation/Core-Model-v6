@@ -29,7 +29,7 @@ the NUnit testing framework (http://www.nunit.org).  The unit tests require
 that framework.  Note that NUnit is included with SharpDevelop and
 MonoDevelop.
 
-After running Premake, open the LANDIS-II_core.sln solution file in an IDE
+After running Premake, open the LANDIS-II.sln solution file in an IDE
 (Visual Studio, Visual C# Express, SharpDevelop, MonoDevelop) and build the
 solution.
 
@@ -44,5 +44,5 @@ Note that Visual C# Express does not allow add-ins, so you will have to run
 the unit tests with NUnit's GUI.  Open the GUI, and then in the File menu,
 select "Open Project...".  Navigate to one of the configuration build
 directories (build/Debug, build/Release), and select one of the test
-assemblies (e.g., Landis.Tests.*.dll).  After NUnit loads the tests, click
+assemblies (e.g., Landis.*.Tests.dll).  After NUnit loads the tests, click
 the "Run" button.
