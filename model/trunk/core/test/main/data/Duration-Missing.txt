@@ -1,0 +1,6 @@
+>> Example of bad input file for scenario
+
+LandisData  Scenario
+
+
+ << Missing Duration parameter

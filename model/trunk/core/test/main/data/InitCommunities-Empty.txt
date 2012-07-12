@@ -1,0 +1,13 @@
+>> Example of bad input file for scenario
+
+LandisData  Scenario
+
+
+Duration  300
+
+Species   ./species.txt
+
+Ecoregions      "./ecoregions.txt"
+EcoregionsMap   "./ecoregions.gis"
+
+InitialCommunities   ""  << path cannot be empty string

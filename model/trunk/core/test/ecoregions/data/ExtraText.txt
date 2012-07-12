@@ -1,0 +1,13 @@
+>> Example of bad input file for ecoregions
+
+LandisData  Ecoregions
+
+>>         Map
+>> Active  Code  Name   Description
+>> ------  ----  -----  -----------
+       -     1   water   water
+      yes   99   SE-pb   "SE pine barrens"
+       -     3   nf/u    non-forest/urban
+       
+       no  123   agri    "agricultural lands"   Four score and seven years ago
+ >> Extra text after last column ---------------^
