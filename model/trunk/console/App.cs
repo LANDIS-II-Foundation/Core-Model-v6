@@ -6,9 +6,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using Landis.SpatialModeling;
-using Landis.SpatialModeling.CoreServices;
 using Landis.Core;
+using Landis.Landscapes;
+using Landis.RasterIO.Gdal;
+using Landis.SpatialModeling;
 
 namespace Landis
 {
@@ -56,8 +57,9 @@ namespace Landis
 
                 string appDir = Application.Directory;
                 Landis.PlugIns.IDataset plugIns = (Landis.PlugIns.IDataset) PlugIns.Admin.Dataset.LoadOrCreate(PlugIns.Admin.Dataset.DefaultPath);
-                RasterFactory driverMgr = new RasterFactory(); 
-                Model model = new Model(plugIns, driverMgr);
+                RasterFactory rasterFactory = new RasterFactory();
+                LandscapeFactory landscapeFactory = new LandscapeFactory();
+                Model model = new Model(plugIns, rasterFactory, landscapeFactory);
                 model.Run(args[0], ci);
                 return 0;
             }

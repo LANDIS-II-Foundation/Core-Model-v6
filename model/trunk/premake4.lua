@@ -1,10 +1,12 @@
 thirdPartyDir = "third-party"
 thirdPartyLibs = {
-  FLEL       = thirdPartyDir .. "/FLEL/util/bin/Edu.Wisc.Forest.Flel.Util.dll",
-  LSML       = thirdPartyDir .. "/LSML/Landis.SpatialModeling.dll",
-  RasterIO   = thirdPartyDir .. "/LSML/Landis.RasterIO.dll",
-  log4net    = thirdPartyDir .. "/log4net/bin/log4net.dll",
-  Troschuetz = thirdPartyDir .. "/Troschuetz/Troschuetz.Random.dll"
+  FLEL          = thirdPartyDir .. "/FLEL/util/bin/Edu.Wisc.Forest.Flel.Util.dll",
+  LSML          = thirdPartyDir .. "/LSML/Landis.SpatialModeling.dll",
+  Landscapes    = thirdPartyDir .. "/LSML/Landis.Landscapes.dll",
+  RasterIO      = thirdPartyDir .. "/LSML/Landis.RasterIO.dll",
+  RasterIO_Gdal = thirdPartyDir .. "/LSML/Landis.RasterIO.Gdal.dll",
+  log4net       = thirdPartyDir .. "/log4net/bin/log4net.dll",
+  Troschuetz    = thirdPartyDir .. "/Troschuetz/Troschuetz.Random.dll"
 }
 
 -- Are we running on Windows?
@@ -143,6 +145,30 @@ solution "LANDIS-II"
       "System.Core",
       "System.Xml",
       thirdPartyLibs["FLEL"],
+    }
+
+  -- Console user interface
+  project "Console"
+    location "console"
+    kind "ConsoleApp"
+    targetname "Landis.Console"
+    files {
+      "SharedAssemblyInfo.cs",
+      "console/*.cs"
+    }
+    links {
+      "Core",
+      "Core_Implementation",
+      "Landis.Extensions.Admin.exe",  -- doesn't work with just project name (cause it's a ConsoleApp?)
+      "System",
+      "System.Configuration",
+      "System.Core",
+      thirdPartyLibs["FLEL"],
+      thirdPartyLibs["LSML"],
+      thirdPartyLibs["Landscapes"],
+      thirdPartyLibs["RasterIO"],
+      thirdPartyLibs["RasterIO_Gdal"],
+      thirdPartyLibs["log4net"]
     }
 
 -- ==========================================================================
