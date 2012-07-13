@@ -127,6 +127,23 @@ solution "LANDIS-II"
       thirdPartyLibs["RasterIO"]
     }
 
+  -- Extension administration tool
+  project "Extension_Admin"
+    location "ext-admin"
+    kind "ConsoleApp"
+    targetname "Landis.Extensions.Admin"
+    files {
+      "SharedAssemblyInfo.cs",
+      "ext-admin/*.cs"
+    }
+    links {
+      "Core",
+      "System",
+      "System.Core",
+      "System.Xml",
+      thirdPartyLibs["FLEL"],
+    }
+
 -- ==========================================================================
 
 -- Hook in a custom function "postActionExecute" so that it's called *after*
