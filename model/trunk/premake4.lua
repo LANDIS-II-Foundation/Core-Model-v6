@@ -138,6 +138,7 @@ solution "LANDIS-II"
     }
     links {
       "Core",
+      "Core_Implementation",
       "System",
       "System.Core",
       "System.Xml",
