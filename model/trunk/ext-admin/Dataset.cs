@@ -45,10 +45,10 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public static Dataset LoadOrCreate(string path)
         {
-        	if (path == null)
-        		throw new ArgumentNullException();
-        	if (path.Trim(null) == "")
-        		throw new ArgumentException("Path is empty or just whitespace.");
+            if (path == null)
+                throw new ArgumentNullException();
+            if (path.Trim(null) == "")
+                throw new ArgumentException("Path is empty or just whitespace.");
 
             if (File.Exists(path))
                 return new Dataset(path);
@@ -98,17 +98,17 @@ namespace Landis.PlugIns.Admin
         /// </param>
         public Dataset(string path)
         {
-        	if (path == null)
-        		throw new ArgumentNullException();
-        	if (path.Trim(null) == "")
-        		throw new ArgumentException("path is empty or just whitespace.");
+            if (path == null)
+                throw new ArgumentNullException();
+            if (path.Trim(null) == "")
+                throw new ArgumentException("path is empty or just whitespace.");
 
             this.path = path;
             PersistentDataset dataset = PersistentDataset.Load(path);
 
             plugIns = new List<ExtensionInfo>();
             foreach (PersistentDataset.PlugInInfo info in dataset.PlugIns) {
-            	plugIns.Add(new ExtensionInfo(info));
+                plugIns.Add(new ExtensionInfo(info));
             }
         }
 
@@ -136,9 +136,9 @@ namespace Landis.PlugIns.Admin
         /// </remarks>
         public string Path
         {
-        	get {
-        		return path;
-        	}
+            get {
+                return path;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -171,7 +171,7 @@ namespace Landis.PlugIns.Admin
         PlugInInfo IDataset.this[string name]
         {
             get {
-        		ExtensionInfo extensionInfo = ((Dataset)this)[name];
+                ExtensionInfo extensionInfo = ((Dataset)this)[name];
                 if (extensionInfo != null)
                     return extensionInfo.CoreInfo;
                 return null;
@@ -186,7 +186,7 @@ namespace Landis.PlugIns.Admin
         public ExtensionInfo this[int index]
         {
             get {
-        		return plugIns[index];
+                return plugIns[index];
             }
         }
 
@@ -203,16 +203,16 @@ namespace Landis.PlugIns.Admin
         /// </exception>
         public void Add(ExtensionInfo plugIn)
         {
-        	Require.ArgumentNotNull(plugIn);
-        	if (string.IsNullOrEmpty(plugIn.Name))
-        		throw new ArgumentException("The plug-in's name is null or empty.");
-        	if (this[plugIn.Name] != null) {
-        		string mesg = string.Format("A plug-in with the name \"{0}\" is already in the dataset",
-        		                            plugIn.Name);
-        		throw new InvalidOperationException(mesg);
-        	}
+            Require.ArgumentNotNull(plugIn);
+            if (string.IsNullOrEmpty(plugIn.Name))
+                throw new ArgumentException("The plug-in's name is null or empty.");
+            if (this[plugIn.Name] != null) {
+                string mesg = string.Format("A plug-in with the name \"{0}\" is already in the dataset",
+                                            plugIn.Name);
+                throw new InvalidOperationException(mesg);
+            }
 
-        	plugIns.Add(plugIn);
+            plugIns.Add(plugIn);
         }
 
         //---------------------------------------------------------------------
@@ -229,20 +229,20 @@ namespace Landis.PlugIns.Admin
         /// </returns>
         public ExtensionInfo Remove(string name)
         {
-        	if (name == null)
-        		throw new ArgumentNullException();
-        	if (name.Trim(null) == "")
-        		throw new ArgumentException("The plug-in's name is empty or just whitespace.");
+            if (name == null)
+                throw new ArgumentNullException();
+            if (name.Trim(null) == "")
+                throw new ArgumentException("The plug-in's name is empty or just whitespace.");
 
-        	ExtensionInfo plugIn;
-        	for (int i = 0; i < plugIns.Count; i++) {
-        		plugIn = plugIns[i];
-        		if (plugIn.Name == name) {
-        			plugIns.RemoveAt(i);
-        			return plugIn;
-        		}
-        	}
-        	return null;
+            ExtensionInfo plugIn;
+            for (int i = 0; i < plugIns.Count; i++) {
+                plugIn = plugIns[i];
+                if (plugIn.Name == name) {
+                    plugIns.RemoveAt(i);
+                    return plugIn;
+                }
+            }
+            return null;
         }
 
         //---------------------------------------------------------------------
@@ -252,7 +252,7 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public void Save()
         {
-        	SaveAs(path);
+            SaveAs(path);
         }
 
         //---------------------------------------------------------------------
@@ -263,20 +263,20 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public void SaveAs(string path)
         {
-        	if (path == null)
-        		throw new ArgumentNullException();
-        	if (path.Trim(null) == "")
-        		throw new ArgumentException();
+            if (path == null)
+                throw new ArgumentNullException();
+            if (path.Trim(null) == "")
+                throw new ArgumentException();
 
-        	PersistentDataset persistentDataset = new PersistentDataset();
-        	foreach (ExtensionInfo extensionInfo in plugIns)
-        		persistentDataset.PlugIns.Add(extensionInfo.PersistentInfo);
-        	persistentDataset.Save(path);
-        	
-        	this.path = path;
+            PersistentDataset persistentDataset = new PersistentDataset();
+            foreach (ExtensionInfo extensionInfo in plugIns)
+                persistentDataset.PlugIns.Add(extensionInfo.PersistentInfo);
+            persistentDataset.Save(path);
+            
+            this.path = path;
 
-        	if (SavedEvent != null)
-        	    SavedEvent(this);
+            if (SavedEvent != null)
+                SavedEvent(this);
         }
 
         //---------------------------------------------------------------------
@@ -286,8 +286,8 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public bool ReferencedByEntries(string library)
         {
-        	// TODO
-        	return false;
+            // TODO
+            return false;
         }
 
         //---------------------------------------------------------------------
@@ -298,8 +298,8 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public IList<string> ReferencedByEntries(IList<string> libs)
         {
-        	// TODO
-        	return null;
+            // TODO
+            return null;
         }
     }
 }

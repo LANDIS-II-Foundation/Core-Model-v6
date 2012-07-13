@@ -27,7 +27,7 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public void Execute()
         {
-	        Dataset dataset = Util.OpenDatasetForChange(Dataset.DefaultPath);
+            Dataset dataset = Util.OpenDatasetForChange(Dataset.DefaultPath);
             if (dataset.Count == 0)
                 Console.WriteLine("No extensions are installed.");
             else {

@@ -11,7 +11,7 @@ namespace Landis.PlugIns.Admin
     /// Editable information about an extension.
     /// </summary>
     public class EditableExtensionInfo
-    	: IEditable<ExtensionInfo>
+        : IEditable<ExtensionInfo>
     {
         /// <summary>
         /// The dataset to use to determine if the extension name is already
@@ -20,15 +20,15 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public static Dataset Dataset = null;
 
-    	private InputValue<string> name;
-    	private InputValue<string> version;
-    	private InputValue<string> type;
-    	private InputValue<string> assemblyName;
-    	private InputValue<string> className;
-    	private InputValue<string> description;
-    	private InputValue<string> userGuidePath;
-    	private InputValue<string> coreVersion;
-    	private System.Version coreVersion_;
+        private InputValue<string> name;
+        private InputValue<string> version;
+        private InputValue<string> type;
+        private InputValue<string> assemblyName;
+        private InputValue<string> className;
+        private InputValue<string> description;
+        private InputValue<string> userGuidePath;
+        private InputValue<string> coreVersion;
+        private System.Version coreVersion_;
 
         //---------------------------------------------------------------------
 
@@ -55,155 +55,155 @@ namespace Landis.PlugIns.Admin
 
         public InputValue<string> Name
         {
-        	get {
-        		return name;
-        	}
+            get {
+                return name;
+            }
 
-        	set {
+            set {
                 if (value != null) {
                     CheckNotEmptyOrBlank(value);
                     if (Dataset != null && Dataset[value.Actual] != null)
                         throw new InputValueException(value.String,
-                    	                              "The name \"{0}\" is already in the extensions database",
-                    	                              value.Actual);
+                                                      "The name \"{0}\" is already in the extensions database",
+                                                      value.Actual);
                 }
-        		name = value;
-        	}
+                name = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> Version
         {
-        	get {
-        		return version;
-        	}
+            get {
+                return version;
+            }
 
-        	set {
+            set {
                 if (value != null)
                     CheckNotEmptyOrBlank(value);
-        		version = value;
-        	}
+                version = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> Type
         {
-        	get {
-        		return type;
-        	}
+            get {
+                return type;
+            }
 
-        	set {
+            set {
                 if (App.InstallingExtension)
                     throw new InvalidOperationException();
                 if (value != null)
                     CheckNotEmptyOrBlank(value);
-        		type = value;
-        	}
+                type = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> AssemblyName
         {
-        	get {
-        		return assemblyName;
-        	}
+            get {
+                return assemblyName;
+            }
 
-        	set {
+            set {
                 if (App.InstallingExtension)
                     throw new InvalidOperationException();
                 if (value != null) {
                     CheckNotEmptyOrBlank(value);
                     // TODO: Check value if properly structured assembly name
                 }
-        		assemblyName = value;
-        	}
+                assemblyName = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> ClassName
         {
-        	get {
-        		return className;
-        	}
+            get {
+                return className;
+            }
 
-        	set {
+            set {
                 if (value != null) {
                     CheckNotEmptyOrBlank(value);
                     // TODO: Check value if properly structured class name
                 }
-        		className = value;
-        	}
+                className = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> Description
         {
-        	get {
-        		return description;
-        	}
+            get {
+                return description;
+            }
 
-        	set {
+            set {
                 if (value != null)
                     CheckNotEmptyOrBlank(value);  // HACK to get existing tests to pass
-        		description = value;
-        	}
+                description = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> UserGuidePath
         {
-        	get {
-        		return userGuidePath;
-        	}
+            get {
+                return userGuidePath;
+            }
 
-        	set {
+            set {
                 if (value != null) {
                     CheckNotEmptyOrBlank(value);
                     if (App.InstallingExtension)
                         CheckFileExists(value);
                 }
-        		userGuidePath = value;
-        	}
+                userGuidePath = value;
+            }
         }
 
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public InputValue<string> CoreVersion
         {
-        	get {
-        		return coreVersion;
-        	}
+            get {
+                return coreVersion;
+            }
 
-        	set {
+            set {
                 if (value != null) {
                     CheckNotEmptyOrBlank(value);
                     coreVersion_ = GetVersion(value.Actual); // HACK
                 }
-        		coreVersion = value;
-        	}
+                coreVersion = value;
+            }
         }
 
         //---------------------------------------------------------------------
 
         public bool IsComplete
         {
-        	get {
-        		//  Make sure the fields needed for core are present
-        		foreach (object parameter in new object[]{ name,
-        		                                           type,
-        		                                           assemblyName,
-        		                                           className}) {
-        			if (parameter == null)
-        				return false;
-        		}
-        		return true;
-        	}
+            get {
+                //  Make sure the fields needed for core are present
+                foreach (object parameter in new object[]{ name,
+                                                           type,
+                                                           assemblyName,
+                                                           className}) {
+                    if (parameter == null)
+                        return false;
+                }
+                return true;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -290,17 +290,17 @@ namespace Landis.PlugIns.Admin
             if (IsComplete) {
                 return new ExtensionInfo(
                     name.Actual,
-        	        version == null ? null : version.Actual,
-        	        type.Actual,
-        	        assemblyName.Actual,
-        	        className.Actual,
-        	        description == null ? null : description.Actual,
-        	        userGuidePath == null ? null : userGuidePath.Actual,
-        	        coreVersion_
-        	    );
+                    version == null ? null : version.Actual,
+                    type.Actual,
+                    assemblyName.Actual,
+                    className.Actual,
+                    description == null ? null : description.Actual,
+                    userGuidePath == null ? null : userGuidePath.Actual,
+                    coreVersion_
+                );
             }
-        	else
-	        	return null;
+            else
+                return null;
         }
     }
 }

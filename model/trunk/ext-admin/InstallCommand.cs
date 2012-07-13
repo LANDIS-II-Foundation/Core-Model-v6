@@ -37,8 +37,8 @@ namespace Landis.PlugIns.Admin
             //  TODO: This code is from the old AddCommand, so it needs to be
             //  updated eventually.
 
-	        Dataset dataset = Dataset.LoadOrCreate(Dataset.DefaultPath);
-	        EditableExtensionInfo.Dataset = dataset;
+            Dataset dataset = Dataset.LoadOrCreate(Dataset.DefaultPath);
+            EditableExtensionInfo.Dataset = dataset;
             ExtensionParser parser = new ExtensionParser();
             ExtensionInfo extension = Data.Load<ExtensionInfo>(extensionInfoPath, parser);
 

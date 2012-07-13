@@ -35,11 +35,11 @@ namespace Landis.PlugIns.Admin
         {
             try {
                 Assembly coreAssembly = Assembly.GetAssembly(typeof(Landis.PlugIns.PlugInInfo));
-				VersionRelease versionRelease = new VersionRelease(coreAssembly);
+                VersionRelease versionRelease = new VersionRelease(coreAssembly);
                 Console.WriteLine("Landis-II {0}", versionRelease);
                 
                 Assembly myAssembly = Assembly.GetExecutingAssembly();
-				versionRelease = new VersionRelease(myAssembly);
+                versionRelease = new VersionRelease(myAssembly);
                 Console.WriteLine("Extensions Administration Tool {0}", versionRelease);
 
                 Console.WriteLine("Copyright 2005-2006 University of Wisconsin");

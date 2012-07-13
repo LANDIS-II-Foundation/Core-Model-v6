@@ -33,11 +33,11 @@ namespace Landis.PlugIns.Admin
         /// </summary>
         public void Execute()
         {
-	        Dataset dataset = Util.OpenDatasetForChange(Dataset.DefaultPath);
-	        EditableExtensionInfo.Dataset = dataset;
+            Dataset dataset = Util.OpenDatasetForChange(Dataset.DefaultPath);
+            EditableExtensionInfo.Dataset = dataset;
             //Model model = new Model(null, null);
 
-	        ExtensionParser parser = new ExtensionParser();
+            ExtensionParser parser = new ExtensionParser();
             ExtensionInfo extension = Load<ExtensionInfo>(extensionInfoPath, parser);
 
             dataset.Add(extension);
