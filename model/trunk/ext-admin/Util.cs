@@ -2,7 +2,6 @@ using Edu.Wisc.Forest.Flel.Util;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace Landis.PlugIns.Admin
@@ -19,47 +18,8 @@ namespace Landis.PlugIns.Admin
         public static Dataset OpenDatasetForChange(string path)
         {
             Dataset dataset = Dataset.LoadOrCreate(path);
-            Dataset.SavedEvent += WriteJavascriptFile;
+            // Dataset.SavedEvent += DelegateToCallAfterFileSaved;
             return dataset;
-        }
-
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Writes a javascript file with information about the extensions in
-        /// a dataset.
-        /// </summary>
-        public static void WriteJavascriptFile(Dataset dataset)
-        {
-            string filename = GetJavascriptFilename();
-            string path = Path.Combine(Application.Directory, filename);
-            using (StreamWriter file = new StreamWriter(path)) {
-                file.WriteLine("with (LANDIS)");
-                file.WriteLine("{");
-                List<ExtensionInfo> extensions = GetExtsInAlphaOrder(dataset);
-                foreach (ExtensionInfo extension in extensions) {
-                    file.WriteLine("    addPlugIn(\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\")",
-                                   extension.Name,
-                                   extension.Version == null ? "" : extension.Version,
-                                   extension.Type,
-                                   extension.Description == null ? "" : extension.Description,
-                                   extension.UserGuidePath == null ? "" : extension.UserGuidePath);
-                }
-                file.WriteLine("}");
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public static string GetJavascriptFilename()
-        {
-            const string settingName = "javascript filename";
-            string filename = ConfigurationManager.AppSettings[settingName];
-            if (filename == null)
-                throw new ApplicationException("The application setting \"" + settingName + "\" is not set");
-            if (filename.Trim(null) == "")
-                throw new ApplicationException("The application setting \"" + settingName + "\" is empty or just whitespace");
-            return filename;
         }
 
         //---------------------------------------------------------------------
