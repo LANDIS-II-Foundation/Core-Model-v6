@@ -1,9 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
 
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
+using log4net;
 
 namespace Landis
 {
@@ -15,12 +15,14 @@ namespace Landis
         : IUserInterface
     {
         private static TextWriter writer;
+        private static ILog log;
 
         //---------------------------------------------------------------------
 
         static ConsoleInterface()
         {
             writer = TextWriter.Null;
+            log = LogManager.GetLogger("Landis");
         }
 
         //---------------------------------------------------------------------
@@ -63,7 +65,7 @@ namespace Landis
         public void WriteLine()
         {
             writer.WriteLine();
-            Log.Info(string.Empty);
+            log.Info(string.Empty);
         }
 
         //---------------------------------------------------------------------
@@ -76,7 +78,7 @@ namespace Landis
         public void WriteLine(string text)
         {
             writer.WriteLine(text);
-            Log.Info(text);
+            log.Info(text);
         }
 
         //---------------------------------------------------------------------
@@ -90,7 +92,7 @@ namespace Landis
         public void WriteLine(string format, params object[] args)
         {
             writer.WriteLine(format, args);
-            Log.Info(format, args);
+            log.Info(string.Format(format, args));
         }
 
         //---------------------------------------------------------------------
