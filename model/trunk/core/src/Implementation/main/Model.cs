@@ -37,6 +37,7 @@ namespace Landis
         private int timeSinceStart;
         private SuccessionMain succession;
         private List<ExtensionMain> disturbAndOtherExtensions;
+        private IUserInterface ui;
 
         private static Generator RandomNumberGenerator;
         private static BetaDistribution betaDist;
@@ -65,23 +66,11 @@ namespace Landis
 
         private static ILog logger= LogManager.GetLogger("Landis");
 
-        private static IUserInterface log;//move to ICore
-
         //---------------------------------------------------------------------
 
         public double NextDouble()
         {
             return RandomNumberGenerator.NextDouble();
-        }
-
-        //---------------------------------------------------------------------
-
-        public static IUserInterface Log
-        {
-            get
-            {
-                return log;
-            }
         }
 
         //---------------------------------------------------------------------
@@ -107,6 +96,8 @@ namespace Landis
             rasterFactory.BindExtensionToFormat(".tif", "GTiff");
             rasterFactory.BindExtensionToFormat(".ingr", "INGR");
             rasterFactory.BindExtensionToFormat(".vrt",  "VRT" );
+ 
+            ui = null;
         }
 
 
@@ -138,14 +129,22 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
+        IUserInterface ICore.UI
+        {
+            get
+            {
+                return ui;
+            }
+        }
+
+        [System.Obsolete("Use the UI property instead.")]
         IUserInterface ICore.Log
         {
             get
             {
-                return log;
+                return ui;
             }
         }
-
 
         //---------------------------------------------------------------------
 
@@ -252,7 +251,7 @@ namespace Landis
         void ICore.RegisterSiteVar(ISiteVariable siteVar,
                                    string        name)
         {
-            Log.WriteLine("   Registering Data:  {0}.", name);
+            ui.WriteLine("   Registering Data:  {0}.", name);
             siteVarRegistry.RegisterVar(siteVar, name);
         }
 
@@ -270,7 +269,7 @@ namespace Landis
         /// </summary>
         public void Run(string scenarioPath, IUserInterface ui)
         {
-            log = ui;
+            this.ui = ui;
 
             siteVarRegistry.Clear();
 
@@ -284,22 +283,22 @@ namespace Landis
             LoadSpecies(scenario.Species);
             LoadEcoregions(scenario.Ecoregions);
 
-            log.WriteLine("Initializing landscape from ecoregions map \"{0}\" ...", scenario.EcoregionsMap);
+            ui.WriteLine("Initializing landscape from ecoregions map \"{0}\" ...", scenario.EcoregionsMap);
             Ecoregions.Map ecoregionsMap = new Ecoregions.Map(scenario.EcoregionsMap,
                                                               ecoregions,
                                                               rasterFactory);
             // -- ProcessMetadata(ecoregionsMap.Metadata, scenario);
             cellLength = scenario.CellLength.Value;
             cellArea = (float)((cellLength * cellLength) / 10000);
-            log.WriteLine("Cell length = {0} m, cell area = {1} ha", cellLength, cellArea);
+            ui.WriteLine("Cell length = {0} m, cell area = {1} ha", cellLength, cellArea);
 
             using (IInputGrid<bool> grid = ecoregionsMap.OpenAsInputGrid()) {
-                log.WriteLine("Map dimensions: {0} = {1:#,##0} cell{2}", grid.Dimensions,
+                ui.WriteLine("Map dimensions: {0} = {1:#,##0} cell{2}", grid.Dimensions,
                              grid.Count, (grid.Count == 1 ? "" : "s"));
                 // landscape = new Landscape(grid);
                 landscape = landscapeFactory.CreateLandscape(grid);
             }
-            log.WriteLine("Sites: {0:#,##0} active ({1:p1}), {2:#,##0} inactive ({3:p1})",
+            ui.WriteLine("Sites: {0:#,##0} active ({1:p1}), {2:#,##0} inactive ({3:p1})",
                          landscape.ActiveSiteCount, (landscape.Count > 0 ? ((double)landscape.ActiveSiteCount)/landscape.Count : 0),
                          landscape.InactiveSiteCount, (landscape.Count > 0 ? ((double)landscape.InactiveSiteCount)/landscape.Count : 0));
 
@@ -308,7 +307,7 @@ namespace Landis
             disturbAndOtherExtensions = new List<ExtensionMain>();
 
             try {
-                log.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
+                ui.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
                 succession = Loader.Load<SuccessionMain>(scenario.Succession.Info);
                 succession.LoadParameters(scenario.Succession.InitFile, this);
                 succession.Initialize();
@@ -353,7 +352,7 @@ namespace Landis
                                         && otherExtensionsToRun.Count == 0)
                         continue;
 
-                    log.WriteLine("Current time: {0}", currentTime);
+                    ui.WriteLine("Current time: {0}", currentTime);
 
                     if (isDistTimestep) {
                         if (scenario.DisturbancesRandomOrder)
@@ -373,14 +372,14 @@ namespace Landis
                 foreach (ExtensionMain extension in disturbAndOtherExtensions)
                     extension.CleanUp();
             }
-            log.WriteLine("Model run is complete.");
+            ui.WriteLine("Model run is complete.");
         }
 
         //---------------------------------------------------------------------
 
         private Scenario LoadScenario(string path)
         {
-            log.WriteLine("Loading scenario from file \"{0}\" ...", path);
+            ui.WriteLine("Loading scenario from file \"{0}\" ...", path);
             ScenarioParser parser = new ScenarioParser(extensionDataset);
             return Load<Scenario>(path, parser);
         }
@@ -394,7 +393,7 @@ namespace Landis
             else {
                 uint generatedSeed = GenerateSeed();
                 Initialize(generatedSeed);
-                log.WriteLine("Initialized random number generator with seed = {0:#,##0}", generatedSeed);
+                ui.WriteLine("Initialized random number generator with seed = {0:#,##0}", generatedSeed);
             }
         }
 
@@ -402,7 +401,7 @@ namespace Landis
 
         private void LoadSpecies(string path)
         {
-            log.WriteLine("Loading species data from file \"{0}\" ...", path);
+            ui.WriteLine("Loading species data from file \"{0}\" ...", path);
             Species.DatasetParser parser = new Species.DatasetParser();
             species = Load<ISpeciesDataset>(path, parser);
         }
@@ -411,7 +410,7 @@ namespace Landis
 
         private void LoadEcoregions(string path)
         {
-            log.WriteLine("Loading ecoregions from file \"{0}\" ...", path);
+            ui.WriteLine("Loading ecoregions from file \"{0}\" ...", path);
             Ecoregions.DatasetParser parser = new Ecoregions.DatasetParser();
             ecoregions = Load<IEcoregionDataset>(path, parser);
         }
@@ -422,13 +421,13 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        //Begin of Log.cs file contents
+        //Begin of ui.cs file contents
 
         /// <summary>
-        /// Writes an informational message into the log.
+        /// Writes an informational message into the ui.
         /// </summary>
         /// <param name="message">
-        /// Message to write into the log.  It may contain placeholders for
+        /// Message to write into the ui.  It may contain placeholders for
         /// optional arguments using the "{n}" notation used by the
         /// System.String.Format method.
         /// </param>
@@ -441,7 +440,7 @@ namespace Landis
             logger.Info(string.Format(message, mesgArgs));
         }
 
-        //End of Log.cs file Contents
+        //End of ui.cs file Contents
 
         //-------------------------------------------------------------------------
 
@@ -571,7 +570,7 @@ namespace Landis
 
         private void Run(ExtensionMain extension)
         {
-            log.WriteLine("Running {0} ...", extension.Name);
+            ui.WriteLine("Running {0} ...", extension.Name);
             extension.Run();
         }
 
@@ -584,7 +583,7 @@ namespace Landis
             foreach (int i in Indexes.Of(extensions))
             {
                 ExtensionAndInitFile extensionAndInitFile = extensions[i];
-                log.WriteLine("Loading {0} extension ...", extensionAndInitFile.Info.Name);
+                ui.WriteLine("Loading {0} extension ...", extensionAndInitFile.Info.Name);
                 ExtensionMain loadedExtension = Loader.Load<ExtensionMain>(extensionAndInitFile.Info);
                 loadedExtension.LoadParameters(extensionAndInitFile.InitFile, this);
 

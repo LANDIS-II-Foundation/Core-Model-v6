@@ -30,12 +30,20 @@ using Troschuetz.Random;
 namespace Landis.Core
 {
     /// <summary>
-    /// Interface to the core framework for plug-ins.
+    /// Interface to the core framework for extensions.
     /// </summary>
     public interface ICore
         : IRasterFactory
     {
+        /// <summary>
+        /// The user interface that the model writes information to.
+        /// </summary>
+        IUserInterface UI
+        {
+            get;
+        }
 
+        [System.Obsolete("Use the UI property instead.")]
         IUserInterface Log
         {
             get;
