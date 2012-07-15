@@ -5,7 +5,7 @@ using Edu.Wisc.Forest.Flel.Util;
 namespace Landis.Core
 {
     /// <summary>
-    /// Base class for plug-ins.
+    /// Base class for extensions.
     /// </summary>
     public abstract class ExtensionMain
     {
@@ -28,7 +28,7 @@ namespace Landis.Core
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The plug-in's name.
+        /// The extension's name.
         /// </summary>
         public string Name
         {
@@ -40,9 +40,22 @@ namespace Landis.Core
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The plug-in's type.
+        /// The extension's type.
         /// </summary>
+		[System.Obsolete("Use the Type property instead.")]
         public ExtensionType PlugInType
+        {
+            get {
+                return Type;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// The extension's type.
+        /// </summary>
+        public ExtensionType Type
         {
             get {
                 return type;
@@ -52,7 +65,7 @@ namespace Landis.Core
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The plug-in's timestep (years).
+        /// The extension's timestep (years).
         /// </summary>
         public int Timestep
         {
@@ -68,20 +81,17 @@ namespace Landis.Core
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Initializes the plug-in with a data file.
+        /// Initializes the extension with a data file.
         /// </summary>
         /// <param name="dataFile">
         /// Path to the file with initialization data.
-        /// </param>
-        /// <param name="modelCore">
-        /// The model's core framework.
         /// </param>
         public abstract void Initialize();
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Loads parameters for the plug-in with a data file.
+        /// Loads parameters for the extension from a data file.
         /// </summary>
         /// <param name="dataFile">
         /// Path to the file with initialization data.
@@ -94,7 +104,7 @@ namespace Landis.Core
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Runs the plug-in for the current timestep.
+        /// Runs the extension for the current timestep.
         /// </summary>
         public abstract void Run();
 

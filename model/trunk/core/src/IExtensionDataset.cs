@@ -1,12 +1,12 @@
-namespace Landis.PlugIns
+namespace Landis.Core
 {
     /// <summary>
-    /// A collection of information about installed plug-ins.
+    /// A collection of information about installed extensions.
     /// </summary>
-    public interface IDataset
+    public interface IExtensionDataset
     {
         /// <summary>
-        /// The number of plug-ins in the dataset.
+        /// The number of extensions in the dataset.
         /// </summary>
         int Count
         {
@@ -16,12 +16,12 @@ namespace Landis.PlugIns
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Gets the information for a plug-in.
+        /// Gets the information for an extension.
         /// </summary>
         /// <returns>
-        /// null if there is no plug-in installed with the specified name.
+        /// null if there is no extension installed with the specified name.
         /// </returns>
-        PlugInInfo this[string name]
+        ExtensionInfo this[string name]
         {
             get;
         }

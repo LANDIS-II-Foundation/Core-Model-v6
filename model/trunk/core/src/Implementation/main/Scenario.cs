@@ -11,10 +11,10 @@ namespace Landis
         private string ecoregions;
         private string ecoregionsMap;
         private float? cellLength;
-        private PlugInAndInitFile succession;
-        private PlugInAndInitFile[] disturbances;
+        private ExtensionAndInitFile succession;
+        private ExtensionAndInitFile[] disturbances;
         private bool disturbRandom;
-        private PlugInAndInitFile[] otherPlugIns;
+        private ExtensionAndInitFile[] otherExtensions;
         private uint? seed;
 
         //---------------------------------------------------------------------
@@ -94,9 +94,9 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The succession plug-in to use for the scenario.
+        /// The succession extension to use for the scenario.
         /// </summary>
-        public PlugInAndInitFile Succession
+        public ExtensionAndInitFile Succession
         {
             get {
                 return succession;
@@ -106,9 +106,9 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The disturbance plug-ins to use for the scenario.
+        /// The disturbance extensions to use for the scenario.
         /// </summary>
-        public PlugInAndInitFile[] Disturbances
+        public ExtensionAndInitFile[] Disturbances
         {
             get {
                 return disturbances;
@@ -130,13 +130,13 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The other plug-ins to use for the scenario (for example: output,
+        /// The other extensions to use for the scenario (for example: output,
         /// metapopulation).
         /// </summary>
-        public PlugInAndInitFile[] OtherPlugIns
+        public ExtensionAndInitFile[] OtherExtensions
         {
             get {
-                return otherPlugIns;
+                return otherExtensions;
             }
         }
 
@@ -154,17 +154,17 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        public Scenario(int                 startTime,
-                        int                 endTime,
-                        string              species,
-                        string              ecoregions,
-                        string              ecoregionsMap,
-                        float?              cellLength,
-                        PlugInAndInitFile   succession,
-                        PlugInAndInitFile[] disturbances,
-                        bool                disturbRandom,
-                        PlugInAndInitFile[] otherPlugIns,
-                        uint?               seed)
+        public Scenario(int                    startTime,
+                        int                    endTime,
+                        string                 species,
+                        string                 ecoregions,
+                        string                 ecoregionsMap,
+                        float?                 cellLength,
+                        ExtensionAndInitFile   succession,
+                        ExtensionAndInitFile[] disturbances,
+                        bool                   disturbRandom,
+                        ExtensionAndInitFile[] otherExtensions,
+                        uint?                  seed)
         {
             this.startTime       = startTime;
             this.endTime         = endTime;
@@ -175,7 +175,7 @@ namespace Landis
             this.succession      = succession;
             this.disturbances    = disturbances;
             this.disturbRandom   = disturbRandom;
-            this.otherPlugIns    = otherPlugIns;
+            this.otherExtensions = otherExtensions;
             this.seed            = seed;
         }
     }

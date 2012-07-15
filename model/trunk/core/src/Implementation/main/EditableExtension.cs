@@ -1,22 +1,23 @@
 using Edu.Wisc.Forest.Flel.Util;
+using Landis.Core;
 
 namespace Landis
 {
     /// <summary>
-    /// Editable pair of a plug-in and its initialization file.
+    /// Editable pair of an extension and its initialization file.
     /// </summary>
-    public class EditablePlugIn
-        : IEditable<PlugInAndInitFile>
+    public class EditableExtension
+        : IEditable<ExtensionAndInitFile>
     {
-        private InputValue<PlugIns.PlugInInfo> info;
+        private InputValue<ExtensionInfo> info;
         private InputValue<string> initFile;
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Information about the plug-in.
+        /// Information about the extension.
         /// </summary>
-        public InputValue<PlugIns.PlugInInfo> Info
+        public InputValue<ExtensionInfo> Info
         {
             get {
                 return info;
@@ -30,7 +31,7 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The path to the data file to initialize the plug-in with.
+        /// The path to the data file to initialize the extension with.
         /// </summary>
         public InputValue<string> InitFile
         {
@@ -54,7 +55,7 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        public EditablePlugIn()
+        public EditableExtension()
         {
             this.info = null;
             this.initFile = null;
@@ -62,10 +63,10 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        public PlugInAndInitFile GetComplete()
+        public ExtensionAndInitFile GetComplete()
         {
             if (IsComplete)
-                return new PlugInAndInitFile(info.Actual, initFile.Actual);
+                return new ExtensionAndInitFile(info.Actual, initFile.Actual);
             else
                 return null;
         }

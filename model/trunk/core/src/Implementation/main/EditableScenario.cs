@@ -1,5 +1,4 @@
 using Edu.Wisc.Forest.Flel.Util;
-using Landis.PlugIns;
 using Landis.Core;
 
 namespace Landis
@@ -16,9 +15,9 @@ namespace Landis
         private InputValue<string> ecoregions;
         private InputValue<string> ecoregionsMap;
         private InputValue<float> cellLength;
-        private EditablePlugIn succession;
-        private EditablePlugInList disturbances;
-        private EditablePlugInList otherPlugIns;
+        private EditableExtension succession;
+        private EditableExtensionList disturbances;
+        private EditableExtensionList otherExtensions;
         private InputValue<bool> disturbRandom;
         private InputValue<uint> seed;
 
@@ -170,9 +169,9 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The succession plug-in to use for the scenario.
+        /// The succession extension to use for the scenario.
         /// </summary>
-        public EditablePlugIn Succession
+        public EditableExtension Succession
         {
             get {
                 return succession;
@@ -182,9 +181,9 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The disturbance plug-ins to use for the scenario.
+        /// The disturbance extensions to use for the scenario.
         /// </summary>
-        public EditablePlugInList Disturbances
+        public EditableExtensionList Disturbances
         {
             get {
                 return disturbances;
@@ -194,7 +193,7 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Are disturbance run is random order?
+        /// Are disturbances run is random order?
         /// </summary>
         public InputValue<bool> DisturbancesRandomOrder
         {
@@ -210,13 +209,13 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The other plug-ins to use for the scenario (for example: output,
+        /// The other extensions to use for the scenario (for example: output,
         /// metapopulation).
         /// </summary>
-        public EditablePlugInList OtherPlugIns
+        public EditableExtensionList OtherExtensions
         {
             get {
-                return otherPlugIns;
+                return otherExtensions;
             }
         }
 
@@ -243,9 +242,9 @@ namespace Landis
 
         public EditableScenario()
         {
-            this.succession = new EditablePlugIn();
-            this.disturbances = new EditablePlugInList();
-            this.otherPlugIns = new EditablePlugInList();
+            this.succession = new EditableExtension();
+            this.disturbances = new EditableExtensionList();
+            this.otherExtensions = new EditableExtensionList();
         }
 
         //---------------------------------------------------------------------
@@ -265,7 +264,7 @@ namespace Landis
                     if (inputValue == null)
                         return false;
                 if (succession.IsComplete && disturbances.IsComplete
-                                          && otherPlugIns.IsComplete)
+                                          && otherExtensions.IsComplete)
                     return true;
                 return false;
             }
@@ -287,7 +286,7 @@ namespace Landis
                                     disturbances.GetComplete(),
                                     disturbRandom == null ? false
                                                           : disturbRandom.Actual,
-                                    otherPlugIns.GetComplete(),
+                                    otherExtensions.GetComplete(),
                                     seed == null ? (uint?) null
                                                  : seed.Actual);
             }

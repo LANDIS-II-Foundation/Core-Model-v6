@@ -1,5 +1,5 @@
 using Edu.Wisc.Forest.Flel.Util;
-using Landis.PlugIns;
+using Landis.Core;
 using System;
 using System.Collections.Generic;
 
@@ -11,7 +11,7 @@ namespace Landis
     public class ScenarioParser
         : Landis.TextParser<Scenario>
     {
-        private enum ValidPlugInTypes {
+        private enum ValidExtensionTypes {
             SuccessionOnly,
             AnyButSuccession,
             AnyButSuccessionOrDisturbance
@@ -32,9 +32,9 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        public ScenarioParser(PlugIns.IDataset installedPlugIns)
+        public ScenarioParser(IExtensionDataset installedExtensions)
         {
-            PlugInInfo.RegisterReadMethod(installedPlugIns);
+            ExtensionInfoIO.RegisterReadMethod(installedExtensions);
             nameLineNumbers = new Dictionary<string, int>();
         }
 
@@ -69,28 +69,28 @@ namespace Landis
                 scenario.CellLength = cellLength.Value;
             }
 
-            //  Table of plug-ins
+            //  Table of extensions
             nameLineNumbers.Clear();  // if Parse called more than once
 
-            //  Succession plug-in must be first entry in table
+            //  Succession extension must be first entry in table
             if (AtEndOfInput)
-                throw NewParseException("Expected a succession plug-in");
-            ReadPlugIn(scenario.Succession, ValidPlugInTypes.SuccessionOnly);
+                throw NewParseException("Expected a succession extension");
+            ReadExtension(scenario.Succession, ValidExtensionTypes.SuccessionOnly);
 
-            //  0 or more disturbance plug-ins
+            //  0 or more disturbance extensions
 
             const string DisturbancesRandomOrder = "DisturbancesRandomOrder";
             const string RandomNumberSeed = "RandomNumberSeed";
 
             while (! AtEndOfInput && CurrentName != DisturbancesRandomOrder
                                   && CurrentName != RandomNumberSeed
-                                  && scenario.OtherPlugIns.Count == 0) {
-                EditablePlugIn plugIn = new EditablePlugIn();
-                ReadPlugIn(plugIn, ValidPlugInTypes.AnyButSuccession);
-                if (plugIn.Info.Actual.PlugInType.IsMemberOf("disturbance"))
-                    scenario.Disturbances.Add(plugIn);
+                                  && scenario.OtherExtensions.Count == 0) {
+                EditableExtension Extension = new EditableExtension();
+                ReadExtension(Extension, ValidExtensionTypes.AnyButSuccession);
+                if (Extension.Info.Actual.Type.IsMemberOf("disturbance"))
+                    scenario.Disturbances.Add(Extension);
                 else
-                    scenario.OtherPlugIns.Add(plugIn);
+                    scenario.OtherExtensions.Add(Extension);
             }
 
             //  Check for optional DisturbancesRandomOrder parameter
@@ -98,15 +98,15 @@ namespace Landis
             if (ReadOptionalVar(randomOrder))
                 scenario.DisturbancesRandomOrder = randomOrder.Value;
 
-            //  All other plug-ins besides succession and disturbances (e.g.,
+            //  All other extensions besides succession and disturbances (e.g.,
             //  output, metapopulation)
 
-            if (scenario.OtherPlugIns.Count == 0)
+            if (scenario.OtherExtensions.Count == 0)
                 nameLineNumbers.Clear();
             while (! AtEndOfInput && CurrentName != RandomNumberSeed) {
-                EditablePlugIn plugIn = new EditablePlugIn();
-                ReadPlugIn(plugIn, ValidPlugInTypes.AnyButSuccessionOrDisturbance);
-                scenario.OtherPlugIns.Add(plugIn);
+                EditableExtension Extension = new EditableExtension();
+                ReadExtension(Extension, ValidExtensionTypes.AnyButSuccessionOrDisturbance);
+                scenario.OtherExtensions.Add(Extension);
             }
 
             //    Either at end of file or we've encountered the optional
@@ -123,61 +123,61 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        private void ReadPlugIn(EditablePlugIn   plugIn,
-                                ValidPlugInTypes validTypes)
+        private void ReadExtension(EditableExtension   Extension,
+                                ValidExtensionTypes validTypes)
         {
             StringReader currentLine = new StringReader(CurrentLine);
-            plugIn.Info = ReadPlugInName(currentLine);
+            Extension.Info = ReadExtensionName(currentLine);
 
             string error = null;
             switch (validTypes) {
-                case ValidPlugInTypes.SuccessionOnly:
-                    if (! plugIn.Info.Actual.PlugInType.IsMemberOf("succession"))
-                        error = "is not a succession plug-in";
+                case ValidExtensionTypes.SuccessionOnly:
+                    if (! Extension.Info.Actual.Type.IsMemberOf("succession"))
+                        error = "is not a succession extension";
                     break;
 
-                case ValidPlugInTypes.AnyButSuccession:
-                    if (plugIn.Info.Actual.PlugInType.IsMemberOf("succession"))
-                        error = "is a succession plug-in";
+                case ValidExtensionTypes.AnyButSuccession:
+                    if (Extension.Info.Actual.Type.IsMemberOf("succession"))
+                        error = "is a succession extension";
                     break;
 
-                case ValidPlugInTypes.AnyButSuccessionOrDisturbance:
-                    if (plugIn.Info.Actual.PlugInType.IsMemberOf("succession"))
-                        error = "is a succession plug-in";
-                    if (plugIn.Info.Actual.PlugInType.IsMemberOf("disturbance"))
-                        error = "is a disturbance plug-in";
+                case ValidExtensionTypes.AnyButSuccessionOrDisturbance:
+                    if (Extension.Info.Actual.Type.IsMemberOf("succession"))
+                        error = "is a succession extension";
+                    if (Extension.Info.Actual.Type.IsMemberOf("disturbance"))
+                        error = "is a disturbance extension";
                     break;
 
                 default:
                     throw new ArgumentException("Unknown value for parameter \"allowedTypes\"");
             }
             if (error != null)
-                throw new InputValueException(plugIn.Info.Actual.Name,
+                throw new InputValueException(Extension.Info.Actual.Name,
                                               "\"{0}\" {1}",
-                                              plugIn.Info.Actual.Name,
+                                              Extension.Info.Actual.Name,
                                               error);
-            CheckForRepeatedName(plugIn.Info.Actual.Name);
-            ReadInitFile(plugIn, currentLine);
+            CheckForRepeatedName(Extension.Info.Actual.Name);
+            ReadInitFile(Extension, currentLine);
             GetNextLine();
         }
 
         //---------------------------------------------------------------------
 
-        private InputValue<PlugIns.PlugInInfo> ReadPlugInName(StringReader currentLine)
+        private InputValue<ExtensionInfo> ReadExtensionName(StringReader currentLine)
         {
-            InputVar<PlugIns.PlugInInfo> plugIn = new InputVar<PlugIns.PlugInInfo>("PlugIn");
-            ReadValue(plugIn, currentLine);
-            return plugIn.Value;
+            InputVar<ExtensionInfo> Extension = new InputVar<ExtensionInfo>("Extension");
+            ReadValue(Extension, currentLine);
+            return Extension.Value;
         }
 
         //---------------------------------------------------------------------
 
-        private void ReadInitFile(EditablePlugIn plugIn,
+        private void ReadInitFile(EditableExtension Extension,
                                   StringReader   currentLine)
         {
             InputVar<string> initFile = new InputVar<string>("InitializationFile");
             ReadValue(initFile, currentLine);
-            plugIn.InitFile = initFile.Value;
+            Extension.InitFile = initFile.Value;
 
             CheckNoDataAfter("the " + initFile.Name + " column",
                              currentLine);
@@ -190,7 +190,7 @@ namespace Landis
             int lineNumber;
             if (nameLineNumbers.TryGetValue(name, out lineNumber))
                 throw new InputValueException(name,
-                                              "The plug-in \"{0}\" was previously used on line {1}",
+                                              "The extension \"{0}\" was previously used on line {1}",
                                               name, lineNumber);
             else
                 nameLineNumbers[name] = LineNumber;

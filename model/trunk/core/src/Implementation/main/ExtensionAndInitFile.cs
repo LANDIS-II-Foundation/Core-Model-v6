@@ -1,19 +1,21 @@
+using Landis.Core;
+
 namespace Landis
 {
     /// <summary>
-    /// Information about a plug-in and its initialization file.
+    /// Information about an extension and its initialization file.
     /// </summary>
-    public class PlugInAndInitFile
+    public class ExtensionAndInitFile
     {
-        private PlugIns.PlugInInfo info;
+        private ExtensionInfo info;
         private string initFile;
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Information about the plug-in.
+        /// Information about the extension.
         /// </summary>
-        public PlugIns.PlugInInfo Info
+        public ExtensionInfo Info
         {
             get {
                 return info;
@@ -23,7 +25,7 @@ namespace Landis
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The path to the plug-in's initialization file.
+        /// The path to the extension's initialization file.
         /// </summary>
         public string InitFile
         {
@@ -37,16 +39,16 @@ namespace Landis
         /// <summary>
         /// Initialize a new instance.
         /// </summary>
-        /// <param name="plugInInfo">
-        /// Information about the plug-in.
+        /// <param name="extensionInfo">
+        /// Information about the extension.
         /// </param>
         /// <param name="initFile">
-        /// The path to the plug-in's initialization file.
+        /// The path to the extension's initialization file.
         /// </param>
-        public PlugInAndInitFile(PlugIns.PlugInInfo plugInInfo,
-                                 string             initFile)
+        public ExtensionAndInitFile(ExtensionInfo extensionInfo,
+                                    string        initFile)
         {
-            this.info = plugInInfo;
+            this.info = extensionInfo;
             this.initFile = initFile;
         }
     }

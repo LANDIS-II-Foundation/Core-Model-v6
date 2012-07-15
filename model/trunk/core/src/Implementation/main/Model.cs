@@ -4,9 +4,6 @@ using Loader = Edu.Wisc.Forest.Flel.Util.PlugIns.Loader;
 using log4net;
 using Landis.Core;
 
-using Landis.PlugIns;
-
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -24,7 +21,7 @@ namespace Landis
     public class Model
         : ICore
     {
-        private PlugIns.IDataset plugInDataset;
+        private IExtensionDataset extensionDataset;
         private SiteVarRegistry siteVarRegistry;
         private ISpeciesDataset species;
         private IEcoregionDataset ecoregions;
@@ -39,7 +36,7 @@ namespace Landis
         private int currentTime;
         private int timeSinceStart;
         private SuccessionMain succession;
-        private List<ExtensionMain> disturbAndOtherPlugIns;
+        private List<ExtensionMain> disturbAndOtherExtensions;
 
         private static Generator RandomNumberGenerator;
         private static BetaDistribution betaDist;
@@ -92,12 +89,12 @@ namespace Landis
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public Model(PlugIns.IDataset plugInDataset,
+        public Model(IExtensionDataset extensionDataset,
                      IConfigurableRasterFactory rasterFactory,
                      ILandscapeFactory landscapeFactory)
 
         {
-            this.plugInDataset = plugInDataset;
+            this.extensionDataset = extensionDataset;
             siteVarRegistry = new SiteVarRegistry();
 
             this.rasterFactory = rasterFactory;
@@ -308,31 +305,31 @@ namespace Landis
 
             ecoregionSiteVar = ecoregionsMap.CreateSiteVar(landscape);
 
-            disturbAndOtherPlugIns = new List<ExtensionMain>();
+            disturbAndOtherExtensions = new List<ExtensionMain>();
 
             try {
-                log.WriteLine("Loading {0} plug-in ...", scenario.Succession.Info.Name);
+                log.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
                 succession = Loader.Load<SuccessionMain>(scenario.Succession.Info);
                 succession.LoadParameters(scenario.Succession.InitFile, this);
                 succession.Initialize();
 
-                ExtensionMain[] disturbancePlugIns = LoadPlugIns(scenario.Disturbances);
-                InitPlugIns(disturbancePlugIns);
+                ExtensionMain[] disturbanceExtensions = LoadExtensions(scenario.Disturbances);
+                InitExtensions(disturbanceExtensions);
 
-                ExtensionMain[] otherPlugIns = LoadPlugIns(scenario.OtherPlugIns);
-                InitPlugIns(otherPlugIns);
+                ExtensionMain[] otherExtensions = LoadExtensions(scenario.OtherExtensions);
+                InitExtensions(otherExtensions);
 
 
-                //  Perform 2nd phase of initialization for non-succession plug-ins.
-                foreach (ExtensionMain plugIn in disturbancePlugIns)
-                    plugIn.InitializePhase2();
-                foreach (ExtensionMain plugIn in otherPlugIns)
-                    plugIn.InitializePhase2();
+                //  Perform 2nd phase of initialization for non-succession extensions.
+                foreach (ExtensionMain extension in disturbanceExtensions)
+                    extension.InitializePhase2();
+                foreach (ExtensionMain extension in otherExtensions)
+                    extension.InitializePhase2();
 
-                //  Run output plug-ins for TimeSinceStart = 0 (time step 0)
-                foreach (ExtensionMain plugIn in otherPlugIns) {
-                    if (plugIn.PlugInType.IsMemberOf("output"))
-                        Run(plugIn);
+                //  Run output extensions for TimeSinceStart = 0 (time step 0)
+                foreach (ExtensionMain extension in otherExtensions) {
+                    if (extension.Type.IsMemberOf("output"))
+                        Run(extension);
                 }
 
                 //******************// for Rob
@@ -343,38 +340,38 @@ namespace Landis
                      currentTime <= endTime;
                      currentTime++, timeSinceStart++) {
 
-                    bool isSuccTimestep = IsPlugInTimestep(succession);
+                    bool isSuccTimestep = IsExtensionTimestep(succession);
 
-                    List<ExtensionMain> distPlugInsToRun;
-                    distPlugInsToRun = GetPlugInsToRun(disturbancePlugIns);
-                    bool isDistTimestep = distPlugInsToRun.Count > 0;
+                    List<ExtensionMain> distExtensionsToRun;
+                    distExtensionsToRun = GetExtensionsToRun(disturbanceExtensions);
+                    bool isDistTimestep = distExtensionsToRun.Count > 0;
 
-                    List<ExtensionMain> otherPlugInsToRun;
-                    otherPlugInsToRun = GetPlugInsToRun(otherPlugIns);
+                    List<ExtensionMain> otherExtensionsToRun;
+                    otherExtensionsToRun = GetExtensionsToRun(otherExtensions);
 
                     if (!isSuccTimestep && !isDistTimestep
-                                        && otherPlugInsToRun.Count == 0)
+                                        && otherExtensionsToRun.Count == 0)
                         continue;
 
                     log.WriteLine("Current time: {0}", currentTime);
 
                     if (isDistTimestep) {
                         if (scenario.DisturbancesRandomOrder)
-                            distPlugInsToRun = shuffle(distPlugInsToRun);
-                        foreach (ExtensionMain distPlugIn in distPlugInsToRun)
-                            Run(distPlugIn);
+                            distExtensionsToRun = shuffle(distExtensionsToRun);
+                        foreach (ExtensionMain distExtension in distExtensionsToRun)
+                            Run(distExtension);
                     }
 
                     if (isSuccTimestep || isDistTimestep)
                         Run(succession);
 
-                    foreach (ExtensionMain otherPlugIn in otherPlugInsToRun)
-                        Run(otherPlugIn);
+                    foreach (ExtensionMain otherExtension in otherExtensionsToRun)
+                        Run(otherExtension);
                 }  // main time loop
             }
             finally {
-                foreach (ExtensionMain plugIn in disturbAndOtherPlugIns)
-                    plugIn.CleanUp();
+                foreach (ExtensionMain extension in disturbAndOtherExtensions)
+                    extension.CleanUp();
             }
             log.WriteLine("Model run is complete.");
         }
@@ -384,7 +381,7 @@ namespace Landis
         private Scenario LoadScenario(string path)
         {
             log.WriteLine("Loading scenario from file \"{0}\" ...", path);
-            ScenarioParser parser = new ScenarioParser(plugInDataset);
+            ScenarioParser parser = new ScenarioParser(extensionDataset);
             return Load<Scenario>(path, parser);
         }
 
@@ -553,58 +550,58 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        private List<ExtensionMain> GetPlugInsToRun(ExtensionMain[] plugIns)
+        private List<ExtensionMain> GetExtensionsToRun(ExtensionMain[] extensions)
         {
-            List<ExtensionMain> plugInsToRun = new List<ExtensionMain>();
-            foreach (ExtensionMain plugIn in plugIns) {
-                if (IsPlugInTimestep(plugIn))
-                    plugInsToRun.Add(plugIn);
+            List<ExtensionMain> extensionsToRun = new List<ExtensionMain>();
+            foreach (ExtensionMain extension in extensions) {
+                if (IsExtensionTimestep(extension))
+                    extensionsToRun.Add(extension);
             }
-            return plugInsToRun;
+            return extensionsToRun;
         }
 
         //---------------------------------------------------------------------
 
-        private bool IsPlugInTimestep(ExtensionMain plugIn)
+        private bool IsExtensionTimestep(ExtensionMain extension)
         {
-            return (plugIn.Timestep > 0) && (timeSinceStart % plugIn.Timestep == 0);
+            return (extension.Timestep > 0) && (timeSinceStart % extension.Timestep == 0);
         }
 
         //---------------------------------------------------------------------
 
-        private void Run(ExtensionMain plugIn)
+        private void Run(ExtensionMain extension)
         {
-            log.WriteLine("Running {0} ...", plugIn.Name);
-            plugIn.Run();
+            log.WriteLine("Running {0} ...", extension.Name);
+            extension.Run();
         }
 
         //---------------------------------------------------------------------
 
-        private ExtensionMain[] LoadPlugIns(PlugInAndInitFile[] plugIns)
+        private ExtensionMain[] LoadExtensions(ExtensionAndInitFile[] extensions)
         {
 
-            ExtensionMain[] loadedPlugIns = new ExtensionMain[plugIns.Length];
-            foreach (int i in Indexes.Of(plugIns))
+            ExtensionMain[] loadedExtensions = new ExtensionMain[extensions.Length];
+            foreach (int i in Indexes.Of(extensions))
             {
-                PlugInAndInitFile plugInAndInitFile = plugIns[i];
-                log.WriteLine("Loading {0} plug-in ...", plugInAndInitFile.Info.Name);
-                ExtensionMain loadedPlugIn = Loader.Load<ExtensionMain>(plugInAndInitFile.Info);
-                loadedPlugIn.LoadParameters(plugInAndInitFile.InitFile, this);
+                ExtensionAndInitFile extensionAndInitFile = extensions[i];
+                log.WriteLine("Loading {0} extension ...", extensionAndInitFile.Info.Name);
+                ExtensionMain loadedExtension = Loader.Load<ExtensionMain>(extensionAndInitFile.Info);
+                loadedExtension.LoadParameters(extensionAndInitFile.InitFile, this);
 
-                loadedPlugIns[i] = loadedPlugIn;
+                loadedExtensions[i] = loadedExtension;
 
-                disturbAndOtherPlugIns.Add(loadedPlugIn);
+                disturbAndOtherExtensions.Add(loadedExtension);
             }
-            return loadedPlugIns;
+            return loadedExtensions;
         }
 
         //-----------------------------------------------------------------------
 
-        private void InitPlugIns(ExtensionMain[] plugIns)
+        private void InitExtensions(ExtensionMain[] extensions)
         {
-            foreach (ExtensionMain plugIn in plugIns)
+            foreach (ExtensionMain extension in extensions)
             {
-                plugIn.Initialize();
+                extension.Initialize();
             }
         }
 
