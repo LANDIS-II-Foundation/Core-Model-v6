@@ -33,16 +33,16 @@ namespace Landis
         /// </remarks>
 
         public TextWriter TextWriter
-		{
-			get {
-				return writer;
-			}
-			set {
-				if (value == null)
-					throw new ArgumentNullException("Use System.IO.TextWriter.Null instead of null");
-				writer = value;
-			}
-		}
+        {
+            get {
+                return writer;
+            }
+            set {
+                if (value == null)
+                    throw new ArgumentNullException("Use System.IO.TextWriter.Null instead of null");
+                writer = value;
+            }
+        }
 
         //---------------------------------------------------------------------
 
@@ -61,10 +61,10 @@ namespace Landis
         /// </summary>
 
         public void WriteLine()
-		{
-			writer.WriteLine();
-			Log.Info(string.Empty);
-		}
+        {
+            writer.WriteLine();
+            Log.Info(string.Empty);
+        }
 
         //---------------------------------------------------------------------
 
@@ -74,10 +74,10 @@ namespace Landis
         /// </summary>
 
         public void WriteLine(string text)
-		{
-			writer.WriteLine(text);
-			Log.Info(text);
-		}
+        {
+            writer.WriteLine(text);
+            Log.Info(text);
+        }
 
         //---------------------------------------------------------------------
 
@@ -88,10 +88,10 @@ namespace Landis
         /// </summary>
 
         public void WriteLine(string format, params object[] args)
-		{
-			writer.WriteLine(format, args);
-			Log.Info(format, args);
-		}
+        {
+            writer.WriteLine(format, args);
+            Log.Info(format, args);
+        }
 
         //---------------------------------------------------------------------
         
