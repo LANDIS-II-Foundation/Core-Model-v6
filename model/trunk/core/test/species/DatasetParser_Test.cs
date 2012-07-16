@@ -17,7 +17,7 @@ namespace Landis.Test.Species
         [TestFixtureSetUp]
         public void Init()
         {
-            Data.InitializeDirectory("species");
+            Data.InitializeDirectory(ModuleData.GetRelativePath("species"));
             parser = new DatasetParser();
         }
 

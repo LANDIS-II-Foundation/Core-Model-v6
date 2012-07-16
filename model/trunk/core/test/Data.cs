@@ -10,7 +10,7 @@ namespace Landis.Test
         private static string directory;
 
         /// <summary>
-        /// The directory with the core module's test data.
+        /// The directory with the test data.
         /// </summary>
         public static string Directory
         {
@@ -22,18 +22,19 @@ namespace Landis.Test
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Initialize the directory with the core module's test data.
+        /// Initialize the path to the directory with the test data.
         /// </summary>
         /// <remarks>
-        /// The module's test data reside in a subdirectory called "data" in
-        /// the module's subdirectory.  This method determines the path to the
-        /// module's data directory, stores it, and prints it to Output showing
+        /// The test data reside in a subdirectory relative to the solution's
+        /// root.  This method determines the absolute path to the directory
+        /// with the test data, stores it, and prints it to Output showing
         /// what the DataDirPlaceholder represents.
         /// </remarks>
-        /// <param name='ModuleDirName'>
-        /// The name of the module's subdirectory in the "test/" folder.
+        /// <param name='dataRelPath'>
+        /// The relative path to the data directory from the solution's root
+        /// directory.
         /// </param>
-        public static void InitializeDirectory(string moduleDirName)
+        public static void InitializeDirectory(string dataRelPath)
         {
             Assembly testAssembly = Assembly.GetExecutingAssembly();
             System.Uri testAssemblyUri = new System.Uri(testAssembly.CodeBase);
@@ -45,11 +46,7 @@ namespace Landis.Test
             string buildDir = Path.GetDirectoryName(configDir);
             string solutionRoot = Path.GetDirectoryName(buildDir);
  
-            // The module's data dir = SOLUTION_ROOT/core/test/MODULE/data
-            string coreDir = Path.Combine(solutionRoot, "core");
-            string testDir = Path.Combine(coreDir, "test");
-            string moduleDir = Path.Combine(testDir, moduleDirName);
-            directory = Path.Combine(moduleDir, "data");
+            directory = Path.Combine(solutionRoot, dataRelPath);
 
             Output.WriteLine("{0} = \"{1}\"", DirPlaceholder, Directory);
             Output.WriteLine();

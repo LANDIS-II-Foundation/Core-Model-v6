@@ -17,7 +17,7 @@ namespace Landis.Test.Ecoregions
         [TestFixtureSetUp]
         public void Init()
         {
-            Data.InitializeDirectory("ecoregions");
+            Data.InitializeDirectory(ModuleData.GetRelativePath("ecoregions"));
             parser = new DatasetParser();
         }
 
