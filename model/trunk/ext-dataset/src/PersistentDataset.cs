@@ -2,21 +2,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions
 {
     /// <summary>
-    /// A persistent collection of information about installed plug-ins.
+    /// A persistent collection of information about installed extensions.
     /// </summary>
-    [XmlRoot("PlugInDataset")]
+    [XmlRoot("ExtensionDataset")]
     public class PersistentDataset
     {
         /// <summary>
-        /// Information about a plug-in.
+        /// Information about a extension.
         /// </summary>
-        public class PlugInInfo
+        public class ExtensionInfo
         {
             /// <summary>
-            /// The plug-in's name.
+            /// The extension's name.
             /// </summary>
             [XmlAttribute]
             public string Name;
@@ -24,7 +24,7 @@ namespace Landis.PlugIns.Admin
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// The plug-in's version.
+            /// The extension's version.
             /// </summary>
             [XmlAttribute("Version")]
             public string Version;
@@ -32,7 +32,7 @@ namespace Landis.PlugIns.Admin
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// The plug-in's type.
+            /// The extension's type.
             /// </summary>
             [XmlElement("Type")]
             public string TypeName;
@@ -40,7 +40,7 @@ namespace Landis.PlugIns.Admin
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// The plug-in's assembly.
+            /// The extension's assembly.
             /// </summary>
             [XmlElement("Assembly")]
             public string AssemblyName;
@@ -48,7 +48,7 @@ namespace Landis.PlugIns.Admin
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// The class in the plug-in's assembly that represents the plug-in.
+            /// The class in the extension's assembly that represents the extension.
             /// </summary>
             [XmlElement("Class")]
             public string ClassName;
@@ -56,14 +56,14 @@ namespace Landis.PlugIns.Admin
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// A brief description of the plug-in.
+            /// A brief description of the extension.
             /// </summary>
             public string Description;
 
             //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             /// <summary>
-            /// The path to the plug-in's user guide.
+            /// The path to the extension's user guide.
             /// </summary>
             /// <remarks>
             /// The path is relative to the documentation directory of a
@@ -77,7 +77,7 @@ namespace Landis.PlugIns.Admin
             /// <summary>
             /// Initializes a new instance with all empty fields.
             /// </summary>
-            public PlugInInfo()
+            public ExtensionInfo()
             {
             }
         }
@@ -85,25 +85,25 @@ namespace Landis.PlugIns.Admin
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The plug-ins in the collection.
+        /// The extensions in the collection.
         /// </summary>
-        [XmlArrayItem("PlugIn")]
-        public List<PlugInInfo> PlugIns;
+        [XmlArrayItem("Extension")]
+        public List<ExtensionInfo> Extensions;
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Initializes a new instance with an empty list of plug-ins.
+        /// Initializes a new instance with an empty list of extensions.
         /// </summary>
         public PersistentDataset()
         {
-            PlugIns = new List<PlugInInfo>();
+            Extensions = new List<ExtensionInfo>();
         }
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Loads a plug-in information dataset from a file.
+        /// Loads a extension information dataset from a file.
         /// </summary>
         public static PersistentDataset Load(string path)
         {

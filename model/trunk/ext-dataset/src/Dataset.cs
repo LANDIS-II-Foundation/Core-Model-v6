@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
-    /// A collection of information about installed plug-ins.
+    /// A collection of information about installed extensions.
     /// </summary>
     public class Dataset
         : IExtensionDataset
@@ -14,19 +14,19 @@ namespace Landis.PlugIns.Admin
         private static string defaultPath;
 
         private string path;
-        private List<ExtensionInfo> plugIns;
+        private List<ExtensionInfo> extensions;
 
         //---------------------------------------------------------------------
 
         static Dataset()
         {
-            defaultPath = null; //System.IO.Path.Combine(Application.Directory, "plug-ins.xml");
+            defaultPath = System.IO.Path.Combine(Application.Directory, "extensions.xml");
         }
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Default path to the plug-ins dataset.
+        /// Default path to the extensions dataset.
         /// </summary>
         public static string DefaultPath
         {
@@ -38,7 +38,7 @@ namespace Landis.PlugIns.Admin
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Loads the plug-ins dataset from a file if the file exists;
+        /// Loads the extensions dataset from a file if the file exists;
         /// otherwise creates an empty dataset and saves it to that file.
         /// </summary>
         public static Dataset LoadOrCreate(string path)
@@ -75,7 +75,7 @@ namespace Landis.PlugIns.Admin
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Initializes a new instance with no plug-ins.
+        /// Initializes a new instance with no extensions.
         /// </summary>
         /// <remarks>
         /// The dataset's Path is the DefaultPath.
@@ -83,7 +83,7 @@ namespace Landis.PlugIns.Admin
         public Dataset()
         {
             path = DefaultPath;
-            plugIns = new List<ExtensionInfo>();
+            extensions = new List<ExtensionInfo>();
         }
 
         //---------------------------------------------------------------------
@@ -104,21 +104,21 @@ namespace Landis.PlugIns.Admin
             this.path = path;
             PersistentDataset dataset = PersistentDataset.Load(path);
 
-            plugIns = new List<ExtensionInfo>();
-            foreach (PersistentDataset.PlugInInfo info in dataset.PlugIns) {
-                plugIns.Add(new ExtensionInfo(info));
+            extensions = new List<ExtensionInfo>();
+            foreach (PersistentDataset.ExtensionInfo info in dataset.Extensions) {
+                extensions.Add(new ExtensionInfo(info));
             }
         }
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// The number of plug-ins in the dataset.
+        /// The number of extensions in the dataset.
         /// </summary>
         public int Count
         {
             get {
-                return plugIns.Count;
+                return extensions.Count;
             }
         }
 
@@ -157,7 +157,7 @@ namespace Landis.PlugIns.Admin
         public ExtensionInfo this[string name]
         {
             get {
-                foreach (ExtensionInfo extensionInfo in plugIns)
+                foreach (ExtensionInfo extensionInfo in extensions)
                     if (extensionInfo.Name == name)
                         return extensionInfo;
                 return null;
@@ -184,61 +184,61 @@ namespace Landis.PlugIns.Admin
         public ExtensionInfo this[int index]
         {
             get {
-                return plugIns[index];
+                return extensions[index];
             }
         }
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Adds a new plug-in to the dataset.
+        /// Adds a new extension to the dataset.
         /// </summary>
-        /// <param name="plugIn">
-        /// Information about the new plug-in.
+        /// <param name="extension">
+        /// Information about the new extension.
         /// </param>
         /// <exception cref="InvalidOperationException">
-        /// There is already a plug-in with the same name in the dataset.
+        /// There is already a extension with the same name in the dataset.
         /// </exception>
-        public void Add(ExtensionInfo plugIn)
+        public void Add(ExtensionInfo extension)
         {
-            if (plugIn == null)
+            if (extension == null)
                 throw new ArgumentNullException();
-            if (string.IsNullOrEmpty(plugIn.Name))
-                throw new ArgumentException("The plug-in's name is null or empty.");
-            if (this[plugIn.Name] != null) {
-                string mesg = string.Format("A plug-in with the name \"{0}\" is already in the dataset",
-                                            plugIn.Name);
+            if (string.IsNullOrEmpty(extension.Name))
+                throw new ArgumentException("The extension's name is null or empty.");
+            if (this[extension.Name] != null) {
+                string mesg = string.Format("A extension with the name \"{0}\" is already in the dataset",
+                                            extension.Name);
                 throw new InvalidOperationException(mesg);
             }
 
-            plugIns.Add(plugIn);
+            extensions.Add(extension);
         }
 
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Removes a plug-in from the dataset.
+        /// Removes a extension from the dataset.
         /// </summary>
         /// <param name="name">
-        /// Name of the plug-in to remove.
+        /// Name of the extension to remove.
         /// </param>
         /// <returns>
-        /// The information about the plug-in that was removed, or null if there
-        /// was no plug-in with the specified name.
+        /// The information about the extension that was removed, or null if there
+        /// was no extension with the specified name.
         /// </returns>
         public ExtensionInfo Remove(string name)
         {
             if (name == null)
                 throw new ArgumentNullException();
             if (name.Trim(null) == "")
-                throw new ArgumentException("The plug-in's name is empty or just whitespace.");
+                throw new ArgumentException("The extension's name is empty or just whitespace.");
 
-            ExtensionInfo plugIn;
-            for (int i = 0; i < plugIns.Count; i++) {
-                plugIn = plugIns[i];
-                if (plugIn.Name == name) {
-                    plugIns.RemoveAt(i);
-                    return plugIn;
+            ExtensionInfo extension;
+            for (int i = 0; i < extensions.Count; i++) {
+                extension = extensions[i];
+                if (extension.Name == name) {
+                    extensions.RemoveAt(i);
+                    return extension;
                 }
             }
             return null;
@@ -268,8 +268,8 @@ namespace Landis.PlugIns.Admin
                 throw new ArgumentException();
 
             PersistentDataset persistentDataset = new PersistentDataset();
-            foreach (ExtensionInfo extensionInfo in plugIns)
-                persistentDataset.PlugIns.Add(extensionInfo.PersistentInfo);
+            foreach (ExtensionInfo extensionInfo in extensions)
+                persistentDataset.Extensions.Add(extensionInfo.PersistentInfo);
             persistentDataset.Save(path);
             
             this.path = path;

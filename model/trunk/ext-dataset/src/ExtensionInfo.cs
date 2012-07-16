@@ -1,14 +1,13 @@
-
 using Landis.Core;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions
 {
     /// <summary>
     /// Information about an extension.
     /// </summary>
     public class ExtensionInfo
     {
-        private PersistentDataset.PlugInInfo persistentInfo;
+        private PersistentDataset.ExtensionInfo persistentInfo;
         private System.Version coreVersion;
 
         //---------------------------------------------------------------------
@@ -16,7 +15,7 @@ namespace Landis.PlugIns.Admin
         /// <summary>
         /// The information that is persisted for an extension.
         /// </summary>
-        public PersistentDataset.PlugInInfo PersistentInfo
+        public PersistentDataset.ExtensionInfo PersistentInfo
         {
             get {
                 return persistentInfo;
@@ -128,9 +127,9 @@ namespace Landis.PlugIns.Admin
         public Landis.Core.ExtensionInfo CoreInfo
         {
             get {
-                ExtensionType plugInType = null;
+                ExtensionType extensionType = null;
                 if (! string.IsNullOrEmpty(Type))
-                    plugInType = new ExtensionType(Type);
+                    extensionType = new ExtensionType(Type);
 
                 string implementationName = null;
                 if (! string.IsNullOrEmpty(ClassName)) {
@@ -138,13 +137,13 @@ namespace Landis.PlugIns.Admin
                     if (! string.IsNullOrEmpty(AssemblyName))
                         implementationName = implementationName + "," + AssemblyName;
                 }
-                return new Landis.Core.ExtensionInfo(Name, plugInType, implementationName);
+                return new Landis.Core.ExtensionInfo(Name, extensionType, implementationName);
             }
         }
 
         //---------------------------------------------------------------------
 
-        public ExtensionInfo(PersistentDataset.PlugInInfo info)
+        public ExtensionInfo(PersistentDataset.ExtensionInfo info)
         {
             persistentInfo = info;
         }
@@ -160,7 +159,7 @@ namespace Landis.PlugIns.Admin
                              string         userGuidePath,
                              System.Version coreVersion)
         {
-            persistentInfo = new PersistentDataset.PlugInInfo();
+            persistentInfo = new PersistentDataset.ExtensionInfo();
             persistentInfo.Name = name;
             persistentInfo.Version = version;
             persistentInfo.TypeName = type;
