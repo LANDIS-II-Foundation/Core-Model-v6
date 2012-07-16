@@ -96,7 +96,8 @@ solution "LANDIS-II"
     targetname "Landis.Species.Tests"
     files {
       "SharedAssemblyInfo.cs",
-      "core/test/Data.cs",
+      "test-util/Data.cs",
+      "core/test/ModuleData.cs",
       "core/test/species/**.cs"
     }
     links {
@@ -115,7 +116,8 @@ solution "LANDIS-II"
     targetname "Landis.Ecoregions.Tests"
     files {
       "SharedAssemblyInfo.cs",
-      "core/test/Data.cs",
+      "test-util/Data.cs",
+      "core/test/ModuleData.cs",
       "core/test/ecoregions/**.cs"
     }
     links {
