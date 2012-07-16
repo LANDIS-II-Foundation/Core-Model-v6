@@ -1,6 +1,4 @@
-//using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -278,29 +276,6 @@ namespace Landis.PlugIns.Admin
 
             if (SavedEvent != null)
                 SavedEvent(this);
-        }
-
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Determines if a library is referenced by any of the entries
-        /// </summary>
-        public bool ReferencedByEntries(string library)
-        {
-            // TODO
-            return false;
-        }
-
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Determines which libraries in a given list are referenced by the
-        /// entries.
-        /// </summary>
-        public IList<string> ReferencedByEntries(IList<string> libs)
-        {
-            // TODO
-            return null;
         }
     }
 }
