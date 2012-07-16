@@ -125,7 +125,7 @@ namespace Landis.PlugIns.Admin
         /// Gets just the information about the extension that the core
         /// framework needs.
         /// </summary>
-        public PlugInInfo CoreInfo
+        public Landis.Core.ExtensionInfo CoreInfo
         {
             get {
                 ExtensionType plugInType = null;
@@ -138,7 +138,7 @@ namespace Landis.PlugIns.Admin
                     if (! string.IsNullOrEmpty(AssemblyName))
                         implementationName = implementationName + "," + AssemblyName;
                 }
-                return new PlugInInfo(Name, plugInType, implementationName);
+                return new Landis.Core.ExtensionInfo(Name, plugInType, implementationName);
             }
         }
 

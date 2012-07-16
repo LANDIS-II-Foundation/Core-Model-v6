@@ -129,6 +129,22 @@ solution "LANDIS-II"
       thirdPartyLibs["RasterIO"]
     }
 
+  -- Extension dataset library
+  project "Extension_Dataset"
+    location "ext-dataset/src"
+    kind "SharedLib"
+    targetname "Landis.Extensions.Dataset"
+    files {
+      "SharedAssemblyInfo.cs",
+      "ext-dataset/src/*.cs"
+    }
+    links {
+      "Core",
+      "System",
+      "System.Core",
+      "System.Xml"
+    }
+
   -- Extension administration tool
   project "Extension_Admin"
     location "ext-admin"
@@ -140,6 +156,7 @@ solution "LANDIS-II"
     }
     links {
       "Core",
+      "Extension_Dataset",
       "System",
       "System.Core",
       "System.Xml",
@@ -158,7 +175,7 @@ solution "LANDIS-II"
     links {
       "Core",
       "Core_Implementation",
-      "Landis.Extensions.Admin.exe",  -- doesn't work with just project name (cause it's a ConsoleApp?)
+      "Extension_Dataset",
       "System",
       "System.Configuration",
       "System.Core",

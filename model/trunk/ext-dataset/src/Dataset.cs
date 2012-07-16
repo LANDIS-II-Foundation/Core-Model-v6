@@ -1,4 +1,4 @@
-using Edu.Wisc.Forest.Flel.Util;
+//using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
 
 using System;
@@ -11,7 +11,7 @@ namespace Landis.PlugIns.Admin
     /// A collection of information about installed plug-ins.
     /// </summary>
     public class Dataset
-        : IDataset
+        : IExtensionDataset
     {
         private static string defaultPath;
 
@@ -22,7 +22,7 @@ namespace Landis.PlugIns.Admin
 
         static Dataset()
         {
-            defaultPath = System.IO.Path.Combine(Application.Directory, "plug-ins.xml");
+            defaultPath = null; //System.IO.Path.Combine(Application.Directory, "plug-ins.xml");
         }
 
         //---------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace Landis.PlugIns.Admin
 
         //---------------------------------------------------------------------
 
-        PlugInInfo IDataset.this[string name]
+        Landis.Core.ExtensionInfo IExtensionDataset.this[string name]
         {
             get {
                 ExtensionInfo extensionInfo = ((Dataset)this)[name];
@@ -203,7 +203,8 @@ namespace Landis.PlugIns.Admin
         /// </exception>
         public void Add(ExtensionInfo plugIn)
         {
-            Require.ArgumentNotNull(plugIn);
+            if (plugIn == null)
+                throw new ArgumentNullException();
             if (string.IsNullOrEmpty(plugIn.Name))
                 throw new ArgumentException("The plug-in's name is null or empty.");
             if (this[plugIn.Name] != null) {
