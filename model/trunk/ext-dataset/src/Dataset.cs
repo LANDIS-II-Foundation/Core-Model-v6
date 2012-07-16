@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Landis.Extensions.Admin
+namespace Landis.Extensions
 {
     /// <summary>
     /// A collection of information about installed extensions.
@@ -64,6 +64,18 @@ namespace Landis.Extensions.Admin
                 dataset.SaveAs(path);
                 return dataset;
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Loads the extensions dataset from the DefaultPath if the file
+        /// exists; otherwise creates an empty dataset and saves it to that
+        /// path.
+        /// </summary>
+        public static Dataset LoadOrCreate()
+        {
+            return LoadOrCreate(DefaultPath);
         }
 
         //---------------------------------------------------------------------

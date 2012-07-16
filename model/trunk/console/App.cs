@@ -55,11 +55,10 @@ namespace Landis
                     return 1;
                 }
 
-                string appDir = Application.Directory;
-                Landis.PlugIns.IDataset plugIns = (Landis.PlugIns.IDataset) PlugIns.Admin.Dataset.LoadOrCreate(PlugIns.Admin.Dataset.DefaultPath);
+                IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate();
                 RasterFactory rasterFactory = new RasterFactory();
                 LandscapeFactory landscapeFactory = new LandscapeFactory();
-                Model model = new Model(plugIns, rasterFactory, landscapeFactory);
+                Model model = new Model(extensions, rasterFactory, landscapeFactory);
                 model.Run(args[0], ci);
                 return 0;
             }
