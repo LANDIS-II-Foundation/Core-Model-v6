@@ -2,6 +2,7 @@ using Landis.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace Landis.Extensions.Admin
 {
@@ -20,7 +21,11 @@ namespace Landis.Extensions.Admin
 
         static Dataset()
         {
-            defaultPath = System.IO.Path.Combine(Application.Directory, "extensions.xml");
+            Assembly thisAssembly = Assembly.GetExecutingAssembly();
+            System.Uri thisAssemblyUri = new System.Uri(thisAssembly.CodeBase);
+            string thisAssemblyPath = thisAssemblyUri.LocalPath;
+            string thisAssemblyDir = System.IO.Path.GetDirectoryName(thisAssemblyPath);
+            defaultPath = System.IO.Path.Combine(thisAssemblyDir, "extensions.xml");
         }
 
         //---------------------------------------------------------------------
@@ -28,6 +33,10 @@ namespace Landis.Extensions.Admin
         /// <summary>
         /// Default path to the extensions dataset.
         /// </summary>
+        /// <remarks>
+        /// It is the "extensions.xml" file in the directory where this library
+        /// is located.
+        /// </remarks>
         public static string DefaultPath
         {
             get {
