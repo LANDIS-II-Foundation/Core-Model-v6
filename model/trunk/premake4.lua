@@ -144,7 +144,8 @@ solution "LANDIS-II"
       "Core",
       "System",
       "System.Core",
-      "System.Xml"
+      "System.Xml",
+      thirdPartyLibs["FLEL"]
     }
 
   -- Extension administration tool
@@ -163,6 +164,7 @@ solution "LANDIS-II"
       "System.Core",
       "System.Xml",
       thirdPartyLibs["FLEL"],
+      thirdPartyLibs["LSML"]
     }
 
   -- Console user interface
