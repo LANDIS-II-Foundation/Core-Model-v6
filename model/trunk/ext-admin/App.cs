@@ -34,13 +34,13 @@ namespace Landis.PlugIns.Admin
         public static int Main(string[] args)
         {
             try {
-                Assembly coreAssembly = Assembly.GetAssembly(typeof(Landis.PlugIns.PlugInInfo));
-                VersionRelease versionRelease = new VersionRelease(coreAssembly);
-                Console.WriteLine("Landis-II {0}", versionRelease);
+                Assembly coreAssembly = Assembly.GetAssembly(typeof(Landis.Core.ICore));
+                Version coreVersion = coreAssembly.GetName().Version;
+                Console.WriteLine("LANDIS-II {0}.{1}", coreVersion.Major, coreVersion.Minor);
                 
                 Assembly myAssembly = Assembly.GetExecutingAssembly();
-                versionRelease = new VersionRelease(myAssembly);
-                Console.WriteLine("Extensions Administration Tool {0}", versionRelease);
+                Version toolVersion = myAssembly.GetName().Version;
+                Console.WriteLine("Extensions Administration Tool {0}.{1}", toolVersion.Major, toolVersion.Minor);
 
                 Console.WriteLine("Copyright 2005-2006 University of Wisconsin");
                 Console.WriteLine("Copyright 2011 Portland State University");
