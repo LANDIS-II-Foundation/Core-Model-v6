@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
     /// A command that displays a brief listing in tabular format of the
-    /// extensions in the plug-in database.
+    /// extensions in the extension database.
     /// </summary>
     public class ListBriefCommand
         : ICommand

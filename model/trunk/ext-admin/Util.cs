@@ -4,7 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     public static class Util
     {

@@ -1,7 +1,7 @@
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
     /// A parser that reads information about an extension from text input.

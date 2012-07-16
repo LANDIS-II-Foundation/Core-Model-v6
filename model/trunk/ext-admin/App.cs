@@ -23,7 +23,7 @@ using System;
 using System.Reflection;
 using System.Text;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     public static class App
     {

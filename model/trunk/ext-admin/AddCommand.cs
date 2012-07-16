@@ -5,10 +5,10 @@ using System.IO;
 using Landis.Core;
 
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
-    /// A command that adds information about an extension to the plug-in
+    /// A command that adds information about an extension to the extension
     /// database.
     /// </summary>
     public class AddCommand

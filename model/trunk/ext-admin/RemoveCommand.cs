@@ -1,9 +1,9 @@
 using System;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
-    /// A command that remove an extension to the plug-in database.
+    /// A command that remove an extension to the extension database.
     /// </summary>
     public class RemoveCommand
         : ICommand

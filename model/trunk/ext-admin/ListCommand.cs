@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
-    /// A command that lists the extensions in the plug-in database.
+    /// A command that lists the extensions in the extension database.
     /// </summary>
     public class ListCommand
         : ICommand

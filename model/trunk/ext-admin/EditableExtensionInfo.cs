@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Landis.Core;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
     /// Editable information about an extension.
@@ -42,11 +42,11 @@ namespace Landis.PlugIns.Admin
                 // the directory where the extension info file is located?)
                 // to look for assembly files (*.dll).  Or perhaps, those files
                 // are in a bin/ subfolder.  Search assembly files for a class
-                // that's a subclass of Landis.PlugIns.PlugIn.  Instantiate that
-                // class to query it for its plug-in (this will require that the
+                // that's a subclass of Landis.Core.ExtensionInfo.  Instantiate that
+                // class to query it for its extension (this will require that the
                 // assembly files are already installed in LANDIS-II's bin
                 // folder).  (Alternative, reflection-only load the assembly,
-                // but then the plug-in type will need to stored as an assembly
+                // but then the extension type will need to stored as an assembly
                 // or class attribute.)
             }
         }
@@ -258,12 +258,12 @@ namespace Landis.PlugIns.Admin
             if (! classType.IsClass)
                 throw new InputValueException(className, "{0} is not a class", className);
 
-            System.Type plugInBaseClass = typeof(ExtensionMain);
-            if (classType.IsSubclassOf(plugInBaseClass))
-                return plugInBaseClass;
+            System.Type mainBaseClass = typeof(ExtensionMain);
+            if (classType.IsSubclassOf(mainBaseClass))
+                return mainBaseClass;
             string[] message = new string[]{
                 string.Format("The class {0} is not", className),
-                "a LANDIS-II plug-in."
+                "a LANDIS-II extension."
             };
             throw new InputValueException(className, message);
         }

@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Landis.PlugIns.Admin
+namespace Landis.Extensions.Admin
 {
     /// <summary>
     /// A command that installs an extension's files and adds an entry for
-    /// it in the plug-in's dataset.
+    /// it in the extension dataset.
     /// </summary>
     public class InstallCommand
         : ICommand
