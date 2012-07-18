@@ -25,8 +25,13 @@
 ; Read the release status and define variables with release information
 #include "release-status.iss"
 
-#define VersionRelease     Version + ReleaseAbbr
+#if ReleaseAbbr != ""
+  #define VersionRelease   Version + " (" + ReleaseAbbr + ")"
+#else
+  #define VersionRelease   Version
+#endif
 #define VersionReleaseFull Version + " (" + Release + ")"
+
 
 #define PkgWindowsFiles    SourcePath
 #define PkgCommonFiles     ExtractFilePath(PkgWindowsFiles)
