@@ -92,7 +92,7 @@ Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {#LandisBinDir}; Flags: uninsnev
 ; Auxiliary tool for administering plug-ins
 Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin; Flags: replacesameversion
 Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#PkgWindowsFiles}\landis-{#VersionRelease}-extensions.cmd; DestDir: {#LandisBinDir}
+Source: {#PkgWindowsFiles}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
 Source: {#PkgWindowsFiles}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 ; Documentation
