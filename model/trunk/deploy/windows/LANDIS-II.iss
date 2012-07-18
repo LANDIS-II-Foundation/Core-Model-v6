@@ -83,9 +83,8 @@ Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-
 Source: {#ScriptDir}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 Source: {#ScriptDir}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
-; Auxiliary tool for administering plug-ins
-Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin;
-Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin;
+; Auxiliary tool for administering extensions
+Source: Landis.Extensions.Admin.exe; DestDir: {app}\bin;
 Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
 Source: {#ScriptDir}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
