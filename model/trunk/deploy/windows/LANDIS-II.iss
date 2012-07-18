@@ -34,9 +34,7 @@
 
 
 #define PkgWindowsFiles    SourcePath
-#define PkgCommonFiles     ExtractFilePath(PkgWindowsFiles)
 #define PkgHomeDir		   "J:\Scheller\LANDIS-II\GoogleCodeExtensions\core-install-library\trunk\"
-; #define PkgHomeDir         ExtractFilePath(PkgCommonFiles)
 #define PkgDocDir          PkgHomeDir + "docs"
 #define PkgSoftwareDir     PkgHomeDir + "software"
 
