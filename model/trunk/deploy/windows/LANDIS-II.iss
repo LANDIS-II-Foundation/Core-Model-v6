@@ -6,6 +6,7 @@
 #define ThirdPartyDir    SolutionDir + "\third-party"
 #define LandisSpatialDir ThirdPartyDir + "\LSML"
 #define GdalDir          LandisSpatialDir + "\GDAL"
+#define DocDir           SolutionDir + "\docs"
 
 #define BuildDir         SolutionDir + "\build"
 #define ReleaseConfigDir BuildDir + "\Release"
@@ -41,17 +42,11 @@
 
 ;-----------------------------------------------------------------------------
 
-#define DocDir             SolutionDir + "\docs"
-
-#define LandisInstallDir   "C:\Program Files\LANDIS-II"
-#define LandisBinDir       LandisInstallDir + "\bin"
-#define LandisPlugInDir    LandisInstallDir + "\plug-ins"
-
 [Setup]
 AppName=LANDIS-II {#VersionReleaseName}
 AppVerName=LANDIS-II {#VersionReleaseFull}
 AppPublisher=Portland State University
-DefaultDirName={#LandisInstallDir}\{#MajorMinor}
+DefaultDirName={pf}\LANDIS-II
 UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\{#MajorMinor}
 UsePreviousGroup=no
@@ -65,62 +60,62 @@ LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 [Files]
 
 ; Core framework
-Source: Landis.Core.dll; DestDir: {app}\bin;
-Source: Landis.Core.Implementation.dll; DestDir: {app}\bin;
+Source: Landis.Core.dll;                DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.Core.Implementation.dll; DestDir: {app}\{#MajorMinor}\bin;
 
 ; Libraries
-Source: log4net.dll; DestDir: {app}\bin;
-Source: Troschuetz.Random.dll; DestDir: {app}\bin;
-Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\bin;
+Source: log4net.dll;                   DestDir: {app}\{#MajorMinor}\bin;
+Source: Troschuetz.Random.dll;         DestDir: {app}\{#MajorMinor}\bin;
+Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\{#MajorMinor}\bin;
 
 ; LSML and GDAL
-Source: Landis.SpatialModeling.dll; DestDir: {app}\bin;
-Source: Landis.Landscapes.dll; DestDir: {app}\bin;
-Source: Landis.RasterIO.dll; DestDir: {app}\bin;
-Source: Landis.RasterIO.Gdal.dll; DestDir: {app}\bin;
-Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\bin;
-Source: {#GdalDir}\native\*; DestDir: {app}\bin
+Source: Landis.SpatialModeling.dll; DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.Landscapes.dll;      DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.RasterIO.dll;        DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.RasterIO.Gdal.dll;   DestDir: {app}\{#MajorMinor}\bin;
+Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\{#MajorMinor}\bin;
+Source: {#GdalDir}\native\*;        DestDir: {app}\{#MajorMinor}\bin
 
 ; Console interface
-Source: Landis.Console.exe; DestDir: {app}\bin;
-Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\bin;
+Source: Landis.Console.exe;              DestDir: {app}\{#MajorMinor}\bin;
+Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\{#MajorMinor}\bin;
 
 ; Command scripts that call console interface
-Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
-Source: {#ScriptDir}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
-Source: {#ScriptDir}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}.cmd
+Source: {#ScriptDir}\landis-ii.cmd;  DestDir: {app}\bin; Flags: uninsneveruninstall
+Source: {#ScriptDir}\landis.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
 
 ; Auxiliary tool for administering extensions
-Source: Landis.Extensions.Admin.exe; DestDir: {app}\bin;
-Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
-Source: {#ScriptDir}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: Landis.Extensions.Admin.exe;            DestDir: {app}\bin;
+Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}-extensions.cmd
+Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
 
 ; Documentation
-Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\docs
-Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf; DestDir: {app}\docs
+Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\{#MajorMinor}\docs
+Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\{#MajorMinor}\docs
 
 ; No example input files but a read me.
-Source: {#DocDir}\READ ME.TXT; DestDir: {app}\examples
+Source: {#DocDir}\READ ME.TXT; DestDir: {app}\{#MajorMinor}\examples
 
 ; Auxillary 3-rd party files.
-Source: {#ScriptDir}\3rd-party\*; DestDir: {#LandisInstallDir}\bin
+Source: {#ScriptDir}\3rd-party\*; DestDir: {app}\bin
 
 ; Script for uninstalling a LANDIS-II release
 #define UninstallReleaseScript "uninstall-landis-release.cmd"
-Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {app}\bin; Flags: uninsneveruninstall
 
 
 [Icons]
-Name: {group}\Documentation; Filename: {app}\docs
-Name: {group}\Sample Input Files; Filename: {app}\examples
-Name: {group}\Uninstall; Filename: {uninstallexe}
+Name: {group}\Documentation;      Filename: {app}\{#MajorMinor}\docs
+Name: {group}\Sample Input Files; Filename: {app}\{#MajorMinor}\examples
+Name: {group}\Uninstall;          Filename: {uninstallexe}
 
 [Run]
 ; Add the LANDIS-II bin directory to the PATH environment variable
-Filename: {#LandisBinDir}\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{#LandisInstallDir}\bin"" -append"
+Filename: {app}\bin\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{app}\bin"" -append"
 
 [UninstallRun]
-Filename: {#LandisBinDir}\{#UninstallReleaseScript}; Parameters: {#VersionRelease}
+Filename: {app}\bin\{#UninstallReleaseScript}; Parameters: {#VersionRelease}
 
 ; Remove the LANDIS-II bin directory to the PATH environment variable
 ;DISABLED THE LINE BELOW BECAUSE IT SHOULD ONLY REMOVE THE BIN DIR FROM PATH IF THERE ARE NO VERSIONS INSTALLED
