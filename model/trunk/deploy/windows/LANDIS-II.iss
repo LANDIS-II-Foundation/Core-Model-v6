@@ -2,6 +2,8 @@
 #define DeployDir    ExtractFilePath(ScriptDir)
 #define SolutionDir  ExtractFilePath(DeployDir)
 
+#define ConsoleDir       SolutionDir + "\console"
+
 #define BuildDir         SolutionDir + "\build"
 #define ReleaseConfigDir BuildDir + "\Release"
 
@@ -74,7 +76,7 @@ Source: gdal_wrap.dll; DestDir: {app}\bin;
 
 ; Console interface
 Source: Landis.Console.exe; DestDir: {app}\bin;
-Source: Landis.Console.exe.config; DestDir: {app}\bin;
+Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\bin;
 
 ; Command scripts that call console interface
 Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
