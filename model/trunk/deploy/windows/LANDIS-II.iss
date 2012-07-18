@@ -3,10 +3,14 @@
 #define SolutionDir  ExtractFilePath(DeployDir)
 
 #define ConsoleDir       SolutionDir + "\console"
+#define ThirdPartyDir    SolutionDir + "\third-party"
+#define LandisSpatialDir ThirdPartyDir + "\LSML"
+#define GdalDir          LandisSpatialDir + "\GDAL"
 
 #define BuildDir         SolutionDir + "\build"
 #define ReleaseConfigDir BuildDir + "\Release"
 
+;-----------------------------------------------------------------------------
 ; Fetch the version # from the core assembly
 #define CoreName "Landis.Core.dll"
 #define CorePath ReleaseConfigDir + "\" + CoreName
@@ -34,6 +38,7 @@
 #endif
 #define VersionReleaseFull Version + " (" + Release + ")"
 
+;-----------------------------------------------------------------------------
 
 #define DocDir             SolutionDir + "\docs"
 
@@ -61,18 +66,19 @@ LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 ; Core framework
 Source: Landis.Core.dll; DestDir: {app}\bin;
 Source: Landis.Core.Implementation.dll; DestDir: {app}\bin;
-Source: Landis.SpatialModeling.dll; DestDir: {app}\bin;
-Source: Landis.SpatialModeling.CoreServices.dll; DestDir: {app}\bin;
 
 ; Libraries
-Source: Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin;
-Source: Landis.Library.Cohorts.dll; DestDir: {app}\bin;
-Source: Landis.Library.Succession.dll; DestDir: {app}\bin;
 Source: log4net.dll; DestDir: {app}\bin;
 Source: Troschuetz.Random.dll; DestDir: {app}\bin;
 Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\bin;
-Source: gdal_csharp.dll; DestDir: {app}\bin;
-Source: gdal_wrap.dll; DestDir: {app}\bin;
+
+; LSML and GDAL
+Source: Landis.SpatialModeling.dll; DestDir: {app}\bin;
+Source: Landis.Landscapes.dll; DestDir: {app}\bin;
+Source: Landis.RasterIO.dll; DestDir: {app}\bin;
+Source: Landis.RasterIO.Gdal.dll; DestDir: {app}\bin;
+Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\bin;
+Source: {#GdalDir}\native\*; DestDir: {app}\bin
 
 ; Console interface
 Source: Landis.Console.exe; DestDir: {app}\bin;
@@ -97,7 +103,6 @@ Source: {#DocDir}\READ ME.TXT; DestDir: {app}\examples
 
 ; Auxillary 3-rd party files.
 Source: {#ScriptDir}\3rd-party\*; DestDir: {#LandisInstallDir}\bin
-Source: {#ScriptDir}\gdal-files\*; DestDir: {app}\bin
 
 ; Script for uninstalling a LANDIS-II release
 #define UninstallReleaseScript "uninstall-landis-release.cmd"
