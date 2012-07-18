@@ -6,6 +6,7 @@
 #define ThirdPartyDir    SolutionDir + "\third-party"
 #define LandisSpatialDir ThirdPartyDir + "\LSML"
 #define GdalDir          LandisSpatialDir + "\GDAL"
+#define ExtToolDir       SolutionDir + "\ext-admin"
 #define DocDir           SolutionDir + "\docs"
 
 #define BuildDir         SolutionDir + "\build"
@@ -87,8 +88,12 @@ Source: {#ScriptDir}\landis.cmd;     DestDir: {app}\bin; Flags: uninsneveruninst
 
 ; Auxiliary tool for administering extensions
 Source: Landis.Extensions.exe;                  DestDir: {app}\v{#Major}\bin; DestName: Landis.Extensions-{#MajorMinor}.exe
+Source: {#ExtToolDir}\App.config;               DestDir: {app}\v{#Major}\bin; DestName: Landis.Extensions-{#MajorMinor}.exe.config
 Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin;           DestName: landis-{#MajorMinor}-extensions.cmd
 Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin;           Flags: uninsneveruninstall
+
+; The library for extension dataset is stored where the extensions are installed
+Source: Landis.Extensions.Dataset.dll; DestDir: {app}\v{#Major}\bin\extensions; Flags: uninsneveruninstall
 
 ; Documentation
 ; (Note: Documentation among minor versions can reside in the same folder
