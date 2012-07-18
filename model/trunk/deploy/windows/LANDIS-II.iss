@@ -57,24 +57,24 @@ LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 [Files]
 
 ; Core framework
-Source: Landis.Core.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.Core.Implementation.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.SpatialModeling.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.SpatialModeling.CoreServices.dll; DestDir: {app}\bin; Flags: replacesameversion
+Source: Landis.Core.dll; DestDir: {app}\bin;
+Source: Landis.Core.Implementation.dll; DestDir: {app}\bin;
+Source: Landis.SpatialModeling.dll; DestDir: {app}\bin;
+Source: Landis.SpatialModeling.CoreServices.dll; DestDir: {app}\bin;
 
 ; Libraries
-Source: Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: log4net.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Troschuetz.Random.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: gdal_csharp.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: gdal_wrap.dll; DestDir: {app}\bin; Flags: replacesameversion
+Source: Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin;
+Source: Landis.Library.Cohorts.dll; DestDir: {app}\bin;
+Source: Landis.Library.Succession.dll; DestDir: {app}\bin;
+Source: log4net.dll; DestDir: {app}\bin;
+Source: Troschuetz.Random.dll; DestDir: {app}\bin;
+Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\bin;
+Source: gdal_csharp.dll; DestDir: {app}\bin;
+Source: gdal_wrap.dll; DestDir: {app}\bin;
 
 ; Console interface
-Source: Landis.Console.exe; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.Console.exe.config; DestDir: {app}\bin; Flags: replacesameversion
+Source: Landis.Console.exe; DestDir: {app}\bin;
+Source: Landis.Console.exe.config; DestDir: {app}\bin;
 
 ; Command scripts that call console interface
 Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
@@ -82,8 +82,8 @@ Source: {#ScriptDir}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveru
 Source: {#ScriptDir}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 ; Auxiliary tool for administering plug-ins
-Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin; Flags: replacesameversion
-Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin; Flags: replacesameversion
+Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin;
+Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin;
 Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
 Source: {#ScriptDir}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
