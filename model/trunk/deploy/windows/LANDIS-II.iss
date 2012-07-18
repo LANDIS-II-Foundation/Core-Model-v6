@@ -1,5 +1,26 @@
-#define Version    "6.0"
-#define MajorMinor "6.0"
+#define WindowsDeployDir ExtractFilePath(SourcePath)
+#define DeployDir        ExtractFilePath(WindowsDeployDir)
+#define SolutionDir      ExtractFilePath(DeployDir)
+
+#define BuildDir         SolutionDir + "\build"
+#define ReleaseConfigDir BuildDir + "\Release"
+
+; Fetch the version # from the core assembly
+#define CoreName "Landis.Core.dll"
+#define CorePath ReleaseConfigDir + "\" + CoreName
+#pragma message 'Getting version from "' + CorePath + '" ...'
+#if ! FileExists(CorePath)
+  #error The Release configuration of the model has not been built
+#endif
+#define Major
+#define Minor
+#define Revision
+#define Build
+#define CoreVersion ParseVersion(CorePath, Major, Minor, Revision, Build)
+#pragma message "Core version = " + CoreVersion
+
+#define MajorMinor Str(Major) + "." + Str(Minor)
+#define Version    MajorMinor
 
 ; Read the release status and define variables with release information
 #include "release-status.iss"
