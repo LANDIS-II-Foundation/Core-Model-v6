@@ -77,8 +77,8 @@ Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
 Source: {#GdalDir}\native\*;        DestDir: {app}\v{#Major}\bin\GDAL
 
 ; Console interface
-Source: Landis.Console.exe;              DestDir: {app}\v{#Major}\bin;
-Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\v{#Major}\bin;
+Source: Landis.Console.exe;              DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe
+Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe.config
 
 ; Command scripts that call console interface
 Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}.cmd
@@ -86,9 +86,9 @@ Source: {#ScriptDir}\landis-ii.cmd;  DestDir: {app}\bin; Flags: uninsneveruninst
 Source: {#ScriptDir}\landis.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
 
 ; Auxiliary tool for administering extensions
-Source: Landis.Extensions.Admin.exe;            DestDir: {app}\bin;
-Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}-extensions.cmd
-Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
+Source: Landis.Extensions.Admin.exe;            DestDir: {app}\v{#Major}\bin; DestName: Landis.Extensions.Admin-{#MajorMinor}.exe
+Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin;           DestName: landis-{#MajorMinor}-extensions.cmd
+Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin;           Flags: uninsneveruninstall
 
 ; Documentation
 ; (Note: Documentation among minor versions can reside in the same folder
