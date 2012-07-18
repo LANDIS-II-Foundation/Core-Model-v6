@@ -9,4 +9,4 @@ set Version=%FileName:landis-=%
 set Version=%Version:-extensions=%
 for /f "delims=." %%X in ("%Version%") do set MajorVer=%%X
 
-"%LandisRootDir%\v%MajorVer%\bin\Landis.Extensions.Admin-%Version%.exe" %*
+"%LandisRootDir%\v%MajorVer%\bin\Landis.Extensions-%Version%.exe" %*

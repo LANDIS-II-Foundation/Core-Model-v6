@@ -152,7 +152,7 @@ solution "LANDIS-II"
   project "Extension_Admin"
     location "ext-admin"
     kind "ConsoleApp"
-    targetname "Landis.Extensions.Admin"
+    targetname "Landis.Extensions"
     files {
       "SharedAssemblyInfo.cs",
       "ext-admin/*.cs"
