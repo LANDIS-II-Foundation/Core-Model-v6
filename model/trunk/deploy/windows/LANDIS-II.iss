@@ -52,8 +52,7 @@ DefaultDirName={#LandisInstallDir}\{#MajorMinor}
 UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\{#MajorMinor}
 UsePreviousGroup=no
-; SourceDir={#MyDocs}\software\release
-SourceDir=C:\Program Files\LANDIS-II\6.0\bin
+SourceDir={#ReleaseConfigDir}
 OutputDir={#PkgWindowsFiles}
 
 ;OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
