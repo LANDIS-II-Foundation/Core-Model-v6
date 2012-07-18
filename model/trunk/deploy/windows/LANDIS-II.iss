@@ -48,7 +48,7 @@ AppVerName=LANDIS-II {#VersionReleaseFull}
 AppPublisher=Portland State University
 DefaultDirName={pf}\LANDIS-II
 UsePreviousAppDir=no
-DefaultGroupName=LANDIS-II\{#MajorMinor}
+DefaultGroupName=LANDIS-II\v{#Major}
 UsePreviousGroup=no
 SourceDir={#ReleaseConfigDir}
 OutputDir={#ScriptDir}
@@ -60,25 +60,25 @@ LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 [Files]
 
 ; Core framework
-Source: Landis.Core.dll;                DestDir: {app}\{#MajorMinor}\bin;
-Source: Landis.Core.Implementation.dll; DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.Core.dll;                DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Landis.Core.Implementation.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
 
 ; Libraries
-Source: log4net.dll;                   DestDir: {app}\{#MajorMinor}\bin;
-Source: Troschuetz.Random.dll;         DestDir: {app}\{#MajorMinor}\bin;
-Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\{#MajorMinor}\bin;
+Source: log4net.dll;                   DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Troschuetz.Random.dll;         DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
 
 ; LSML and GDAL
-Source: Landis.SpatialModeling.dll; DestDir: {app}\{#MajorMinor}\bin;
-Source: Landis.Landscapes.dll;      DestDir: {app}\{#MajorMinor}\bin;
-Source: Landis.RasterIO.dll;        DestDir: {app}\{#MajorMinor}\bin;
-Source: Landis.RasterIO.Gdal.dll;   DestDir: {app}\{#MajorMinor}\bin;
-Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\{#MajorMinor}\bin;
-Source: {#GdalDir}\native\*;        DestDir: {app}\{#MajorMinor}\bin
+Source: Landis.SpatialModeling.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Landis.Landscapes.dll;      DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Landis.RasterIO.dll;        DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: Landis.RasterIO.Gdal.dll;   DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
+Source: {#GdalDir}\native\*;        DestDir: {app}\v{#Major}\bin\GDAL
 
 ; Console interface
-Source: Landis.Console.exe;              DestDir: {app}\{#MajorMinor}\bin;
-Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\{#MajorMinor}\bin;
+Source: Landis.Console.exe;              DestDir: {app}\v{#Major}\bin;
+Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\v{#Major}\bin;
 
 ; Command scripts that call console interface
 Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}.cmd
@@ -91,11 +91,13 @@ Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin; DestName: la
 Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
 
 ; Documentation
-Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\{#MajorMinor}\docs
-Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\{#MajorMinor}\docs
+; (Note: Documentation among minor versions can reside in the same folder
+;        because all the files have version #s in their names.)
+Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\v{#Major}\docs
+Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\v{#Major}\docs
 
 ; No example input files but a read me.
-Source: {#DocDir}\READ ME.TXT; DestDir: {app}\{#MajorMinor}\examples
+Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
 
 ; Auxillary 3-rd party files.
 Source: {#ScriptDir}\3rd-party\*; DestDir: {app}\bin
@@ -106,9 +108,9 @@ Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {app}\bin; Flags: unins
 
 
 [Icons]
-Name: {group}\Documentation;      Filename: {app}\{#MajorMinor}\docs
-Name: {group}\Sample Input Files; Filename: {app}\{#MajorMinor}\examples
-Name: {group}\Uninstall;          Filename: {uninstallexe}
+Name: {group}\Documentation;           Filename: {app}\v{#Major}\docs
+Name: {group}\Sample Input Files;      Filename: {app}\v{#Major}\examples
+Name: {group}\Uninstall {#MajorMinor}; Filename: {uninstallexe}
 
 [Run]
 ; Add the LANDIS-II bin directory to the PATH environment variable
