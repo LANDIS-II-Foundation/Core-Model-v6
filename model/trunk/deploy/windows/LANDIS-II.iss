@@ -75,7 +75,6 @@ Source: Troschuetz.Random.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: gdal_csharp.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: gdal_wrap.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#PkgSoftwareDir}\plug-ins.js; DestDir: {app}\bin; Flags: replacesameversion
 
 ; Console interface
 Source: Landis.Console.exe; DestDir: {app}\bin; Flags: replacesameversion
@@ -99,7 +98,6 @@ Source: {#PkgWindowsFiles}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flag
 ; Documentation
 Source: {#PkgDocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\docs
 Source: {#PkgDocDir}\LANDIS-II Model v6.0 User Guide.pdf; DestDir: {app}\docs
-; Source: {#PkgDocDir}\index.html; DestDir: {app}\docs
 
 ; No example input files but a read me.
 Source: {#PkgDocDir}\READ ME.TXT; DestDir: {app}\examples
