@@ -1,6 +1,6 @@
-#define WindowsDeployDir ExtractFilePath(SourcePath)
-#define DeployDir        ExtractFilePath(WindowsDeployDir)
-#define SolutionDir      ExtractFilePath(DeployDir)
+#define ScriptDir    ExtractFilePath(SourcePath)
+#define DeployDir    ExtractFilePath(ScriptDir)
+#define SolutionDir  ExtractFilePath(DeployDir)
 
 #define BuildDir         SolutionDir + "\build"
 #define ReleaseConfigDir BuildDir + "\Release"
@@ -33,7 +33,6 @@
 #define VersionReleaseFull Version + " (" + Release + ")"
 
 
-#define PkgWindowsFiles    SourcePath
 #define PkgHomeDir		   "J:\Scheller\LANDIS-II\GoogleCodeExtensions\core-install-library\trunk\"
 #define PkgDocDir          PkgHomeDir + "docs"
 
@@ -50,7 +49,7 @@ UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\{#MajorMinor}
 UsePreviousGroup=no
 SourceDir={#ReleaseConfigDir}
-OutputDir={#PkgWindowsFiles}
+OutputDir={#ScriptDir}
 
 ;OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
 OutputBaseFilename=LANDIS-II-6.0-setup
@@ -80,15 +79,15 @@ Source: Landis.Console.exe; DestDir: {app}\bin; Flags: replacesameversion
 Source: Landis.Console.exe.config; DestDir: {app}\bin; Flags: replacesameversion
 
 ; Command scripts that call console interface
-Source: {#PkgWindowsFiles}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
-Source: {#PkgWindowsFiles}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
-Source: {#PkgWindowsFiles}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
+Source: {#ScriptDir}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 ; Auxiliary tool for administering plug-ins
 Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin; Flags: replacesameversion
 Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#PkgWindowsFiles}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
-Source: {#PkgWindowsFiles}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}-extensions.cmd
+Source: {#ScriptDir}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 ; Documentation
 Source: {#PkgDocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\docs
@@ -98,12 +97,12 @@ Source: {#PkgDocDir}\LANDIS-II Model v6.0 User Guide.pdf; DestDir: {app}\docs
 Source: {#PkgDocDir}\READ ME.TXT; DestDir: {app}\examples
 
 ; Auxillary 3-rd party files.
-Source: {#PkgWindowsFiles}\3rd-party\*; DestDir: {#LandisInstallDir}\bin
-Source: {#PkgWindowsFiles}\gdal-files\*; DestDir: {app}\bin
+Source: {#ScriptDir}\3rd-party\*; DestDir: {#LandisInstallDir}\bin
+Source: {#ScriptDir}\gdal-files\*; DestDir: {app}\bin
 
 ; Script for uninstalling a LANDIS-II release
 #define UninstallReleaseScript "uninstall-landis-release.cmd"
-Source: {#PkgWindowsFiles}\{#UninstallReleaseScript}; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
+Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 
 [Icons]
