@@ -1,17 +1,11 @@
-; #include "build\settings.iss"
-
-
 #define Version    "6.0"
 #define MajorMinor "6.0"
 
-#define Release       "official"
-#define ReleaseType   "official"
-; #define ReleaseNumber "3"
-#define ReleaseAbbr   ""
-#define ReleaseFull   "official release"
+; Read the release status and define variables with release information
+#include "release-status.iss"
 
 #define VersionRelease     Version + ReleaseAbbr
-#define VersionReleaseFull Version + " (" + ReleaseFull + ")"
+#define VersionReleaseFull Version + " (" + Release + ")"
 
 #define PkgWindowsFiles    SourcePath
 #define PkgCommonFiles     ExtractFilePath(PkgWindowsFiles)
