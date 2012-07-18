@@ -81,7 +81,7 @@ Source: Landis.Console.exe; DestDir: {app}\bin; Flags: replacesameversion
 Source: Landis.Console.exe.config; DestDir: {app}\bin; Flags: replacesameversion
 
 ; Command scripts that call console interface
-Source: {#PkgWindowsFiles}\landis-{#VersionRelease}.cmd; DestDir: {#LandisBinDir}
+Source: {#PkgWindowsFiles}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: landis-{#MajorMinor}.cmd
 Source: {#PkgWindowsFiles}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 Source: {#PkgWindowsFiles}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
