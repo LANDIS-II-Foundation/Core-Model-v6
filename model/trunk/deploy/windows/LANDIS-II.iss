@@ -36,7 +36,6 @@
 #define PkgWindowsFiles    SourcePath
 #define PkgHomeDir		   "J:\Scheller\LANDIS-II\GoogleCodeExtensions\core-install-library\trunk\"
 #define PkgDocDir          PkgHomeDir + "docs"
-#define PkgSoftwareDir     PkgHomeDir + "software"
 
 #define LandisInstallDir   "C:\Program Files\LANDIS-II"
 #define LandisBinDir       LandisInstallDir + "\bin"
@@ -85,10 +84,6 @@ Source: {#PkgWindowsFiles}\landis-X.Y.cmd; DestDir: {#LandisBinDir}; DestName: l
 Source: {#PkgWindowsFiles}\landis-ii.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 Source: {#PkgWindowsFiles}\landis.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
-; Auxiliary tool for identifying versions of LANDIS-II installed
-Source: {#PkgSoftwareDir}\Landis.Versions.exe; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
-Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
-
 ; Auxiliary tool for administering plug-ins
 Source: Landis.PlugIns.Admin.exe; DestDir: {app}\bin; Flags: replacesameversion
 Source: Landis.PlugIns.Admin.exe.config; DestDir: {app}\bin; Flags: replacesameversion
@@ -120,9 +115,6 @@ Name: {group}\Uninstall; Filename: {uninstallexe}
 ; Add the LANDIS-II bin directory to the PATH environment variable
 Filename: {#LandisBinDir}\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{#LandisInstallDir}\bin"" -append"
 
-; Run tool to determine newest version of LANDIS-II installed
-Filename: {#LandisBinDir}\Landis.Versions.exe; Parameters: store-newest
-
 [UninstallRun]
 Filename: {#LandisBinDir}\{#UninstallReleaseScript}; Parameters: {#VersionRelease}
 
@@ -131,8 +123,7 @@ Filename: {#LandisBinDir}\{#UninstallReleaseScript}; Parameters: {#VersionReleas
 ;Filename: {pf}\LANDIS-II\bin\envinst.exe; Parameters: "-silent -broadcast -eraseval -name=PATH -value=""{pf}\LANDIS-II\bin"""
 
 ;; EVENTUALLY TO-DO:
-;; Run the versions tool after this version's command script removed.
-;; If no versions installed, i.e. landis-newest.txt doesn't exist, then
+;; If no versions installed, i.e. no landis-#.#.cmd scripts exist, then
 ;; remove version-independent cmd scripts (landis.cmd, landis-ii.cmd, admin tools?)
 ;; if bin now empty, remove it
 ;; if parent dir ({pf}\LANDIS-II) empty, remove it
