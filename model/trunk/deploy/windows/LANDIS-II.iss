@@ -120,7 +120,6 @@ Name: {group}\Uninstall; Filename: {uninstallexe}
 
 [Run]
 ; Add the LANDIS-II bin directory to the PATH environment variable
-Filename: {#LandisBinDir}\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{#LandisInstallDir}\6.0\bin"" -append"
 Filename: {#LandisBinDir}\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{#LandisInstallDir}\bin"" -append"
 
 ; Run tool to determine newest version of LANDIS-II installed
