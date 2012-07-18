@@ -50,8 +50,7 @@ UsePreviousGroup=no
 SourceDir={#ReleaseConfigDir}
 OutputDir={#ScriptDir}
 
-;OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
-OutputBaseFilename=LANDIS-II-6.0-setup
+OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
 LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 
 
