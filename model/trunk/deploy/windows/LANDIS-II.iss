@@ -33,8 +33,7 @@
 #define VersionReleaseFull Version + " (" + Release + ")"
 
 
-#define PkgHomeDir		   "J:\Scheller\LANDIS-II\GoogleCodeExtensions\core-install-library\trunk\"
-#define PkgDocDir          PkgHomeDir + "docs"
+#define DocDir             SolutionDir + "\docs"
 
 #define LandisInstallDir   "C:\Program Files\LANDIS-II"
 #define LandisBinDir       LandisInstallDir + "\bin"
@@ -53,7 +52,7 @@ OutputDir={#ScriptDir}
 
 ;OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
 OutputBaseFilename=LANDIS-II-6.0-setup
-LicenseFile={#PkgDocDir}\LANDIS-II_Binary_license.rtf
+LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 
 
 [Files]
@@ -90,11 +89,11 @@ Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {#LandisBinDir}; DestNa
 Source: {#ScriptDir}\landis-extensions.cmd; DestDir: {#LandisBinDir}; Flags: uninsneveruninstall
 
 ; Documentation
-Source: {#PkgDocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\docs
-Source: {#PkgDocDir}\LANDIS-II Model v6.0 User Guide.pdf; DestDir: {app}\docs
+Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\docs
+Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf; DestDir: {app}\docs
 
 ; No example input files but a read me.
-Source: {#PkgDocDir}\READ ME.TXT; DestDir: {app}\examples
+Source: {#DocDir}\READ ME.TXT; DestDir: {app}\examples
 
 ; Auxillary 3-rd party files.
 Source: {#ScriptDir}\3rd-party\*; DestDir: {#LandisInstallDir}\bin
