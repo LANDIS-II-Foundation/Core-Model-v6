@@ -32,11 +32,12 @@
 #include "release-status.iss"
 
 #if ReleaseAbbr != ""
-  #define VersionRelease   Version + " (" + ReleaseAbbr + ")"
+  #define VersionReleaseName Version + " (" + ReleaseAbbr + ")"
 #else
-  #define VersionRelease   Version
+  #define VersionReleaseName Version
 #endif
-#define VersionReleaseFull Version + " (" + Release + ")"
+#define VersionRelease       Version + ReleaseAbbr
+#define VersionReleaseFull   Version + " (" + Release + ")"
 
 ;-----------------------------------------------------------------------------
 
@@ -47,7 +48,7 @@
 #define LandisPlugInDir    LandisInstallDir + "\plug-ins"
 
 [Setup]
-AppName=LANDIS-II {#VersionRelease}
+AppName=LANDIS-II {#VersionReleaseName}
 AppVerName=LANDIS-II {#VersionReleaseFull}
 AppPublisher=Portland State University
 DefaultDirName={#LandisInstallDir}\{#MajorMinor}
