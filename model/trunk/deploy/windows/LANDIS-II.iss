@@ -136,7 +136,26 @@ Filename: {#LandisBinDir}\{#UninstallReleaseScript}; Parameters: {#VersionReleas
 Name: {app}; Type: filesandordirs
 
 
+;-----------------------------------------------------------------------------
+
 [Code]
+
+var
+  { Was the Inno Setup script for this installer found in the same directory
+    as the installer itself?  Used to determine whether to allow the user to
+    select the Destination Directory. }
+  InnoSetupScriptFound: Boolean;
+
+function InitializeSetup(): Boolean;
+var
+  InstallerDir : String;
+  InnoSetupScript : String;
+begin
+  InstallerDir := ExpandConstant('{src}');
+  InnoSetupScript := AddBackslash(InstallerDir) + 'LANDIS-II.iss';
+  InnoSetupScriptFound := FileExists(InnoSetupScript);
+  Result := True;
+end;
 
 {-----------------------------------------------------------------------------}
 
@@ -145,9 +164,12 @@ begin
   { Skip the SelectProgramGroup page because program group fixed. }
   if CurPage = wpSelectProgramGroup then
     Result := True
-  { Skip the SelectDestination Directory page because that directory is fixed. }
+  { Skip the Select Destination Directory page because that directory is fixed.
+    Unless the Inno Setup script is alongside the installer, in which case, do
+    NOT skip the page.  Enables the developer who's building the installer to
+    select a different directory for test purposes. }
   else if CurPage = wpSelectDir then
-    Result := True
+    Result := not InnoSetupScriptFound
   else
     Result := False
 end;
