@@ -53,8 +53,9 @@ DefaultGroupName=LANDIS-II\v{#Major}
 UsePreviousGroup=no
 SourceDir={#ReleaseConfigDir}
 OutputDir={#ScriptDir}
-
 OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
+ChangesEnvironment=yes
+SetupLogging=yes
 LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 
 ; GDAL 64-bit binaries are built for x64
@@ -107,9 +108,6 @@ Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\v{#Major}
 ; No example input files but a read me.
 Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
 
-; Auxillary 3-rd party files.
-Source: {#ScriptDir}\3rd-party\*; DestDir: {app}\bin
-
 ; Script for uninstalling a LANDIS-II release
 #define UninstallReleaseScript "uninstall-landis-release.cmd"
 Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {app}\bin; Flags: uninsneveruninstall
@@ -120,9 +118,11 @@ Name: {group}\Documentation;           Filename: {app}\v{#Major}\docs
 Name: {group}\Sample Input Files;      Filename: {app}\v{#Major}\examples
 Name: {group}\Uninstall {#MajorMinor}; Filename: {uninstallexe}
 
-[Run]
+[Registry]
 ; Add the LANDIS-II bin directory to the PATH environment variable
-Filename: {app}\bin\envinst.exe; Parameters: "-silent -broadcast -addval -name=PATH -value=""{app}\bin"" -append"
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment";   \
+            ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\bin"; \
+            Check: DirNotInPath(ExpandConstant('{app}\bin'))
 
 [UninstallRun]
 Filename: {app}\bin\{#UninstallReleaseScript}; Parameters: {#VersionRelease}
@@ -160,6 +160,33 @@ begin
   InnoSetupScript := AddBackslash(InstallerDir) + 'LANDIS-II.iss';
   InnoSetupScriptFound := FileExists(InnoSetupScript);
   Result := True;
+end;
+
+// ----------------------------------------------------------------------------
+
+// This function and its corresponding use in the Check parameter in the
+// Registry are described in this Stack Overflow answer:
+// http://stackoverflow.com/a/3431379/1258514
+
+function DirNotInPath(Directory: String): Boolean;
+var
+  OrigPath: String;
+  PosInPath: Integer;
+begin
+  if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
+    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+    'Path', OrigPath)
+  then begin
+    Result := True;
+    exit;
+  end;
+  // look for the path with leading and trailing semicolon
+  // Pos() returns 0 if not found
+  PosInPath := Pos(';' + Directory + ';', ';' + OrigPath + ';');
+  Result := PosInPath = 0;
+  Log('DirNotInPath: Directory = "' + Directory + '"');
+  Log('DirNotInPath: OrigPath = "' + OrigPath + '"');
+  Log('DirNotInPath: PosInPath = ' + IntToStr(PosInPath));
 end;
 
 {-----------------------------------------------------------------------------}
