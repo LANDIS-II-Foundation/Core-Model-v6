@@ -108,15 +108,11 @@ Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\v{#Major}
 ; No example input files but a read me.
 Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
 
-; Script for uninstalling a LANDIS-II release
-#define UninstallReleaseScript "uninstall-landis-release.cmd"
-Source: {#ScriptDir}\{#UninstallReleaseScript}; DestDir: {app}\bin; Flags: uninsneveruninstall
-
 
 [Icons]
-Name: {group}\Documentation;           Filename: {app}\v{#Major}\docs
-Name: {group}\Sample Input Files;      Filename: {app}\v{#Major}\examples
-Name: {group}\Uninstall {#MajorMinor}; Filename: {uninstallexe}
+Name: {group}\Documentation;                         Filename: {app}\v{#Major}\docs
+Name: {group}\Sample Input Files;                    Filename: {app}\v{#Major}\examples
+Name: {group}\Uninstall\LANDIS-II {#VersionRelease}; Filename: {uninstallexe}; Parameters: "/log";
 
 [Registry]
 ; Add the LANDIS-II bin directory to the PATH environment variable
@@ -124,31 +120,18 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
             ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\bin"; \
             Check: DirNotInPath(ExpandConstant('{app}\bin'))
 
-[UninstallRun]
-Filename: {app}\bin\{#UninstallReleaseScript}; Parameters: {#VersionRelease}
-
 ; Remove the LANDIS-II bin directory to the PATH environment variable
 ;DISABLED THE LINE BELOW BECAUSE IT SHOULD ONLY REMOVE THE BIN DIR FROM PATH IF THERE ARE NO VERSIONS INSTALLED
 ;Filename: {pf}\LANDIS-II\bin\envinst.exe; Parameters: "-silent -broadcast -eraseval -name=PATH -value=""{pf}\LANDIS-II\bin"""
-
-;; EVENTUALLY TO-DO:
-;; If no versions installed, i.e. no landis-#.#.cmd scripts exist, then
-;; remove version-independent cmd scripts (landis.cmd, landis-ii.cmd, admin tools?)
-;; if bin now empty, remove it
-;; if parent dir ({pf}\LANDIS-II) empty, remove it
-
-[UninstallDelete]
-Name: {app}; Type: filesandordirs
-
 
 ;-----------------------------------------------------------------------------
 
 [Code]
 
 var
-  { Was the Inno Setup script for this installer found in the same directory
-    as the installer itself?  Used to determine whether to allow the user to
-    select the Destination Directory. }
+  // Was the Inno Setup script for this installer found in the same directory
+  // as the installer itself?  Used to determine whether to allow the user to
+  // select the Destination Directory.
   InnoSetupScriptFound: Boolean;
 
 function InitializeSetup(): Boolean;
@@ -217,3 +200,61 @@ begin
             NewLine +
             MemoGroupInfo + NewLine;
 end;
+
+// ----------------------------------------------------------------------------
+
+// Count the number of LANDIS-II versions that are current installed.  Each
+// version has its own "landis-X.Y.cmd" script, where X.Y is its version
+// number (X = major version, Y = minor version).
+
+function CountVersions(): Integer;
+var
+  BinDir: String;
+  NumVersionsFound: Integer;
+  FindRec: TFindRec;
+begin
+  BinDir := ExpandConstant('{app}\bin');
+  if not DirExists(BinDir) then
+  begin
+    Log('CountVersions: directory does not exist: ' + BinDir);
+    Result := 0;
+    exit;
+  end;
+
+  // Look for "landis-X.Y.cmd" scripts
+  NumVersionsFound := 0;
+  if FindFirst(BinDir + '\landis-?.?.cmd', FindRec) then
+  begin
+    try
+      repeat
+        NumVersionsFound := NumVersionsFound + 1;
+        Log('CountVersions: (' + IntToStr(NumVersionsFound) + ') ' + BinDir + '\' + FindRec.Name);
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
+  end;
+  Log('CountVersions: # found = ' + IntToStr(NumVersionsFound))
+  Result := NumVersionsFound;
+end;
+
+// ----------------------------------------------------------------------------
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  LandisRootDir: String;
+begin
+  if CurUninstallStep = usPostUninstall then
+  begin
+    if CountVersions() = 0 then
+    begin
+      LandisRootDir := ExpandConstant('{app}');
+      Log('No LANDIS-II versions remain installed, so deleting ' + LandisRootDir + '\ ...');
+      if not DelTree(LandisRootDir, True, True, True) then
+      begin
+        Log('Error: unable to delete everything in ' + LandisRootDir + '\');
+      end;
+    end;
+  end;
+end;
+
