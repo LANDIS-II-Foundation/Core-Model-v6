@@ -120,10 +120,6 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
             ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\bin"; \
             Check: DirNotInPath(ExpandConstant('{app}\bin'))
 
-; Remove the LANDIS-II bin directory to the PATH environment variable
-;DISABLED THE LINE BELOW BECAUSE IT SHOULD ONLY REMOVE THE BIN DIR FROM PATH IF THERE ARE NO VERSIONS INSTALLED
-;Filename: {pf}\LANDIS-II\bin\envinst.exe; Parameters: "-silent -broadcast -eraseval -name=PATH -value=""{pf}\LANDIS-II\bin"""
-
 ;-----------------------------------------------------------------------------
 
 [Code]
@@ -158,8 +154,8 @@ var
 begin
   if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
     'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
-    'Path', OrigPath)
-  then begin
+    'Path', OrigPath) then
+  begin
     Result := True;
     exit;
   end;
@@ -240,6 +236,73 @@ end;
 
 // ----------------------------------------------------------------------------
 
+// Notify other top-level windows (applications) that there's been a change in
+// the environment variables.  Based on this posting:
+//
+// http://news.jrsoftware.org/news/innosetup/msg25626.html
+
+procedure BroadcastEnvironmentChange();
+var
+  Leaf: String;
+  LeafPtr: Longint;
+  ReturnVal: Longint;
+begin
+  Leaf := 'Environment';
+  LeafPtr := CastStringToInteger(Leaf);
+  ReturnVal := SendBroadcastMessage($1A {WM_SETTINGCHANGE}, 0, LeafPtr);
+  Log('BroadcastEnvironmentChange: Result from SendBroadcastMessage = ' + IntToStr(ReturnVal));
+end;
+
+// ----------------------------------------------------------------------------
+
+// Remove a specified directory from the system PATH environment variable.
+
+procedure RemoveDirFromPath(Directory: String);
+var
+  CurrentPath: String;
+  PosInPath: Integer;
+  NewPath: String;
+begin
+  if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
+    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+    'Path', CurrentPath) then
+  begin
+    // Nothing to do
+    exit;
+  end;
+
+  // Look for the directory in the path (using the same trick with leading and
+  // trailing semicolon as in the function DirNotInPath above).
+  // Pos() returns 0 if not found
+  PosInPath := Pos(';' + Directory + ';', ';' + CurrentPath + ';');
+  Log('RemoveDirFromPath: Directory = "' + Directory + '"');
+  Log('RemoveDirFromPath: CurrentPath = "' + CurrentPath + '"');
+  Log('RemoveDirFromPath: PosInPath = ' + IntToStr(PosInPath));
+  if PosInPath > 0 then
+  begin
+    NewPath := ';' + CurrentPath + ';';
+    StringChangeEx(NewPath, ';' + Directory + ';', ';', True);
+
+    // Strip leading and trailing ';'s
+    NewPath := Copy(NewPath, 2, Length(NewPath)-2);
+    Log('RemoveDirFromPath: NewPath = "' + NewPath + '"');
+
+    if RegWriteExpandStringValue(HKEY_LOCAL_MACHINE,
+        'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+        'Path', NewPath) then
+    begin
+      Log('RemoveDirFromPath: Updated system PATH environment variable');
+      BroadcastEnvironmentChange();
+    end
+    else
+    begin
+      Log('RemoveDirFromPath: ERROR occurred when updating system PATH environment variable');
+    end;
+  end;
+end;
+
+// ----------------------------------------------------------------------------
+
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
   LandisRootDir: String;
@@ -254,6 +317,7 @@ begin
       begin
         Log('Error: unable to delete everything in ' + LandisRootDir + '\');
       end;
+      RemoveDirFromPath(LandisRootDir + '\bin');
     end;
   end;
 end;
