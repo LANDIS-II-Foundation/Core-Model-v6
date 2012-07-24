@@ -120,6 +120,15 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
             ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\bin"; \
             Check: DirNotInPath(ExpandConstant('{app}\bin'))
 
+[Run]
+; Run the extension admin tool so if the extension dataset doesn't exist, it'll
+; be created.  Need to do this during installation because running with elevated
+; privileges on Vista and newer Windows.  A normal user can't run the tool and
+; have it create the initial empty dataset because the user doesn't have write
+; access to the "Program Files" folder.  Note: running the tool with no
+; parameters simply has it display a brief list of installed extensions.
+Filename: landis-{#MajorMinor}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
+
 ;-----------------------------------------------------------------------------
 
 [Code]
