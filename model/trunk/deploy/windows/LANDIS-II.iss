@@ -91,9 +91,9 @@ Source: {#ScriptDir}\landis-ii.cmd;  DestDir: {app}\bin; Flags: uninsneveruninst
 Source: {#ScriptDir}\landis.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
 
 ; Auxiliary tool for administering extensions
-Source: Landis.Extensions.exe;                  DestDir: {app}\v{#Major}\bin; DestName: Landis.Extensions-{#MajorMinor}.exe
-Source: {#ExtToolDir}\App.config;               DestDir: {app}\v{#Major}\bin; DestName: Landis.Extensions-{#MajorMinor}.exe.config
-Source: {#ScriptDir}\landis-X.Y-extensions.cmd; DestDir: {app}\bin;           DestName: landis-{#MajorMinor}-extensions.cmd
+Source: Landis.Extensions.exe;                  DestDir: {app}\v{#Major}\bin; Flags: uninsneveruninstall
+Source: {#ExtToolDir}\App.config;               DestDir: {app}\v{#Major}\bin; Flags: uninsneveruninstall; DestName: Landis.Extensions.exe.config;   Check: not VersionInToolConfig
+Source: {#ScriptDir}\landis-vX-extensions.cmd;  DestDir: {app}\bin;           Flags: uninsneveruninstall; DestName: landis-v{#Major}-extensions.cmd
 Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin;           Flags: uninsneveruninstall
 
 ; The library for extension dataset is stored where the extensions are installed
@@ -127,11 +127,15 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 ; have it create the initial empty dataset because the user doesn't have write
 ; access to the "Program Files" folder.  Note: running the tool with no
 ; parameters simply has it display a brief list of installed extensions.
-Filename: landis-{#MajorMinor}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
+Filename: landis-v{#Major}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
 
 ;-----------------------------------------------------------------------------
 
 [Code]
+
+const
+  MajorVersion = '{#Major}';
+  MajorMinor = '{#MajorMinor}';
 
 var
   // Was the Inno Setup script for this installer found in the same directory
@@ -148,6 +152,40 @@ begin
   InnoSetupScript := AddBackslash(InstallerDir) + 'LANDIS-II.iss';
   InnoSetupScriptFound := FileExists(InnoSetupScript);
   Result := True;
+end;
+
+// ----------------------------------------------------------------------------
+
+// This function returns True if the current version number (i.e., major.minor)
+// is in the extension admin tool's config file.  If present, then the tool is
+// probing that particular version's subdirectory.
+
+function VersionInToolConfig(): Boolean;
+var
+  LandisRootDir: String;
+  MajorVerBinDir: String;
+  ToolConfig: String;
+  ToolConfigContents: String;
+  PosOfVersion: Integer;
+begin
+  LandisRootDir := ExpandConstant('{app}\');
+  MajorVerBinDir := LandisRootDir + '\v' + MajorVersion + '\bin';
+  ToolConfig := MajorVerBinDir + '\Landis.Extensions.exe.config';
+  if not FileExists(ToolConfig) then
+  begin
+    Log('VersionInToolConfig: "' + ToolConfig + '" does not exist');
+    Result := False;
+    exit;
+  end;
+  if not LoadStringFromFile(ToolConfig, ToolConfigContents) then
+  begin
+    Log('VersionInToolConfig: Cannot read contents from "' + ToolConfig + '"');
+    Result := False;
+    exit;
+  end;
+  PosOfVersion := Pos(MajorMinor + ';', ToolConfigContents);
+  Log('VersionInToolConfig: Position of "' + MajorMinor + '" in file = ' + IntToStr(PosOfVersion));
+  Result := PosOfVersion <> 0;
 end;
 
 // ----------------------------------------------------------------------------
