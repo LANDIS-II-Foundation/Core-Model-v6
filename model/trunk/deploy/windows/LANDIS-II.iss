@@ -172,17 +172,17 @@ begin
   MajorVerBinDir := LandisRootDir + '\v' + MajorVersion + '\bin';
   ToolConfig := MajorVerBinDir + '\Landis.Extensions.exe.config';
   if not FileExists(ToolConfig) then
-  begin
+    begin
     Log('VersionInToolConfig: "' + ToolConfig + '" does not exist');
     Result := False;
     exit;
-  end;
+    end;
   if not LoadStringFromFile(ToolConfig, ToolConfigContents) then
-  begin
+    begin
     Log('VersionInToolConfig: Cannot read contents from "' + ToolConfig + '"');
     Result := False;
     exit;
-  end;
+    end;
   PosOfVersion := Pos(MajorMinor + ';', ToolConfigContents);
   Log('VersionInToolConfig: Position of "' + MajorMinor + '" in file = ' + IntToStr(PosOfVersion));
   Result := PosOfVersion <> 0;
@@ -200,12 +200,12 @@ var
   PosInPath: Integer;
 begin
   if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
-    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
-    'Path', OrigPath) then
-  begin
+      'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+      'Path', OrigPath) then
+    begin
     Result := True;
     exit;
-  end;
+    end;
   // look for the path with leading and trailing semicolon
   // Pos() returns 0 if not found
   PosInPath := Pos(';' + Directory + ';', ';' + OrigPath + ';');
@@ -258,16 +258,16 @@ var
 begin
   BinDir := ExpandConstant('{app}\bin');
   if not DirExists(BinDir) then
-  begin
+    begin
     Log('CountVersions: directory does not exist: ' + BinDir);
     Result := 0;
     exit;
-  end;
+    end;
 
   // Look for "landis-X.Y.cmd" scripts
   NumVersionsFound := 0;
   if FindFirst(BinDir + '\landis-?.?.cmd', FindRec) then
-  begin
+    begin
     try
       repeat
         NumVersionsFound := NumVersionsFound + 1;
@@ -276,7 +276,7 @@ begin
     finally
       FindClose(FindRec);
     end;
-  end;
+    end;  // if
   Log('CountVersions: # found = ' + IntToStr(NumVersionsFound))
   Result := NumVersionsFound;
 end;
@@ -311,12 +311,12 @@ var
   NewPath: String;
 begin
   if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
-    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
-    'Path', CurrentPath) then
-  begin
+      'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+      'Path', CurrentPath) then
+    begin
     // Nothing to do
     exit;
-  end;
+    end;
 
   // Look for the directory in the path (using the same trick with leading and
   // trailing semicolon as in the function DirNotInPath above).
@@ -326,7 +326,7 @@ begin
   Log('RemoveDirFromPath: CurrentPath = "' + CurrentPath + '"');
   Log('RemoveDirFromPath: PosInPath = ' + IntToStr(PosInPath));
   if PosInPath > 0 then
-  begin
+    begin
     NewPath := ';' + CurrentPath + ';';
     StringChangeEx(NewPath, ';' + Directory + ';', ';', True);
 
@@ -337,15 +337,15 @@ begin
     if RegWriteExpandStringValue(HKEY_LOCAL_MACHINE,
         'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
         'Path', NewPath) then
-    begin
+      begin
       Log('RemoveDirFromPath: Updated system PATH environment variable');
       BroadcastEnvironmentChange();
-    end
+      end
     else
-    begin
+      begin
       Log('RemoveDirFromPath: ERROR occurred when updating system PATH environment variable');
+      end;
     end;
-  end;
 end;
 
 // ----------------------------------------------------------------------------
@@ -355,17 +355,17 @@ var
   LandisRootDir: String;
 begin
   if CurUninstallStep = usPostUninstall then
-  begin
-    if CountVersions() = 0 then
     begin
+    if CountVersions() = 0 then
+      begin
       LandisRootDir := ExpandConstant('{app}');
       Log('No LANDIS-II versions remain installed, so deleting ' + LandisRootDir + '\ ...');
       if not DelTree(LandisRootDir, True, True, True) then
-      begin
+        begin
         Log('Error: unable to delete everything in ' + LandisRootDir + '\');
-      end;
+        end;
       RemoveDirFromPath(LandisRootDir + '\bin');
+      end;
     end;
-  end;
 end;
 
