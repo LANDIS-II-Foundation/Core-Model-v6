@@ -249,13 +249,20 @@ end;
 // Count the number of LANDIS-II versions that are current installed.  Each
 // version has its own "landis-X.Y.cmd" script, where X.Y is its version
 // number (X = major version, Y = minor version).
+//
+// SiblingMinorVersions is assigned the number of minor versions found that are
+// siblings of the version being uninstalled.  Siblings have the same major
+// version number.
 
-function CountVersions(): Integer;
+function CountVersions(var SiblingMinorVersions: Integer): Integer;
 var
   BinDir: String;
   NumVersionsFound: Integer;
   FindRec: TFindRec;
+  SiblingMarker: String;
+  SiblingStatus: String;
 begin
+  SiblingMinorVersions := 0;
   BinDir := ExpandConstant('{app}\bin');
   if not DirExists(BinDir) then
     begin
@@ -266,18 +273,27 @@ begin
 
   // Look for "landis-X.Y.cmd" scripts
   NumVersionsFound := 0;
+  SiblingMarker := '-' + MajorVersion + '.';  // The "-X." in script name
   if FindFirst(BinDir + '\landis-?.?.cmd', FindRec) then
     begin
     try
       repeat
         NumVersionsFound := NumVersionsFound + 1;
-        Log('CountVersions: (' + IntToStr(NumVersionsFound) + ') ' + BinDir + '\' + FindRec.Name);
+        if Pos(SiblingMarker, FindRec.Name) > 0 then
+          begin
+          SiblingStatus := ' (sibling)';
+          SiblingMinorVersions := SiblingMinorVersions + 1;
+          end
+        else
+          SiblingStatus := '';
+        Log('CountVersions: (' + IntToStr(NumVersionsFound) + ') ' + BinDir + '\' + FindRec.Name + SiblingStatus);
       until not FindNext(FindRec);
     finally
       FindClose(FindRec);
     end;
     end;  // if
   Log('CountVersions: # found = ' + IntToStr(NumVersionsFound))
+  Log('CountVersions: # of siblings = ' + IntToStr(SiblingMinorVersions))
   Result := NumVersionsFound;
 end;
 
@@ -352,11 +368,14 @@ end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
+  SiblingVersionsLeft: Integer;
   LandisRootDir: String;
+  MajorVersionDir: String;
+  ExtToolScript: String;
 begin
   if CurUninstallStep = usPostUninstall then
     begin
-    if CountVersions() = 0 then
+    if CountVersions(SiblingVersionsLeft) = 0 then
       begin
       LandisRootDir := ExpandConstant('{app}');
       Log('No LANDIS-II versions remain installed, so deleting ' + LandisRootDir + '\ ...');
@@ -365,7 +384,26 @@ begin
         Log('Error: unable to delete everything in ' + LandisRootDir + '\');
         end;
       RemoveDirFromPath(LandisRootDir + '\bin');
-      end;
-    end;
+      end
+    else if SiblingVersionsLeft = 0 then
+      begin
+      LandisRootDir := ExpandConstant('{app}');
+      MajorVersionDir := LandisRootDir + '\v' + MajorVersion;
+      Log('No LANDIS-II ' + MajorVersion + '._ versions remain installed, so deleting ' + MajorVersionDir + '\ ...');
+      if not DelTree(MajorVersionDir, True, True, True) then
+        begin
+        Log('Error: unable to delete everything in ' + MajorVersionDir + '\');
+        end;
+
+      ExtToolScript := LandisRootDir + '\bin\landis-v' + MajorVersion + '-extensions.cmd';
+      if FileExists(ExtToolScript) then
+        begin
+        if DeleteFile(ExtToolScript) then
+          Log('Deleted file: ' + ExtToolScript)
+        else
+          Log('Error: unable to delete file: ' + ExtToolScript);
+        end;
+      end; // if SiblingVersionsLeft = 0
+    end; // if CurUninstallStep = usPostUninstall
 end;
 
