@@ -99,6 +99,12 @@ Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin;           Fl
 ; The library for extension dataset is stored where the extensions are installed
 Source: Landis.Extensions.Dataset.dll; DestDir: {app}\v{#Major}\bin\extensions; Flags: uninsneveruninstall
 
+; An interim version of the old plug-in admin tool for current extension
+; installers (until they are updated to call the landis-v6-extensions.cmd
+; script).
+Source: {#ScriptDir}\plugin-admin\Landis.PlugIns.Admin.exe; DestDir: {app}\6.0\bin
+Source: {#ScriptDir}\plugin-admin\Landis.PlugIns.Admin.cmd; DestDir: {app}\6.0\bin
+
 ; Documentation
 ; (Note: Documentation among minor versions can reside in the same folder
 ;        because all the files have version #s in their names.)
