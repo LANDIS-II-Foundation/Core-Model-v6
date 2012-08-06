@@ -162,6 +162,29 @@ end;
 
 // ----------------------------------------------------------------------------
 
+function NextButtonClick(CurPageID: Integer): Boolean;
+var
+  LandisBinDir : String;
+  MajorMinorScript : String;
+begin
+  if CurPageId = wpSelectDir then
+    begin
+    LandisBinDir := ExpandConstant('{app}\bin');
+    MajorMinorScript := LandisBinDir + '\landis-' + MajorMinor + '.cmd';
+    if FileExists(MajorMinorScript) then
+      begin
+      MsgBox('LANDIS-II ' + MajorMinor + ' is already installed in this directory.', mbError, MB_OK);
+      Result := False;
+      end
+    else
+      Result := True;
+    end
+  else // Current page is not Select Directory
+    Result := True;
+end;
+
+// ----------------------------------------------------------------------------
+
 // This function returns True if the current version number (i.e., major.minor)
 // is in the extension admin tool's config file.  If present, then the tool is
 // probing that particular version's subdirectory.
@@ -174,7 +197,7 @@ var
   ToolConfigContents: String;
   PosOfVersion: Integer;
 begin
-  LandisRootDir := ExpandConstant('{app}\');
+  LandisRootDir := ExpandConstant('{app}');
   MajorVerBinDir := LandisRootDir + '\v' + MajorVersion + '\bin';
   ToolConfig := MajorVerBinDir + '\Landis.Extensions.exe.config';
   if not FileExists(ToolConfig) then
