@@ -9,22 +9,6 @@ thirdPartyLibs = {
   Troschuetz    = thirdPartyDir .. "/Troschuetz/Troschuetz.Random.dll"
 }
 
-require "premake4_util"
-
--- Fetch LSML if it's not present and we're generating project files
-if _ACTION and _ACTION ~= "clean" then
-  if not os.isfile(thirdPartyLibs["LSML"]) then
-    print("Fetching LSML ...")
-    local onWindows = runningOnWindows()
-    local scriptExt = iif(onWindows, "cmd", "sh")
-    local LSMLscript = thirdPartyDir .. "/LSML/get-LSML." .. scriptExt
-    if onWindows then
-      LSMLscript = path.translate(LSMLscript, "\\")
-    end
-    os.execute(LSMLscript)
-  end
-end
-
 buildDir = "build"
 
 -- ==========================================================================
@@ -188,13 +172,22 @@ solution "LANDIS-II"
 -- Hook in a custom function that it's called *after*
 -- the selected action is executed.
 
-afterAction_call(function()
-  --  If generating Visual Studio files, add HintPath elements for references
-  --  with paths.
-  if string.startswith(_ACTION, "vs") then
-    modifyCSprojFiles()
+require "premake4_util"
+
+afterAction_call(
+  function()
+    --  If generating Visual Studio files, add HintPath elements for references
+    --  with paths.
+    if string.startswith(_ACTION, "vs") then
+      modifyCSprojFiles()
+
+      -- Fetch LSML and GDAL C# bindings if they're not present
+      if not os.isfile(thirdPartyLibs["LSML"]) then
+        LSMLadmin("get")
+      end
+    end
+
   end
-end
 )
 
 -- The function below modifies the all the projects' *.csproj files, by
@@ -222,4 +215,18 @@ function modifyCSprojFiles()
       error(err, 0)
     end
   end -- for each project
+end
+-- ==========================================================================
+
+-- Run the LSML-admin script with a specific action
+
+function LSMLadmin(action)
+  local onWindows = runningOnWindows()
+  local scriptExt = iif(onWindows, "cmd", "sh")
+  local adminScript = thirdPartyDir .. "/LSML/LSML-admin." .. scriptExt
+  if onWindows then
+    adminScript = path.translate(adminScript, "\\")
+  end
+  print("Running " .. adminScript .. " '" .. action .. "'...")
+  os.execute(adminScript .. " " .. action)
 end
