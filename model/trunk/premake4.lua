@@ -185,8 +185,11 @@ afterAction_call(
       if not os.isfile(thirdPartyLibs["LSML"]) then
         LSMLadmin("get")
       end
-    end
 
+	-- If cleaning, then have LSML-admin clean too.
+	elseif _ACTION == "clean" then
+	  LSMLadmin("clean")
+	end
   end
 )
 
