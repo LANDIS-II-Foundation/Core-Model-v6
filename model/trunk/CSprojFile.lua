@@ -1,22 +1,29 @@
+-- Class and utility functions for C# project files (*.csproj)
 -- Copyright 2012 Green Code LLC
--- All rights reserved.
 --
--- The copyright holders license this file under the New (3-clause) BSD
--- License (the "License").  You may not use this file except in
--- compliance with the License.  A copy of the License is available at
---
---   http://www.opensource.org/licenses/BSD-3-Clause
---
--- and is included in the NOTICE.txt file distributed with this work.
+-- This library is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU Lesser General Public
+-- License as published by the Free Software Foundation; either
+-- version 2.1 of the License, or (at your option) any later version.
+-- 
+-- This library is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+-- 
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with this library; if not, see
+-- <http://www.gnu.org/licenses/>.
 --
 -- Contributors:
 --   James Domingo, Green Code LLC
 -- ==========================================================================
 
--- Class and utility functions for C# project files (*.csproj)
---
--- Revision history:
+-- Release history:
 --   2012-08-26 : Initial release
+--   2012-09-02 : Changed license from BSD to LGPL.
+--                Improved documentation in comments.
+--                Added removeFrameworkProfile function.
 
 -- ==========================================================================
 
@@ -46,7 +53,7 @@ function CSprojFile:readLines()
 end
 
 -- Write the modified lines out to the .csproj file.
--- Return true if successful; otherwise, return false, error message
+-- Return true if successful; otherwise, return (false, error message)
 function CSprojFile:writeLines()
   local outFile, errMessage = io.open(self.absPath, "w")
   if not outFile then
@@ -121,7 +128,7 @@ end
 function addFramework(csprojFile)
   local framework = csprojFile.project.framework or solution().framework
   for i, line in ipairs(csprojFile.lines) do
-    -- Look for <Reference Include="some\path\to\Example.Assembly.dll" />
+    -- Look for <AssemblyName>Example.Assembly</AssemblyName>
     local pattern = "^(%s*)<AssemblyName>"
     local indent = string.match(line, pattern)
     if indent then
@@ -129,6 +136,30 @@ function addFramework(csprojFile)
         "%s<TargetFrameworkVersion>v%s</TargetFrameworkVersion>",
         indent, framework)
       table.insert(csprojFile.lines, i + 1, frameworkLine)
+      break
+    end
+  end -- for each line in file
+end
+
+-- ==========================================================================
+
+-- This function removes the <TargetFrameworkProfile> element from a project
+-- file, if the element is present.
+--
+-- Premake 4.4(beta 4) sets this element to the "Client" profile.  The
+-- section "Selecting a Target Framework" on the "MSBuild MultiTargeting"
+-- page:
+--
+--   http://msdn.microsoft.com/en-us/library/ee395432%28v=vs.100%29.aspx
+--
+-- states that if <TargetFrameworkProfile> is not present, the full framework
+-- is targeted.
+
+function removeFrameworkProfile(csprojFile)
+  for i, line in ipairs(csprojFile.lines) do
+    local pattern = "^%s*<TargetFrameworkProfile>"
+    if string.match(line, pattern) then
+      table.remove(csprojFile.lines, i)
       break
     end
   end -- for each line in file

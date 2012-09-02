@@ -210,6 +210,12 @@ function modifyCSprojFiles()
       print("  <TargetFrameworkVersion> element added to the project's properties")
     end
 
+	if _ACTION == "vs2010" then
+	  -- Target the full framework, not the Client profile
+	  removeFrameworkProfile(csprojFile)
+	  print("  <TargetFrameworkProfile> element removed")
+	end
+
     ok, err = csprojFile:writeLines()
     if not ok then
       error(err, 0)
