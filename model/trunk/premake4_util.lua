@@ -1,26 +1,32 @@
+-- Utility functions for Premake v4
 -- Copyright 2012 Green Code LLC
--- All rights reserved.
 --
--- The copyright holders license this file under the New (3-clause) BSD
--- License (the "License").  You may not use this file except in
--- compliance with the License.  A copy of the License is available at
---
---   http://www.opensource.org/licenses/BSD-3-Clause
---
--- and is included in the NOTICE.txt file distributed with this work.
+-- This library is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU Lesser General Public
+-- License as published by the Free Software Foundation; either
+-- version 2.1 of the License, or (at your option) any later version.
+-- 
+-- This library is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+-- 
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with this library; if not, see
+-- <http://www.gnu.org/licenses/>.
 --
 -- Contributors:
 --   James Domingo, Green Code LLC
 -- ==========================================================================
 
--- Utility functions for Premake
---
--- Revision history:
+-- Release history:
 --   2012-08-26 : Initial release
+--   2012-09-01 : Changed license from BSD to LGPL.
+--                Improved documentation in comments.
 
 -- ==========================================================================
 
--- Returns a boolean indicating where Premake is running on Windows
+-- Returns a boolean indicating whether Premake is running on Windows or not
 
 function runningOnWindows()
   if string.match(_PREMAKE_VERSION, "^4.[123]") then
@@ -41,18 +47,20 @@ end
 --
 -- Example:
 --
---   function myCustomFunc()
---     -- do something with generated project files
---     ...
---   end
---
 --   afterAction_call(myCustomFunc)
+--
+--   function myCustomFunc()
+--     if _ACTION and _ACTION ~= "clean" then
+--       -- do something with generated project files
+--       ...
+--     end
+--   end
 
 function afterAction_call(func)
   if _ACTION then
     local action = premake.action.get(_ACTION)
     if not action then
-      -- An unknown action was specified (typing mistake?)
+      -- An unknown action was specified (user made typing mistake?)
     else
       local triggerAction = premake.action.get(action.trigger)
       local originalExecute = triggerAction.execute
