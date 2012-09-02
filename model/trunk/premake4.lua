@@ -169,6 +169,13 @@ solution "LANDIS-II"
 
 -- ==========================================================================
 
+newoption {
+  trigger     = "dist",
+  description = 'Clean to distribution state (remove downloaded files too)'
+}
+
+-- ==========================================================================
+
 -- Hook in a custom function that it's called *after*
 -- the selected action is executed.
 
@@ -188,7 +195,7 @@ afterAction_call(
 
 	-- If cleaning, then have LSML-admin clean too.
 	elseif _ACTION == "clean" then
-	  LSMLadmin("clean")
+	  LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
 	end
   end
 )
