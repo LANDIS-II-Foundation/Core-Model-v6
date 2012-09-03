@@ -89,17 +89,28 @@ namespace Landis
             this.rasterFactory = rasterFactory;
             this.landscapeFactory = landscapeFactory;
 
-            rasterFactory.BindExtensionToFormat(".bin", "ENVI");
-            rasterFactory.BindExtensionToFormat(".bmp", "BMP");
-            rasterFactory.BindExtensionToFormat(".gis", "LAN");
-            rasterFactory.BindExtensionToFormat(".img", "HFA");
-            rasterFactory.BindExtensionToFormat(".tif", "GTiff");
-            rasterFactory.BindExtensionToFormat(".ingr", "INGR");
-            rasterFactory.BindExtensionToFormat(".vrt",  "VRT" );
+            BindExtensionToFormat(".bin", "ENVI");
+            BindExtensionToFormat(".bmp", "BMP");
+            BindExtensionToFormat(".gis", "LAN");
+            BindExtensionToFormat(".img", "HFA");
+            BindExtensionToFormat(".tif", "GTiff");
+            BindExtensionToFormat(".ingr", "INGR");
+            BindExtensionToFormat(".vrt",  "VRT" );
  
             ui = null;
         }
 
+        //---------------------------------------------------------------------
+
+        // Bind a file extension to a raster format if the format is supported
+        // by the raster factory.
+        private void BindExtensionToFormat(string fileExtension,
+                                           string formatCode)
+        {
+            RasterFormat rasterFormat = rasterFactory.GetFormat(formatCode);
+            if (rasterFormat != null)
+                rasterFactory.BindExtensionToFormat(fileExtension, rasterFormat);
+        }
 
          //---------------------------------------------------------------------
 
