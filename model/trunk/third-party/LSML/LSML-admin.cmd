@@ -153,7 +153,11 @@ rem  ------------------------------------------------------------------------
 
 set GdalAdmin_VersionFile=GDAL-version.txt
 set GdalAdmin_InstallDir=GDAL
-call WinPkgTools\initialize.cmd
+
+set VarsArg=
+if "%~1" == "clean" set VarsArg=vars
+if "%~1" == "distclean" set VarsArg=vars
+call WinPkgTools\initialize.cmd %VarsArg%
 
 if exist GDAL-admin.cmd call GDAL-admin.cmd %1
 
