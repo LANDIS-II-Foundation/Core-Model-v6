@@ -6,6 +6,9 @@ set ScriptDir=%~dp0
 rem Trim off trailing "\bin\"
 set LandisRootDir=%ScriptDir:~0,-5%
 
+rem Add folder with GDAL native libraries to PATH
+path %LandisRootDir%\GDAL\{VERSION};%PATH%
+
 set FileName=%~n0
 set Version=%FileName:landis-=%
 for /f "delims=." %%X in ("%Version%") do set MajorVer=%%X

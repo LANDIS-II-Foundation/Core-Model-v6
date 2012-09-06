@@ -84,7 +84,7 @@ function installConfig(config)
 
   install { file="bin/landis.cmd",            from="deploy/windows/" }
   install { file="bin/landis-ii.cmd",         from="deploy/windows/" }
-  install { file="bin/landis-{X.Y}.cmd",      from="deploy/windows/landis-X.Y.cmd" }
+  install { file="bin/landis-{X.Y}.cmd",      from="deploy/windows/landis-X.Y.cmd", replace={ ["{VERSION}"]=GDALversion } }
 
   install { file="bin/landis-extensions.cmd",      from="deploy/windows/" }
   install { file="bin/landis-v{X}-extensions.cmd", from="deploy/windows/landis-vX-extensions.cmd" }
