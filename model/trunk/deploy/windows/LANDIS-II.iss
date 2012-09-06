@@ -82,8 +82,8 @@ Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
 Source: {#GdalDir}\native\*;        DestDir: {app}\v{#Major}\bin\GDAL
 
 ; Console interface
-Source: Landis.Console.exe;              DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe
-Source: {#ConsoleDir}\Landis.App.config; DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe.config
+Source: Landis.Console.exe;       DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe
+Source: {#ConsoleDir}\App.config; DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe.config
 
 ; Command scripts that call console interface
 Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}.cmd

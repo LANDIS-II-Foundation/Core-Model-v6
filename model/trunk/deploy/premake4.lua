@@ -92,7 +92,8 @@ function installConfig(config)
   -- {InstallDir}/vX/bin/
 
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console.exe" }
-  install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/Landis.App.config",            replace={ ["{RELEASE}"]=releaseStatus } }
+  install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/App.config",
+                                                             replace={ ["{RELEASE}"]=releaseStatus } }
 
   install { file="v{X}/bin/Landis.Extensions.exe",        from="build/"..config }
   install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/App.config" }
