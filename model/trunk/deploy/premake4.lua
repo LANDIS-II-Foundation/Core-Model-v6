@@ -139,8 +139,8 @@ function install(info)
     local destPath = configInstallDir.."/"..filePath
 
 	-- The source path is relative to the project's root directory.
-    local srcPath = "../"..info.from
-    if string.endswith(srcPath, "/") and not os.isdir(srcPath) then
+    local srcPath = "../"..trimTrailingSlash(info.from)
+    if string.endswith(info.from, "/") and not os.isdir(srcPath) then
       error('No such directory "'..srcPath..'"')
     elseif os.isdir(srcPath) then
       srcPath = path.join(srcPath, path.getname(destPath))
@@ -155,7 +155,7 @@ function install(info)
   elseif info.dir then
     -- The destination path is relative to the configuration's installation
     -- directory.
-    local destDir = configInstallDir.."/"..info.dir
+    local destDir = configInstallDir.."/"..trimTrailingSlash(info.dir)
 
     if os.isfile(destDir) then
       error('"'..destDir..'" is not a directory')
@@ -165,19 +165,28 @@ function install(info)
     end
 
 	-- The source directory is relative to the project's root directory.
-    local srcDir = "../"..info.source
+    local srcDir = "../"..trimTrailingSlash(info.source)
     if not os.isdir(srcDir) then
       error('No such directory "'..srcDir..'"')
     end
-
-    -- Trim trailing slashes
-    srcDir = string.gsub(srcDir, "/$", "")
-    destDir = string.gsub(destDir, "/$", "")
 
     copyDir(srcDir, destDir)
 
   else
     error("no file or directory specified")
+  end
+end
+
+-- ============================================================================
+
+-- Trim trailing separator from a path string.  Necessary because os.dir on
+-- Windows doesn't work with a trailing slash (forward or backward).
+
+function trimTrailingSlash(pathStr)
+  if pathStr:endswith("/") then
+    return pathStr:sub(1,-2)
+  else
+    return pathStr
   end
 end
 
