@@ -46,3 +46,23 @@ select "Open Project...".  Navigate to one of the configuration build
 directories (build/Debug, build/Release), and select one of the test
 assemblies (e.g., Landis.*.Tests.dll).  After NUnit loads the tests, click
 the "Run" button.
+
+
+Staging a Configuration For Testing
+-----------------------------------
+
+After a configuration has been built, it can be "staged" for test purposes.
+When staged, a configuration's files are copied into the directory structure
+used for an LANDIS-II installation.  To stage a configuration, run Premake
+in the deploy/ subdirectory.  For example, 
+
+  cd deploy
+  premake4.4 install Debug
+
+This will install the Debug configuration's files along with other files into
+the build/install/Debug/ directory.  This configuration of LANDIS-II can be
+run by using the scripts in the installation's bin/ directory:
+
+  cd some/path/to/test/scenarios
+  path_to_model_project/build/install/Debug/bin/landis-ii scenario_1.txt
+
