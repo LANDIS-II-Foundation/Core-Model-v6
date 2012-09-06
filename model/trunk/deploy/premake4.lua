@@ -10,6 +10,11 @@ function main()
     printHelp()
     return 1
   end
+  if # _ARGS == 0 then
+    print("No configurations specified on command line.")
+	printHelp()
+	return 0
+  end
 
   installDir = "../build/install"
 
