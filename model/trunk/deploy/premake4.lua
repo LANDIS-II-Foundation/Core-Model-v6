@@ -147,9 +147,7 @@ function install(info)
     elseif not os.isfile(srcPath) then
       error('No such file "'..srcPath..'"')
     end
-    if installFile(srcPath, destPath, info.replace) then
-      installCount = installCount + 1
-    end
+    installFile(srcPath, destPath, info.replace)
 
   -- Install a directory
   elseif info.dir then
@@ -220,6 +218,8 @@ function installFile(srcPath, destPath, textReplacements)
   if printFrom then
     print("     from "..srcPath) 
   end
+
+  installCount = installCount + 1
 end
 
 -- ============================================================================
@@ -282,7 +282,6 @@ end
 -- Copy a file and replace certain text strings in its contents.
 
 function copyFileAndReplaceText(srcPath, destPath, textReplacements)
-  print(textReplacements)
   local outFile, errMessage = io.open(destPath, "w")
   if not outFile then
     error(errMessage)
