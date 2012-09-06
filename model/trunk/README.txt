@@ -52,17 +52,4 @@ Staging a Configuration For Testing
 -----------------------------------
 
 After a configuration has been built, it can be "staged" for test purposes.
-When staged, a configuration's files are copied into the directory structure
-used for an LANDIS-II installation.  To stage a configuration, run Premake
-in the deploy/ subdirectory.  For example, 
-
-  cd deploy
-  premake4.4 install Debug
-
-This will install the Debug configuration's files along with other files into
-the build/install/Debug/ directory.  This configuration of LANDIS-II can be
-run by using the scripts in the installation's bin/ directory:
-
-  cd some/path/to/test/scenarios
-  path_to_model_project/build/install/Debug/bin/landis-ii scenario_1.txt
-
+See the deploy/README.txt file for details.
