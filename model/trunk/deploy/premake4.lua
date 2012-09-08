@@ -89,6 +89,9 @@ function installConfig(config)
   install { file="bin/landis-extensions.cmd",      from="deploy/bin/" }
   install { file="bin/landis-v{X}-extensions.cmd", from="deploy/bin/landis-vX-extensions.cmd" }
 
+  install { file="bin/uninstall-landis.cmd",  from="deploy/bin/" }
+  install { file="bin/uninstall-landis.sh",   from="deploy/bin/" }
+
   -- {InstallDir}/vX/bin/
 
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console.exe" }
@@ -116,6 +119,9 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/Landis.RasterIO.dll",            from="third-party/LSML/" }
   install { file="v{X}/bin/{X.Y}/Landis.RasterIO.Gdal.dll",       from="third-party/LSML/" }
   install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="third-party/LSML/GDAL/managed/" }
+
+  install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
+                                                                                            ["{X.Y}"]=majorMinor } }
 
   -- {InstallDir}/GDAL/#.#.#/
 
