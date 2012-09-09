@@ -2,15 +2,13 @@
 #define DeployDir    ExtractFilePath(ScriptDir)
 #define SolutionDir  ExtractFilePath(DeployDir)
 
-#define ConsoleDir       SolutionDir + "\console"
-#define ThirdPartyDir    SolutionDir + "\third-party"
-#define LandisSpatialDir ThirdPartyDir + "\LSML"
-#define GdalDir          LandisSpatialDir + "\GDAL"
-#define ExtToolDir       SolutionDir + "\ext-admin"
 #define DocDir           SolutionDir + "\docs"
 
 #define BuildDir         SolutionDir + "\build"
 #define ReleaseConfigDir BuildDir + "\Release"
+
+#define StagingDir         BuildDir + "\install"
+#define ReleaseStagingDir  StagingDir + "\Release"
 
 ;-----------------------------------------------------------------------------
 ; Fetch the version # from the core assembly
@@ -29,6 +27,16 @@
 
 #define MajorMinor Str(Major) + "." + Str(Minor)
 #define Version    MajorMinor
+
+; Make sure that the Release configuration has been staged
+#define StagedCorePath ReleaseStagingDir + "\v" + Str(Major) + "\bin\" + MajorMinor + "\" + CoreName
+#if ! FileExists(StagedCorePath)
+  #error The Release configuration of the model has not been staged
+#endif
+#define StagedCoreVersion GetFileVersion(StagedCorePath)
+#if CoreVersion != StagedCoreVersion
+  #error The staged copy of the model's Release configuration is out of date
+#endif
 
 ; Read the release status and define variables with release information
 #include "release-status.iss"
@@ -68,7 +76,7 @@ DefaultDirName={pf}\LANDIS-II
 UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\v{#Major}
 UsePreviousGroup=no
-SourceDir={#ReleaseConfigDir}
+SourceDir={#ReleaseStagingDir}
 OutputDir={#ScriptDir}
 OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup{#NBits}
 ChangesEnvironment=yes
@@ -81,40 +89,8 @@ ArchitecturesInstallIn64BitMode=x64
 
 [Files]
 
-; Core framework
-Source: Landis.Core.dll;                DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Landis.Core.Implementation.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-
-; Libraries
-Source: log4net.dll;                   DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Troschuetz.Random.dll;         DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Edu.Wisc.Forest.Flel.Util.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-
-; LSML and GDAL
-Source: Landis.SpatialModeling.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Landis.Landscapes.dll;      DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Landis.RasterIO.dll;        DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: Landis.RasterIO.Gdal.dll;   DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: {#GdalDir}\gdal_csharp.dll; DestDir: {app}\v{#Major}\bin\{#MajorMinor};
-Source: {#GdalDir}\native\*;        DestDir: {app}\v{#Major}\bin\GDAL
-
-; Console interface
-Source: Landis.Console.exe;       DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe
-Source: {#ConsoleDir}\App.config; DestDir: {app}\v{#Major}\bin; DestName: Landis.Console-{#MajorMinor}.exe.config
-
-; Command scripts that call console interface
-Source: {#ScriptDir}\landis-X.Y.cmd; DestDir: {app}\bin; DestName: landis-{#MajorMinor}.cmd
-Source: {#ScriptDir}\landis-ii.cmd;  DestDir: {app}\bin; Flags: uninsneveruninstall
-Source: {#ScriptDir}\landis.cmd;     DestDir: {app}\bin; Flags: uninsneveruninstall
-
-; Auxiliary tool for administering extensions
-Source: Landis.Extensions.exe;                  DestDir: {app}\v{#Major}\bin; Flags: uninsneveruninstall
-Source: {#ExtToolDir}\App.config;               DestDir: {app}\v{#Major}\bin; Flags: uninsneveruninstall; DestName: Landis.Extensions.exe.config;   Check: not VersionInToolConfig
-Source: {#ScriptDir}\landis-vX-extensions.cmd;  DestDir: {app}\bin;           Flags: uninsneveruninstall; DestName: landis-v{#Major}-extensions.cmd
-Source: {#ScriptDir}\landis-extensions.cmd;     DestDir: {app}\bin;           Flags: uninsneveruninstall
-
-; The library for extension dataset is stored where the extensions are installed
-Source: Landis.Extensions.Dataset.dll; DestDir: {app}\v{#Major}\bin\extensions; Flags: uninsneveruninstall
+; Use everything in staging directory except extensions database file and Unix shell scripts
+Source: *; DestDir: {app}; Flags: recursesubdirs uninsneveruninstall; Excludes: "*.xml,*.sh"
 
 ; An interim version of the old plug-in admin tool for current extension
 ; installers (until they are updated to call the landis-v6-extensions.cmd
@@ -151,6 +127,9 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 ; access to the "Program Files" folder.  Note: running the tool with no
 ; parameters simply has it display a brief list of installed extensions.
 Filename: landis-v{#Major}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
+
+[UninstallRun]
+Filename: uninstall-landis.cmd; Parameters: {#MajorMinor} ; WorkingDir: {app}\bin; Flags: runhidden
 
 ;-----------------------------------------------------------------------------
 
