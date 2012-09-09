@@ -43,6 +43,23 @@
 
 ;-----------------------------------------------------------------------------
 
+; Determine if the Inno Setup compiler (not the generated setup program) is
+; running on a 32-bit or 64-bit system.
+;
+; NOTE: Inno Setup itself is a 32-bit program.
+;
+; This check is based on this blog post:
+; http://blogs.msdn.com/b/david.wang/archive/2006/03/26/howto-detect-process-bitness.aspx
+
+#if GetEnv("PROCESSOR_ARCHITECTURE") + "," + GetEnv("PROCESSOR_ARCHITEW6432") == "x86,"
+  #define NBits "32"
+#else
+  #define NBits "64"
+#endif
+#pragma message "Script being compiled on " + NBits + "-bit Windows"
+
+;-----------------------------------------------------------------------------
+
 [Setup]
 AppName=LANDIS-II {#VersionReleaseName}
 AppVerName=LANDIS-II {#VersionReleaseFull}
@@ -53,7 +70,7 @@ DefaultGroupName=LANDIS-II\v{#Major}
 UsePreviousGroup=no
 SourceDir={#ReleaseConfigDir}
 OutputDir={#ScriptDir}
-OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup
+OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup{#NBits}
 ChangesEnvironment=yes
 SetupLogging=yes
 LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
