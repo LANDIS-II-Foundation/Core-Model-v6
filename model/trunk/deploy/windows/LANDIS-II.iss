@@ -71,7 +71,7 @@
 [Setup]
 AppName=LANDIS-II {#VersionReleaseName}
 AppVerName=LANDIS-II {#VersionReleaseFull}
-AppPublisher=Portland State University
+AppPublisher=LANDIS-II Core Development Team
 DefaultDirName={pf}\LANDIS-II
 UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\v{#Major}
