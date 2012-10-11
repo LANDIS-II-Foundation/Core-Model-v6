@@ -86,6 +86,14 @@ LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
 ; GDAL 64-bit binaries are built for x64
 ArchitecturesInstallIn64BitMode=x64
 
+; Allow the user to only run the setup program on the same N-bit system as it
+; was built on.
+#if NBits == "32"
+  ArchitecturesAllowed=x86
+#else
+  ArchitecturesAllowed=x64
+#endif
+
 
 [Files]
 
