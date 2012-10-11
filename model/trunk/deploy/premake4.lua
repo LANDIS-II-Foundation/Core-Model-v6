@@ -1,3 +1,21 @@
+-- Copyright 2012 Green Code LLC
+-- All rights reserved. 
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+-- Contributors:
+--   James Domingo, Green Code LLC
+
 -- ============================================================================
 
 function main()
@@ -94,9 +112,12 @@ function installConfig(config)
 
   -- {InstallDir}/vX/bin/
 
+  GDALcsharpVersion = getAssemblyVersion("../third-party/LSML/GDAL/managed/gdal_csharp.dll")  
+
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console.exe" }
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/App.config",
-                                                             replace={ ["{RELEASE}"]=releaseStatus } }
+                                                             replace={ ["{RELEASE}"]=releaseStatus,
+                                                                       ["{GDAL_CSHARP_VERSION}"]=GDALcsharpVersion } }
 
   install { file="v{X}/bin/Landis.Extensions.exe",        from="build/"..config }
   install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/App.config" }
@@ -303,6 +324,22 @@ function copyFileAndReplaceText(srcPath, destPath, textReplacements)
     outFile:write(line.."\n")
   end
   io.close(outFile)
+end
+
+-- ============================================================================
+
+-- Get the version number of an assembly.
+
+function getAssemblyVersion(assemblyPath)
+  local scriptEngine = path.translate("../third-party/CS-Script/cscs.exe")
+  local outFileName = "assembly-version.txt"
+  assemblyPath = path.translate(assemblyPath)
+  local status = os.execute(scriptEngine.." /nl assembly-version.cs "..assemblyPath.." >"..outFileName)
+  if status ~= 0 then
+    error("Unable to get assembly version for '"..assemblyPath.."'")
+  end
+  local version = readFirstLine(outFileName)
+  return version
 end
 
 -- ============================================================================
