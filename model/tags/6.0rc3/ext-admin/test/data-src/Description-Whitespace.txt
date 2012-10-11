@@ -1,0 +1,9 @@
+>> Example of bad input file
+
+LandisData   Extension
+
+Name         "Foo Bar"
+Type         disturbance:foo-bar
+Assembly     "@DATA_INSTALL_DIR@/Landis.Test.PlugIns.Admin.FooBar.dll"
+Class        Landis.Test.PlugIns.Admin.FooBarPlugIn
+Description  "  "  << ERROR HERE: Just whitespace not permitted
