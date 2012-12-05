@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>scenario.txt</StartArguments>
+    <StartWorkingDirectory>C:\Program Files\LANDIS-II\v6\examples\century-succession</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartWorkingDirectory>C:\Program Files\LANDIS-II\6.0\examples\base-BDA</StartWorkingDirectory>
+    <StartArguments>scenario.txt</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\Program Files\LANDIS-II\v6\bin\;C:\Program Files\LANDIS-II\v6\bin\6.0\;C:\Program Files\LANDIS-II\v6\bin\extensions\</ReferencePath>
+  </PropertyGroup>
+</Project>
