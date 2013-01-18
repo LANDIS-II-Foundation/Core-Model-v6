@@ -81,7 +81,7 @@ OutputDir={#ScriptDir}
 OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup{#NBits}
 ChangesEnvironment=yes
 SetupLogging=yes
-LicenseFile={#DocDir}\LANDIS-II_Binary_license.rtf
+LicenseFile={#ScriptDir}\LANDIS-II_Binary_license.rtf
 
 ; GDAL 64-bit binaries are built for x64
 ArchitecturesInstallIn64BitMode=x64
