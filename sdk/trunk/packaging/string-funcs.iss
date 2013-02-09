@@ -109,3 +109,26 @@
             ) \
       )
 
+;-----------------------------------------------------------------------------
+; Get text bracketed by left and right characters from a string.
+; The text can be bracketed by parentheses "(...)", braces "{...}", square
+; brackets "[...]", angle brackets "<...>", etc.  The left and right delimiters
+; must be different, and not appear within the bracketed text.  If a format
+; error is detected (for example, the left delimiter is found but not the
+; right one), then a message explaining the error is assigned to the Error
+; parameter.  If no error is detected, Error is assigned the empty string.
+
+#define GetBracketedText(Str S, Str LeftChar, Str RightChar, Str *Error) \
+  Error = '', \
+  Local[0] = Pos(LeftChar, S), \
+  Local[1] = Pos(RightChar, S), \
+  Local[0] == 0 && Local[1] == 0 \
+    ? '' \
+    : Local[0] == 0 \
+        ? (Error = 'Missing "' + LeftChar + '"', '') \
+        : Local[1] == 0 \
+            ? (Error = 'Missing "' + RightChar + '"', '') \
+            : Local[1] < Local[0] \
+                ? (Error = '"' + RightChar + '" comes before "' + LeftChar + '"', '') \
+                : Copy(S, Local[0], Local[1]-Local[0]+1)
+
