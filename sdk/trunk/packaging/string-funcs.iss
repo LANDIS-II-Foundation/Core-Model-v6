@@ -60,7 +60,52 @@
 
 ;-----------------------------------------------------------------------------
 ; Trim leading and trailing double quote characters from a string.
+
 #define TrimQuotes(str S) \
   Local[0] = Copy(S,1,1) == '"' ? 2 : 1, \
   Local[1] = Copy(S, Len(S)) == '"' ? Len(S)-1 : Len(S), \
   Copy(S, Local[0], Local[1] - Local[0] + 1)
+  
+;-----------------------------------------------------------------------------
+; Is a character a digit '0' .. '9'?
+; Note: If the argument has more than 1 character, only the first character is
+; checked.
+
+#define IsDigit(Str S) \
+  Len(S) == 0 ? False : ( Pos(Copy(S,1,1), '0123456789') > 0 )
+
+;-----------------------------------------------------------------------------
+; Get the digits at the start of a string
+
+#define GetDigits(Str S) \
+  Len(S) == 0 \
+    ? "" \
+    : ( IsDigit(S) ? Copy(S,1,1) + GetDigits(Copy(S,2)) \
+                   : "" \
+      )
+
+;-----------------------------------------------------------------------------
+; Is a string an integer?
+
+#define SignRequired   'required'
+#define SignOptional   'optional'
+#define SignNotAllowed 'not allowed'
+
+#define IsInteger(Str S, Str SignSetting) \
+  Len(S) == 0 \
+    ? False \
+    : ( Local[0] = Pos(Copy(S,1,1), "+-"), \
+        Local[0] && Len(S) == 1 \
+          ? False \
+          : ( Local[0] && SignSetting == SignNotAllowed \
+                ? False \
+                : ( !Local[0] && SignSetting == SignRequired \
+                      ? False \
+                      : ( !Local[0] && !IsDigit(S) \
+                            ? False \
+                            : GetDigits(Copy(S,2)) == Copy(S,2) \
+                        ) \
+                  ) \
+            ) \
+      )
+
