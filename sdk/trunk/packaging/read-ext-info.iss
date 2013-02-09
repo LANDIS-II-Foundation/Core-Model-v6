@@ -114,8 +114,7 @@
   #pragma error InfoFileMessage('LandisData is "' + LandisData + '", but should be "Extension"')
 #endif
 
-#define VarAndValue(str Name) {
-#define ExtensionName ReadRequiredVar("Name")
+#define public ExtensionName ReadRequiredVar("Name")
 #pragma message 'ExtensionName = "' + ExtensionName + '"'
 
 ; Read an optional variable from the extension info file.
@@ -127,37 +126,37 @@
                                     : False )
 
 #if ReadOptionalVar("Version")
-  #define ExtensionVersion InputVariableValue
+  #define public ExtensionVersion InputVariableValue
   #pragma message 'ExtensionVersion = "' + ExtensionVersion + '"'
 #endif
 
 #if ReadOptionalVar("Type")
-  #define ExtensionType InputVariableValue
+  #define public ExtensionType InputVariableValue
   #pragma message 'ExtensionType = "' + ExtensionType + '"'
 #endif
 
 #if ReadOptionalVar("Assembly")
-  #define ExtensionAssembly InputVariableValue
+  #define public ExtensionAssembly InputVariableValue
   #pragma message 'ExtensionAssembly = "' + ExtensionAssembly + '"'
 #endif
 
 #if ReadOptionalVar("Class")
-  #define ExtensionMainClass InputVariableValue
+  #define public ExtensionMainClass InputVariableValue
   #pragma message 'ExtensionMainClass = "' + ExtensionMainClass + '"'
 #endif
 
 #if ReadOptionalVar("Description")
-  #define ExtensionDescription InputVariableValue
+  #define public ExtensionDescription InputVariableValue
   #pragma message 'ExtensionDescription = "' + ExtensionDescription + '"'
 #endif
 
 #if ReadOptionalVar("UserGuide")
-  #define UserGuide InputVariableValue
+  #define public UserGuide InputVariableValue
   #pragma message 'UserGuide = "' + UserGuide + '"'
 #endif
 
 #if ReadOptionalVar("CoreVersion")
-  #define CoreVersion InputVariableValue
+  #define public CoreVersion InputVariableValue
   #pragma message 'CoreVersion = "' + CoreVersion + '"'
 #endif
 
