@@ -29,4 +29,11 @@
   #pragma error SdkVerFileError('Unable to read release info', 2)
 #endif
 
-#pragma message 'LANDIS-II SDK version ' + LandisSDKversion + ', release ' + LandisSDKrelease
+#define SdkVerFileURL Trim(StringChange(FileRead(SdkVersionFile), '$', ''))
+#if SdkVerFileURL == ''
+  #pragma error SdkVerFileError('Unable to read Subversion URL', 3)
+#endif
+#define SdkVerFileSvnPath Copy(SdkVerFileURL, Pos('/sdk/', SdkVerFileURL))
+#define SdkSvnPath        StringChange(SdkVerFileSvnPath, '/version.txt', '')
+
+#pragma message 'LANDIS-II SDK version ' + LandisSDKversion + ', release ' + LandisSDKrelease + ' (svn path: ' + SdkSvnPath + ')'
