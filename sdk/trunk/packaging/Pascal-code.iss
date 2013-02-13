@@ -322,15 +322,7 @@ end;
 
 function ShouldSkipPage(pageID: Integer): Boolean;
 begin
-  // Skip the SelectProgramGroup page because program group fixed.
-  if pageID = wpSelectProgramGroup then
-    Result := True
-
-  // Skip the SelectDestination Directory page because that directory is fixed.
-  else if pageID = wpSelectDir then
-    Result := True
-
-  else if (CurrVersPage <> nil) and (pageID = CurrVersPage.ID) then
+  if (CurrVersPage <> nil) and (pageID = CurrVersPage.ID) then
       //  Skip the Current Version page if there is no current version
       if CurrentVersion.Version = '' then
         Result := True
@@ -394,15 +386,3 @@ begin
   Result := True;
 end;
 
-//-----------------------------------------------------------------------------
-
-// Returns the text for the "Ready To Install" wizard page
-
-function UpdateReadyMemo(space, newLine, memoUserInfoInfo, memoDirInfo,
-                         memoTypeInfo, memoComponentsInfo, memoGroupInfo,
-                         memoTasksInfo: String): String;
-begin
-  Result := memoDirInfo + newLine +
-            newLine +
-            memoGroupInfo + newLine
-end;

@@ -10,8 +10,9 @@ AppPublisher={#Organization}
 
 DefaultDirName={#LandisInstallDir}\v{#CoreMajorVersion}
 UsePreviousAppDir=no
-DefaultGroupName=LANDIS-II\{#CoreVersion}
-UsePreviousGroup=no
+DisableDirPage=yes
+AlwaysShowDirOnReadyPage=yes
+DisableProgramGroupPage=yes
 
 OutputDir={#SourcePath}
 OutputBaseFilename=LANDIS-II {#ExtensionName} {#VersionRelease}-setup
