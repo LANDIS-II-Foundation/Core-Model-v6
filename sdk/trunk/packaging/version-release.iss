@@ -1,7 +1,3 @@
-#ifndef PackageNameLong
-  #define PackageNameLong PackageName
-#endif
-
 #ifdef Version
   #define Pos1stDot Pos(".", Version)
   #if Pos1stDot == 0
@@ -72,41 +68,3 @@
 
 #define VersionRelease     Version + ReleaseSuffix
 
-#define LandisDeployDir    GetEnv("LANDIS_DEPLOY")
-#define LandisInstallDir   "C:\Program Files\LANDIS-II"
-#define LandisBinDir       LandisInstallDir + "\bin"
-#define LandisPlugInDir    LandisInstallDir + "\plug-ins"
-
-; The directory where LANDIS-II code is built for deployment
-#define LandisBuildDir     "C:\Program Files\LANDIS-II\6.0\bin"
-
-
-#if CoreReleaseAbbr == ""
-  #define CoreReleaseSuffix ""
-#else
-  #define CoreReleaseSuffix "-" + CoreReleaseAbbr
-#endif
-#define CoreVersionRelease CoreVersion + CoreReleaseSuffix
-#define CoreDir            LandisInstallDir + "\" + CoreVersionRelease
-#define CoreBinDir         CoreDir + "\bin"
-
-[Setup]
-AppName=LANDIS-II {#PackageName} v{#Version}{#ReleaseForAppName}
-AppVerName=LANDIS-II {#PackageNameLong} v{#Version}{#ReleaseForAppVerName}
-AppPublisher=Portland State University
-; DefaultDirName={pf}\LANDIS-II\{#CoreVersionRelease}
-DefaultDirName={#LandisInstallDir}\{#CoreVersionRelease}
-UsePreviousAppDir=no
-DefaultGroupName=LANDIS-II\{#CoreVersionRelease}
-UsePreviousGroup=no
-
-OutputDir={#SourcePath}
-OutputBaseFilename=LANDIS-II {#PackageName} {#VersionRelease}-setup
-VersionInfoCompany=Portland State University
-#if PatchLevel == ""
-VersionInfoVersion={#MajorMinor}.0.{#ReleaseAsInt}
-#else
-VersionInfoVersion={#MajorMinor}.{#PatchLevel}.{#ReleaseAsInt}
-#endif
-
-LicenseFile={#LandisDeployDir}\..\licenses\LANDIS-II_Binary_license.rtf
