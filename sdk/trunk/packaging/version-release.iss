@@ -30,34 +30,87 @@
   #define public MajorMinor MajorVersion + "." + MinorVersion
 #endsub
 
+;-----------------------------------------------------------------------------
+; Parse release info in the variable ReleaseInfo
+;
+; Valid formats: "alpha release #" or "alpha # release"
+;                "beta release #"  or "beta # release"
+;                "release candidate #"
+;                "official release"
+;
+; Outputs:  ReleaseType = "alpha", "beta", "candidate" or "official"
+;           ReleaseNumber = defined as integer if ReleaseType != "official"
+
+#sub ParseReleaseInfo
+  ; Remove "release" keyword so release info reduced to "alpha #", "beta #",
+  ; "candidate #", or "official"
+  #define ReleaseInfo Trim( StringChange(ReleaseInfo, 'release', '') )
+  #if ReleaseInfo == ""
+    #pragma error "Missing release type (alpha, beta, candidate, official)"
+  #endif
+  #define public ReleaseType FirstWord(ReleaseInfo)
+  #if Pos("|"+ReleaseType+"|", "|alpha|beta|candidate|official|") == 0
+    #pragma error 'Unknown release type: "' + ReleaseType + '"'
+  #endif
+  #pragma message 'ReleaseType = "' + ReleaseType + '"'
+
+  ; Get release number for non-official releases
+  #if ReleaseType != "official"
+    #define ReleaseNumber Trim( StringChange(ReleaseInfo, ReleaseType, '') )
+    #if ReleaseNumber == ""
+      #pragma error "Missing release number"
+    #endif
+    #if IsInteger(ReleaseNumber, SignNotAllowed)
+      #define public ReleaseNumber Int(ReleaseNumber)
+    #else
+      #pragma error 'Invalid release number: "' + '"'
+    #endif
+    #if ReleaseNumber == 0
+      #pragma error 'Release number is 0'
+    #endif
+    #pragma message 'ReleaseNumber = ' + Str(ReleaseNumber)
+  #endif
+#endsub
+
+;-----------------------------------------------------------------------------
+; Set preprocessor variables with release info
+;
+; Inputs:  ReleaseType
+;          ReleaseNumber (only if ReleaseType != "official")
+;
+; Outputs:  ReleaseAbbr
+;           ReleaseSuffix
+;           ReleaseForAppName
+;           ReleaseForAppVerName
+;           ReleaseAsInt
+
+#sub SetReleaseVars
 #if ReleaseType == "official"
-  #define ReleaseAbbr ""
-  #define ReleaseSuffix ""
-  #define ReleaseForAppName ""
-  #define ReleaseForAppVerName ""
-  #define ReleaseAsInt 400
+  #define public ReleaseAbbr ""
+  #define public ReleaseSuffix ""
+  #define public ReleaseForAppName ""
+  #define public ReleaseForAppVerName ""
+  #define public ReleaseAsInt 400
 #else
   #if ReleaseType == "alpha"
-    #define ReleaseTypeAbbr "a"
-    #define ReleaseForAppVerName " (alpha " + Str(ReleaseNumber) + " release)"
+    #define public ReleaseTypeAbbr "a"
+    #define public ReleaseForAppVerName " (alpha " + Str(ReleaseNumber) + " release)"
     #define ReleaseOffset 100
   #elif ReleaseType == "beta"
-    #define ReleaseTypeAbbr "b"
-    #define ReleaseForAppVerName " (beta " + Str(ReleaseNumber) + " release)"
+    #define public ReleaseTypeAbbr "b"
+    #define public ReleaseForAppVerName " (beta " + Str(ReleaseNumber) + " release)"
     #define ReleaseOffset 200
   #elif ReleaseType == "candidate"
-    #define ReleaseTypeAbbr "rc"
-    #define ReleaseForAppVerName " (release candidate " + Str(ReleaseNumber) + ")"
+    #define public ReleaseTypeAbbr "rc"
+    #define public ReleaseForAppVerName " (release candidate " + Str(ReleaseNumber) + ")"
     #define ReleaseOffset 300
   #else
     #error Invalid ReleaseType
   #endif
 
-  #define ReleaseAbbr ReleaseTypeAbbr + Str(ReleaseNumber)
-  #define ReleaseSuffix "-" + ReleaseAbbr
-  #define ReleaseForAppName " (" + ReleaseAbbr + ")"
-  #define ReleaseAsInt ReleaseOffset + Int(ReleaseNumber)
+  #define public ReleaseAbbr ReleaseTypeAbbr + Str(ReleaseNumber)
+  #define public ReleaseSuffix "-" + ReleaseAbbr
+  #define public ReleaseForAppName " (" + ReleaseAbbr + ")"
+  #define public ReleaseAsInt ReleaseOffset + Int(ReleaseNumber)
 #endif
-
-#define VersionRelease     Version + ReleaseSuffix
-
+#endsub

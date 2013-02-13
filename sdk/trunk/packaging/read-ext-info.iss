@@ -174,3 +174,33 @@
 #define public Version FirstWord(ExtensionVersion)
 #pragma message 'Extracted version from ExtensionVersion: "' + Version + '"'
 #expr ParseVersion
+
+#define ErrorMesg ''
+#define public ReleaseInfo GetBracketedText(ExtensionVersion, '(', ')', ErrorMesg)
+#if ErrorMesg
+  #pragma error "Error extracting release info from ExtensionVersion: " + ErrorMesg
+#endif
+
+#if ReleaseInfo == ""
+  ; If no release info, set default to official release
+  #define ReleaseType "official"
+  #pragma message 'No release info in ExtensionVersion, so using default release type (official)'
+#else
+  #pragma message 'Extracted release info from ExtensionVersion: "' + ReleaseInfo + '"'
+
+  ; Remove parentheses
+  #define public ReleaseInfo Trim( Copy(ReleaseInfo, 2, Len(ReleaseInfo)-2) )
+
+  #if ReleaseInfo == ""
+    #pragma error "No release info between parentheses"
+  #endif
+
+  #expr ParseReleaseInfo
+  #if ErrorMesg
+    #pragma error parsing error
+  #endif
+#endif
+
+#expr SetReleaseVars
+
+#define public VersionRelease  Version + ReleaseSuffix
