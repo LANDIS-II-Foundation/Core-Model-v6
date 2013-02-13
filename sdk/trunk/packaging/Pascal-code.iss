@@ -1,6 +1,6 @@
 [Code]
 // This Code section uses a number of preprocessor variables defined in the
-// the corresponding Setup section (in the file "package (Setup section).iss".
+// the "read-extension-info" and "Landis-vars" include files.
 //
 // This Code section contains a forward declaration for a boolean function
 // called InitializeSetup_FirstPhase.  That function represents the first
@@ -208,16 +208,16 @@ begin
     exit
     end;
 
-  if not DirExists('{#CoreBinDir}') then
+  if not DirExists('{#LandisCoreDir}') then
     begin
-    MsgBox('This package requires LANDIS-II {#CoreVersionRelease} which is not installed.',
+    MsgBox('This package requires LANDIS-II {#CoreVersion} which is not installed.',
            mbError, MB_OK)
     Result := False
     exit
     end;
 
   // Determine if there is already a version of this package installed
-  if GetInstalledVersions('LANDIS-II {#PackageName} v', installedVersions) then
+  if GetInstalledVersions('LANDIS-II {#ExtensionName} v', installedVersions) then
     case GetArrayLength(installedVersions) of
       0:
         CurrentVersion.Version := '';
@@ -226,7 +226,7 @@ begin
         CurrentVersion := installedVersions[0];
         if CurrentVersion.Version = '{#Version}{#ReleaseForAppName}' then
           begin
-          MsgBox('LANDIS-II {#PackageName} v{#Version}{#ReleaseForAppName} is already installed.',
+          MsgBox('LANDIS-II {#ExtensionName} v{#Version}{#ReleaseForAppName} is already installed.',
                   mbInformation, MB_OK)
           Result := True
           exit
