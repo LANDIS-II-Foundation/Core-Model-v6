@@ -191,18 +191,12 @@ forward;
 
 //-----------------------------------------------------------------------------
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "EnsureLandisIIDirsUC.iss"
-
-//-----------------------------------------------------------------------------
-
 function InitializeSetup(): Boolean;
 var
   installedVersions: Array of TInstalledVersion;
   i: Integer;
   mesg: String;
 begin
-  EnsureLandisIIDirsUC();
-
   // Not really necessary to initialize these variables, but doing so
   // avoids warnings from compiler about unused variables.
   InitializeSetup_FinalPhase := nil;
