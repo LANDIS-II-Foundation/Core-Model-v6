@@ -14,7 +14,7 @@
 #define LandisExtDir       LandisMajorBinDir + "\extensions"
 #define ExtAdminTool       LandisMajorBinDir + "\Landis.Extensions.exe"
 
-; The directory where LANDIS-II code is built for deployment
-#define LandisBuildDir     "C:\Program Files\LANDIS-II\6.0\bin"
+; The directory where LANDIS-II code is built during development
+#define LandisBuildDir     LandisMajorBinDir + "\build"
 
 #define LandisCoreDir      LandisMajorBinDir + "\" + CoreVersion
