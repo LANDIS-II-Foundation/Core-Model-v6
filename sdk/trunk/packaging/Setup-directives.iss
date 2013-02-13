@@ -1,11 +1,14 @@
+; Directives for the [Setup] section of the Inno Setup script for the setup
+; program (installer) for a LANDIS-II extension.
+
 AppName=LANDIS-II {#ExtensionName} v{#Version}{#ReleaseForAppName}
 AppVerName=LANDIS-II {#ExtensionName} Extension v{#Version}{#ReleaseForAppVerName}
 
 AppPublisher=Portland State University
-; DefaultDirName={pf}\LANDIS-II\{#CoreVersionRelease}
-DefaultDirName={#LandisInstallDir}\{#CoreVersionRelease}
+
+DefaultDirName={#LandisInstallDir}\v{#CoreMajorVersion}
 UsePreviousAppDir=no
-DefaultGroupName=LANDIS-II\{#CoreVersionRelease}
+DefaultGroupName=LANDIS-II\{#CoreVersion}
 UsePreviousGroup=no
 
 OutputDir={#SourcePath}
