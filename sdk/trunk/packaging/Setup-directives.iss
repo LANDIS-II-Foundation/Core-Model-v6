@@ -22,4 +22,3 @@ VersionInfoVersion={#MajorMinor}.0.{#ReleaseAsInt}
 VersionInfoVersion={#MajorMinor}.{#PatchLevel}.{#ReleaseAsInt}
 #endif
 
-LicenseFile={#LandisDeployDir}\..\licenses\LANDIS-II_Binary_license.rtf
