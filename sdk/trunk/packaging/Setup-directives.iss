@@ -4,7 +4,9 @@
 AppName=LANDIS-II {#ExtensionName} v{#Version}{#ReleaseForAppName}
 AppVerName=LANDIS-II {#ExtensionName} Extension v{#Version}{#ReleaseForAppVerName}
 
-AppPublisher=Portland State University
+#ifdef Organization
+AppPublisher={#Organization}
+#endif
 
 DefaultDirName={#LandisInstallDir}\v{#CoreMajorVersion}
 UsePreviousAppDir=no
@@ -13,7 +15,7 @@ UsePreviousGroup=no
 
 OutputDir={#SourcePath}
 OutputBaseFilename=LANDIS-II {#ExtensionName} {#VersionRelease}-setup
-VersionInfoCompany=Portland State University
+
 #if PatchLevel == ""
 VersionInfoVersion={#MajorMinor}.0.{#ReleaseAsInt}
 #else

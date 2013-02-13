@@ -5,7 +5,6 @@
 
 #include SDKpackaging + '\string-funcs.iss'
 
-
 ;-----------------------------------------------------------------------------
 ; Read SDK version
 
@@ -37,3 +36,16 @@
 #define SdkSvnPath        StringChange(SdkVerFileSvnPath, '/version.txt', '')
 
 #pragma message 'LANDIS-II SDK version ' + LandisSDKversion + ', release ' + LandisSDKrelease + ' (svn path: ' + SdkSvnPath + ')'
+
+;-----------------------------------------------------------------------------
+; If a file with developer-specific custom preprocessor directives exists,
+; include it.
+;
+; Developers can use the file to specify their organizations, which is used
+; in the AppPublisher [Setup] directive.
+
+#define CustomISPPdirectives GetEnv('USERPROFILE') + '\config\LANDIS-II\ISPP-directives.iss'
+#if FileExists(CustomISPPdirectives)
+  #pragma message 'Loading custom preprocessor directives from "' + CustomISPPdirectives + '"..'
+  #include CustomISPPdirectives
+#endif
