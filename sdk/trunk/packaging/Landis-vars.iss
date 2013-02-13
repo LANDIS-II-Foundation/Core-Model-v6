@@ -1,22 +1,20 @@
-#ifndef PackageNameLong
-  #define PackageNameLong PackageName
-#endif
+; Define variables related to LANDIS-II.
+;
+; Inputs:  CoreVersion = required LANDIS-II version formatted as "#.#"
 
-#define LandisDeployDir    GetEnv("LANDIS_DEPLOY")
+#define CoreMajorVersion GetDigits(CoreVersion)
+
 #define LandisInstallDir   "C:\Program Files\LANDIS-II"
 #define LandisBinDir       LandisInstallDir + "\bin"
-#define LandisPlugInDir    LandisInstallDir + "\plug-ins"
+
+#define LandisMajorVerDir  LandisInstallDir + "\v" + CoreMajorVersion
+#define LandisMajorBinDir  LandisMajorVerDir + "\bin"
+#define LandisExtInfoDir   LandisMajorVerDir + "\ext-info"
+
+#define LandisExtDir       LandisMajorBinDir + "\extensions"
+#define ExtAdminTool       LandisMajorBinDir + "\Landis.Extensions.exe"
 
 ; The directory where LANDIS-II code is built for deployment
 #define LandisBuildDir     "C:\Program Files\LANDIS-II\6.0\bin"
 
-
-#if CoreReleaseAbbr == ""
-  #define CoreReleaseSuffix ""
-#else
-  #define CoreReleaseSuffix "-" + CoreReleaseAbbr
-#endif
-#define CoreVersionRelease CoreVersion + CoreReleaseSuffix
-#define CoreDir            LandisInstallDir + "\" + CoreVersionRelease
-#define CoreBinDir         CoreDir + "\bin"
-
+#define LandisCoreDir      LandisMajorBinDir + "\" + CoreVersion
