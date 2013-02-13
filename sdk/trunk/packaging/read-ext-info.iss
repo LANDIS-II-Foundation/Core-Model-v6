@@ -167,7 +167,7 @@
 #expr FileClose(FileHandle)
 
 ;-----------------------------------------------------------------------------
-; Get version from ExtensionVersion
+; Get version and release info from ExtensionVersion
 
 #include LandisSDK + '\packaging\version-release.iss'
 
