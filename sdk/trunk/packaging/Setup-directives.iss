@@ -22,3 +22,4 @@ VersionInfoVersion={#MajorMinor}.0.{#ReleaseAsInt}
 VersionInfoVersion={#MajorMinor}.{#PatchLevel}.{#ReleaseAsInt}
 #endif
 
+UninstallFilesDir={#LandisMajorVerDir}\uninstall
