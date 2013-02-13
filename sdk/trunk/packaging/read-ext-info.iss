@@ -165,3 +165,12 @@
 #endif
 
 #expr FileClose(FileHandle)
+
+;-----------------------------------------------------------------------------
+; Get version from ExtensionVersion
+
+#include LandisSDK + '\packaging\version-release.iss'
+
+#define public Version FirstWord(ExtensionVersion)
+#pragma message 'Extracted version from ExtensionVersion: "' + Version + '"'
+#expr ParseVersion

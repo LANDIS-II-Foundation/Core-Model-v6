@@ -1,9 +1,11 @@
-#ifdef Version
+; Parse a version number in the variable Version
+
+#sub ParseVersion
   #define Pos1stDot Pos(".", Version)
   #if Pos1stDot == 0
     #error Version doesn't have proper format: "{major}.{minor}" or "{major}.{minor}.{patch}"
   #endif
-  #define MajorVersion Copy(Version, 1, Pos1stDot-1)
+  #define public MajorVersion Copy(Version, 1, Pos1stDot-1)
   #if MajorVersion == ""
     #error Missing major version number in Version variable
   #endif
@@ -13,29 +15,20 @@
   #endif
   #define Pos2ndDot Pos(".", TextAfter1stDot)
   #if Pos2ndDot == 0
-    #define MinorVersion TextAfter1stDot
-    #define PatchLevel ""
+    #define public MinorVersion TextAfter1stDot
+    #define public PatchLevel ""
   #else
-    #define MinorVersion Copy(TextAfter1stDot, 1, Pos2ndDot-1)
+    #define public MinorVersion Copy(TextAfter1stDot, 1, Pos2ndDot-1)
     #if MinorVersion == ""
       #error Missing minor version number in Version variable
     #endif
-    #define PatchLevel Copy(TextAfter1stDot, Pos2ndDot+1)
+    #define public PatchLevel Copy(TextAfter1stDot, Pos2ndDot+1)
     #if PatchLevel == ""
       #error Missing patch level after 2nd period in Version variable
     #endif
   #endif
-  #define MajorMinor MajorVersion + "." + MinorVersion
-#else
-  #ifndef MajorMinor
-    #error The pre-processor variable "MajorMinor" is not defined
-  #endif
-  #ifdef PatchLevel
-    #define Version MajorMinor + "." + PatchLevel
-  #else
-    #define Version MajorMinor
-  #endif
-#endif
+  #define public MajorMinor MajorVersion + "." + MinorVersion
+#endsub
 
 #if ReleaseType == "official"
   #define ReleaseAbbr ""
