@@ -183,7 +183,7 @@
 
 #if ReleaseInfo == ""
   ; If no release info, set default to official release
-  #define ReleaseType "official"
+  #define public ReleaseType "official"
   #pragma message 'No release info in ExtensionVersion, so using default release type (official)'
 #else
   #pragma message 'Extracted release info from ExtensionVersion: "' + ReleaseInfo + '"'
