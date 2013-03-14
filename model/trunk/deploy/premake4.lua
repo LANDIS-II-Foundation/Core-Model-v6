@@ -115,12 +115,12 @@ function installConfig(config)
   GDALcsharpVersion = getAssemblyVersion("../third-party/LSML/GDAL/managed/gdal_csharp.dll")  
 
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console.exe" }
-  install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/App.config",
+  install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/Landis.Console-X.Y.exe.config",
                                                              replace={ ["{RELEASE}"]=releaseStatus,
                                                                        ["{GDAL_CSHARP_VERSION}"]=GDALcsharpVersion } }
 
   install { file="v{X}/bin/Landis.Extensions.exe",        from="build/"..config }
-  install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/App.config" }
+  install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/Landis.Extensions.exe.config" }
 
   -- {InstallDir}/vX/bin/extensions/
 
