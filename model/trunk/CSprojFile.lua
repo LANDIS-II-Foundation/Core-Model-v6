@@ -1,5 +1,5 @@
 -- Class and utility functions for C# project files (*.csproj)
--- Copyright 2012 Green Code LLC
+-- Copyright 2012,2013 Green Code LLC
 --
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@
 --   2012-09-02 : Changed license from BSD to LGPL.
 --                Improved documentation in comments.
 --                Added removeFrameworkProfile function.
+--   2013-03-07 : Added enableXMLdocumentation function.
 
 -- ==========================================================================
 
@@ -163,4 +164,63 @@ function removeFrameworkProfile(csprojFile)
       break
     end
   end -- for each line in file
+end
+
+-- ==========================================================================
+
+-- This function enables the generation of XML documentation file for a
+-- project.
+--
+-- VC# 2010 requires the developer to specify the path to the XML file.  The
+-- path is stored in the <DocumentationFile> element of each configuration's
+-- property group.
+--
+-- MonoDevelop 3.0 just allows the developer to enable the generation of the
+-- XML file.  It stores a boolean value in the <GenerateDocumentation>
+-- element of a configuration's property group.
+--
+-- To work with multiple IDEs, this function inserts both elements into each
+-- configuration's property group right after the <OutputPath> element:
+--
+--    <OutputPath>bin\Debug</OutputPath>
+--    <DocumentationFile>bin\Debug\MyAssembly.xml</DocumentationFile>   <-- new
+--    <GenerateDocumentation>true</GenerateDocumentation>               <-- new
+
+function enableXMLdocumentation(csprojFile)
+  local lookingFor = "AssemblyName"
+  local AssemblyNamePattern = "%s*<AssemblyName>(.*)</AssemblyName>"
+  local assemblyName = nil
+  local OutputPathPattern   = "(%s*)<OutputPath>(.*)</OutputPath>"
+  local ItemGroupPattern    = "%s*<ItemGroup>"
+  local lines = { }
+
+  for _, line in ipairs(csprojFile.lines) do
+    -- Copy the current line
+    table.insert(lines, line)
+
+    -- Check if the current line is one we're looking for
+    if lookingFor == "AssemblyName" then
+      assemblyName = string.match(line, AssemblyNamePattern)
+      if assemblyName then
+        lookingFor = "OutputPath"
+      end
+    elseif lookingFor == "OutputPath" then
+      local indent, outputPath = string.match(line, OutputPathPattern)
+      if outputPath then
+        local docFile = string.format("%s\\%s.xml", outputPath, assemblyName)
+        local newLines = {
+          "<DocumentationFile>" .. docFile .. "</DocumentationFile>" ,
+  	  "<GenerateDocumentation>true</GenerateDocumentation>"
+        }
+        for _, newLine in ipairs(newLines) do
+          table.insert(lines, indent .. newLine)
+        end
+      elseif string.match(line, ItemGroupPattern) then
+        -- no more property groups for configurations
+        lookingFor = nil
+      end
+    end
+  end -- for each line in file
+
+  csprojFile.lines = lines
 end

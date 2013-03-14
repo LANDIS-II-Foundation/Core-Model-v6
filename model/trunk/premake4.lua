@@ -226,6 +226,12 @@ function modifyCSprojFiles()
 	  print("  <TargetFrameworkProfile> element removed")
 	end
 
+	-- Generate XML documentation for core API assembly (for inclusion in SDK)
+	if prj.name == "Core" then
+	  enableXMLdocumentation(csprojFile)
+	  print("  Enabled the generation of XML documentation file")
+	end
+
     ok, err = csprojFile:writeLines()
     if not ok then
       error(err, 0)
