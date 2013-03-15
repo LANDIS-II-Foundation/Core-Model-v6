@@ -1,4 +1,4 @@
--- Copyright 2012 Green Code LLC
+-- Copyright 2012,2013 Green Code LLC
 -- All rights reserved. 
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -114,7 +114,7 @@ function installConfig(config)
 
   GDALcsharpVersion = getAssemblyVersion("../third-party/LSML/GDAL/managed/gdal_csharp.dll")  
 
-  install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console.exe" }
+  install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console-"..majorMinor..".exe" }
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/Landis.Console-X.Y.exe.config",
                                                              replace={ ["{RELEASE}"]=releaseStatus,
                                                                        ["{GDAL_CSHARP_VERSION}"]=GDALcsharpVersion } }
