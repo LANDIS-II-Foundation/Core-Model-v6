@@ -232,12 +232,55 @@ function modifyCSprojFiles()
 	  print("  Enabled the generation of XML documentation file")
 	end
 
+    -- Add version number as "-X.Y" to the console's assembly name
+    if prj.name == "Console" then
+      local assemblyName = appendVersionToAssemblyName(csprojFile)
+      print("  Changed <AssemblyName> element to \"" .. assemblyName .. "\"")
+    end
+
     ok, err = csprojFile:writeLines()
     if not ok then
       error(err, 0)
     end
   end -- for each project
 end
+
+-- ==========================================================================
+
+-- Append the model's version # to the AssemblyName of a C# project
+
+function appendVersionToAssemblyName(csprojFile)
+  -- Get model version (major.minor) from the shared assembly source file
+  local modelVersion = readAssemblyVersion("SharedAssemblyInfo.cs")
+  local majorMinor = string.match(modelVersion, "^(%d+\.%d+)")
+
+  local pattern = "^(%s*)<AssemblyName>(.*)</AssemblyName>"
+  for i, line in ipairs(csprojFile.lines) do
+    -- Look for <AssemblyName>Example.Assembly</AssemblyName>
+    local indent, name = string.match(line, pattern)
+    if indent then
+      name = name .. "-" .. majorMinor
+      csprojFile.lines[i] = string.format("%s<AssemblyName>%s</AssemblyName>",
+                                          indent, name)
+      return name
+    end
+  end
+end
+
+-- ==========================================================================
+
+-- Read the AssemblyVersion attribute in a C# source file
+
+function readAssemblyVersion(sourceFile)
+  local pattern = "AssemblyVersion%(\"(.*)\"%)"
+  for line in io.lines(sourceFile) do
+    local versionStr = string.match(line, pattern)
+    if versionStr then
+      return versionStr
+    end
+  end
+end
+
 -- ==========================================================================
 
 -- Run the LSML-admin script with a specific action
