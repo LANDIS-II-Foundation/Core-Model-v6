@@ -40,6 +40,7 @@ function main()
   majorMinor = majorVersion..'.'..minorVersion
   releaseStatus = readFirstLine("release-status.txt")
   GDALversion = readFirstLine("../third-party/LSML/GDAL-version.txt")
+  GDALmajorMinor = string.match(GDALversion, "^(%d+\.%d+)")
   print("Installing LANDIS-II "..majorMinor.." ("..releaseStatus..") with GDAL "..GDALversion)
 
   for _, config in ipairs(_ARGS) do
@@ -102,7 +103,7 @@ function installConfig(config)
 
   install { file="bin/landis.cmd",            from="deploy/bin/" }
   install { file="bin/landis-ii.cmd",         from="deploy/bin/" }
-  install { file="bin/landis-{X.Y}.cmd",      from="deploy/bin/landis-X.Y.cmd", replace={ ["{VERSION}"]=GDALversion } }
+  install { file="bin/landis-{X.Y}.cmd",      from="deploy/bin/landis-X.Y.cmd", replace={ ["{VERSION}"]=GDALmajorMinor } }
 
   install { file="bin/landis-extensions.cmd",      from="deploy/bin/" }
   install { file="bin/landis-v{X}-extensions.cmd", from="deploy/bin/landis-vX-extensions.cmd" }
@@ -144,9 +145,9 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
 
-  -- {InstallDir}/GDAL/#.#.#/
+  -- {InstallDir}/GDAL/#.#/
 
-  install { dir="GDAL/"..GDALversion, source="third-party/LSML/GDAL/native/" }
+  install { dir="GDAL/"..GDALmajorMinor, source="third-party/LSML/GDAL/native/" }
 
   -- {InstallDir}/vX/licenses/
 
