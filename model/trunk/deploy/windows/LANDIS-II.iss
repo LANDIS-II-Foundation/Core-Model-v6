@@ -87,6 +87,7 @@ VersionInfoVersion={#Major}.{#Minor}.{#ReleaseAsInt}
 ChangesEnvironment=yes
 SetupLogging=yes
 LicenseFile={#ScriptDir}\LANDIS-II_Binary_license.rtf
+UninstallFilesDir={app}\config
 
 ; GDAL 64-bit binaries are built for x64
 ArchitecturesInstallIn64BitMode=x64
@@ -119,6 +120,9 @@ Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\v{#Major}
 
 ; No example input files but a read me.
 Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
+
+; INI file with information about this release
+Source: {#ScriptDir}\LANDIS-II X.Y.ini; DestDir: {app}\config; DestName: LANDIS-II {#MajorMinor}.ini
 
 
 [Icons]
@@ -172,19 +176,91 @@ end;
 
 // ----------------------------------------------------------------------------
 
+// Returns the path to the INI file for this particular LANDIS-II version
+
+function PathToIniFile(): String;
+var
+  ConfigDir : String;
+begin
+  ConfigDir := ExpandConstant('{app}') + '\config';
+  Result := ConfigDir + '\LANDIS-II ' + MajorMinor + '.ini';
+end;
+
+// ----------------------------------------------------------------------------
+
+procedure UninstallRelease(CurrentRelease, IniFile: String);
+var
+  Uninstaller : String;
+  ResultCode : Integer;
+  TemporaryScript : String;
+begin
+  Uninstaller := GetIniString('LANDIS-II', 'uninstaller', '', IniFile);
+  if Uninstaller = '' then
+    begin
+    Log('UninstallRelease: No uninstaller in "' + IniFile + '"');
+    exit;
+    end;
+
+  if not FileExists(Uninstaller) then
+    begin
+    Log('UninstallRelease: uninstaller = "' + uninstaller + '" does not exist');
+    exit;
+    end;
+
+  // Create a temporary dummy command script so if the current release is the
+  // only release installed, then its uninstaller will not remove all the
+  // LANDIS-II files including installed extensions.  In other words, keep the
+  // installed extensions for the new release being installed.
+  TemporaryScript := ExpandConstant('{app}\bin\landis-' + MajorVersion + '.Y.cmd');
+  if SaveStringToFile(TemporaryScript, '(temporary file)' + #13#10, False) then
+    Log('UninstallRelease: created temporary script "' + TemporaryScript + '"')
+  else
+    begin
+    Log('UninstallRelease: unable to create temporary script "' + TemporaryScript + '"');
+    exit;
+    end;
+
+  if Exec(Uninstaller, '/silent', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+    Log('UninstallRelease: uninstaller "' + Uninstaller + '" ran OK; exit code = ' + IntToStr(ResultCode))
+  else
+    Log('UninstallRelease: uninstaller "' + Uninstaller + '" failed; error code = ' + IntToStr(ResultCode));
+
+  if DeleteFile(TemporaryScript) then
+    Log('UninstallRelease: deleted temporary script')
+  else
+    Log('UninstallRelease: error while trying to delete temporary script');
+end;
+
+// ----------------------------------------------------------------------------
+
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
-  LandisBinDir : String;
-  MajorMinorScript : String;
+  IniFile : String;
+  CurrentRelease : String;
+  ReplaceResponse : Integer;
 begin
   if CurPageId = wpSelectDir then
     begin
-    LandisBinDir := ExpandConstant('{app}\bin');
-    MajorMinorScript := LandisBinDir + '\landis-' + MajorMinor + '.cmd';
-    if FileExists(MajorMinorScript) then
+    IniFile := PathToIniFile();
+    if FileExists(IniFile) then
       begin
-      MsgBox('LANDIS-II ' + MajorMinor + ' is already installed in this directory.', mbError, MB_OK);
-      Result := False;
+      CurrentRelease := GetIniString('LANDIS-II', 'release', '(?)', IniFile);
+      if CurrentRelease = '{#Release}' then
+        begin
+        MsgBox('LANDIS-II {#VersionReleaseFull} is already installed in this directory.', mbError, MB_OK);
+        Result := False;
+        end
+      else
+        begin
+        ReplaceResponse := MsgBox('LANDIS-II ' + MajorMinor + ' (' + CurrentRelease + ') is already installed.  Replace it?', mbConfirmation, MB_OKCANCEL or MB_DEFBUTTON2);
+        if ReplaceResponse = IDOK then
+          begin
+          UninstallRelease(CurrentRelease, IniFile);
+          Result := True;
+          end
+        else
+          Result := False;
+        end
       end
     else
       Result := True;
@@ -281,6 +357,25 @@ begin
   Result := MemoDirInfo + NewLine +
             NewLine +
             MemoGroupInfo + NewLine;
+end;
+
+// ----------------------------------------------------------------------------
+
+// Store information about the installed release in the associated INI file.
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  IniFile : String;
+  Uninstaller : String;
+begin
+  if CurStep = ssPostInstall then
+    begin
+    IniFile := PathToIniFile();
+    Uninstaller := ExpandConstant('{uninstallexe}');
+    SetIniString('LANDIS-II', 'version',     MajorMinor,   IniFile);
+    SetIniString('LANDIS-II', 'release',     '{#Release}', IniFile);
+    SetIniString('LANDIS-II', 'uninstaller', Uninstaller,  IniFile);
+    end;
 end;
 
 // ----------------------------------------------------------------------------
