@@ -124,6 +124,7 @@ Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
 [Icons]
 Name: {group}\Documentation;                         Filename: {app}\v{#Major}\docs
 Name: {group}\Sample Input Files;                    Filename: {app}\v{#Major}\examples
+Name: {group}\Licenses;                              Filename: {app}\v{#Major}\licenses; Flags: uninsneveruninstall
 Name: {group}\Uninstall\LANDIS-II {#VersionRelease}; Filename: {uninstallexe}; Parameters: "/log";
 
 [Registry]
