@@ -83,6 +83,7 @@ UsePreviousGroup=no
 SourceDir={#ReleaseStagingDir}
 OutputDir={#ScriptDir}
 OutputBaseFilename=LANDIS-II-{#VersionRelease}-setup{#NBits}
+VersionInfoVersion={#Major}.{#Minor}.{#ReleaseAsInt}
 ChangesEnvironment=yes
 SetupLogging=yes
 LicenseFile={#ScriptDir}\LANDIS-II_Binary_license.rtf
