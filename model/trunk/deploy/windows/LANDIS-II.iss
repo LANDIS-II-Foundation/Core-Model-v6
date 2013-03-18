@@ -46,7 +46,7 @@
 #else
   #define VersionReleaseName Version
 #endif
-#if ReleaseTypeAbbr == "rev"
+#if ReleaseType == "revision"
   #define VersionRelease     Version + "," + ReleaseAbbr
 #else
   #define VersionRelease     Version + ReleaseAbbr
