@@ -11,8 +11,8 @@
 ; This file defines these variables:
 ;
 ;    Release = (the release status read from the file)
-;    ReleaseType = alpha, beta, release candidate, official
-;    ReleaseNumber = (#)  (not defined if official release)
+;    ReleaseType = alpha, beta, candidate, official
+;    ReleaseNumber = (#)  (defined if ReleaseType = alpha, beta or candidate)
 ;    ReleaseAbbr = a#, b#, rc#, or "" (empty string for official)
 
 #define ReleaseStatusFile "..\release-status.txt"
