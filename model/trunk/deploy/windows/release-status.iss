@@ -6,14 +6,16 @@
 ;    beta release (#)
 ;    release candidate (#)
 ;    official release
+;    official release, revision (#)
 ;
 ; where (#) is an integer = or > 1.  Example: "beta release 3".
 ; This file defines these variables:
 ;
 ;    Release = (the release status read from the file)
-;    ReleaseType = alpha, beta, candidate, official
+;    ReleaseType = alpha, beta, candidate, official, revision
 ;    ReleaseNumber = (#)  (defined if ReleaseType = alpha, beta or candidate)
-;    ReleaseAbbr = a#, b#, rc#, or "" (empty string for official)
+;    RevisionNumber = (#) (defined if ReleaseType = revision)
+;    ReleaseAbbr = a#, b#, rc#, "" (empty string for official), rev#
 
 #define ReleaseStatusFile "..\release-status.txt"
 #pragma message 'Reading release status from "' + ReleaseStatusFile + '"'
@@ -52,6 +54,10 @@
     #define ReleaseType "candidate"
     #define ReleaseTypeAbbr "rc"
     #define PosOfReleaseNumber 18
+  #elif Copy(Release, 1, 26) == "official release, revision"
+    #define ReleaseType "revision"
+    #define ReleaseTypeAbbr "rev"
+    #define PosOfReleaseNumber 27
   #else
     #pragma error 'Invalid release status: "' + Release + '"'
   #endif
@@ -68,7 +74,11 @@
   #pragma message 'Release number = "' + ReleaseNumber + '"'
   #define ReleaseNumber Int(ReleaseNumber)
   #if ReleaseNumber < 1
-    #error The release number is 0 or negative
+    #error The number in release status is 0 or negative
+  #endif
+  #if ReleaseType == "revision"
+    #define RevisionNumber ReleaseNumber
+    #undef  ReleaseNumber
   #endif
 #endif
 #pragma message 'Release abbreviation = "' + ReleaseAbbr + '"'
