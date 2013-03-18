@@ -66,10 +66,10 @@
 #pragma message 'Release type = "' + ReleaseType + '"'
 #ifdef ReleaseNumber
   #pragma message 'Release number = "' + ReleaseNumber + '"'
-#endif
-#define ReleaseNumber Int(ReleaseNumber)
-#if ReleaseNumber < 1
-  #error The release number is 0 or negative
+  #define ReleaseNumber Int(ReleaseNumber)
+  #if ReleaseNumber < 1
+    #error The release number is 0 or negative
+  #endif
 #endif
 #pragma message 'Release abbreviation = "' + ReleaseAbbr + '"'
 
