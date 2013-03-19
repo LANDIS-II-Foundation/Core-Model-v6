@@ -233,6 +233,78 @@ end;
 
 // ----------------------------------------------------------------------------
 
+// The installer for LANDIS-II 6.0 RC3 didn't create an INI file.  So check to
+// see if it's installed.  If so, create an INI file for it.
+
+procedure CheckFor60RC3();
+var
+  UninstallKey : String;
+  RootKey : Integer;
+  UninstallCommand : String;
+  IniFile : String;
+  IniDir : String;
+begin
+  // Check if uninstall key exists for 6.0 RC3 in registry.
+  UninstallKey := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\LANDIS-II 6.0 (rc3)_is1';
+  if RegKeyExists(HKLM, UninstallKey) then
+    begin
+    Log('RegKeyExists(HKLM, ' + UninstallKey + ')');
+    RootKey := HKLM;
+    end
+  else if RegKeyExists(HKCU, UninstallKey) then
+    begin
+    Log('RegKeyExists(HKCU, ' + UninstallKey + ')');
+    RootKey := HKCU;
+    end
+  else
+    begin
+    Log('LANDIS-II 6.0 (rc3) is not installed');
+    exit;
+    end;
+
+  // Get the uninstall command for the key.
+  if RegQueryStringValue(RootKey, UninstallKey, 'UninstallString', UninstallCommand) then
+    begin
+    Log('UninstallString for LANDIS-II 6.0 (rc3): ' + UninstallCommand);
+    UninstallCommand := RemoveQuotes(UninstallCommand);
+    end
+  else
+    begin
+    Log('RegQueryString(RootKey, ' + UninstallKey + ', "UninstallString") failed');
+    exit;
+    end;
+
+  // Create the .INI file for 6.0 RC3 with the uninstall command.
+  IniFile := PathToIniFile();
+  if FileExists(IniFile) then
+    begin
+    Log('INI file for 6.0 RC3 already exists: "' + IniFile + '"');
+    exit;
+    end;
+  IniDir := ExtractFilePath(IniFile);
+  if not DirExists(IniDir) then
+    begin
+    if ForceDirectories(IniDir) then
+      Log('Created directory "' + IniDir + '"')
+    else
+      begin
+      Log('Error: unable to create directory "' + IniDir + '"');
+      exit;
+      end;
+    end;
+  if not SaveStringToFile(IniFile, '[LANDIS-II]' + #13#10, False) then
+    begin
+    Log('Error: unable to create file "' + IniFile + '"');
+    exit;
+    end;
+  SetIniString('LANDIS-II', 'version',     MajorMinor,            IniFile);
+  SetIniString('LANDIS-II', 'release',     'release candidate 3', IniFile);
+  SetIniString('LANDIS-II', 'uninstaller', UninstallCommand,      IniFile);
+  Log('Created file "' + IniFile + '"');
+end;
+
+// ----------------------------------------------------------------------------
+
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
   IniFile : String;
@@ -241,6 +313,9 @@ var
 begin
   if CurPageId = wpSelectDir then
     begin
+    // Special handling for L-II 6.0 RC3; can be removed in L-II 6.1
+    CheckFor60RC3();
+
     IniFile := PathToIniFile();
     if FileExists(IniFile) then
       begin
