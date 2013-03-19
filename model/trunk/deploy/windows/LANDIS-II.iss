@@ -188,6 +188,19 @@ end;
 
 // ----------------------------------------------------------------------------
 
+// Returns the path to the temporary command script used when uninstalling a
+// release of the same LANDIS-II version.  See the procedure UninstallRelease
+// below.
+
+function PathToTemporaryScript(): String;
+var
+  ConfigDir : String;
+begin
+  Result := ExpandConstant('{app}') + '\bin\landis-' + MajorVersion + '.Y.cmd';
+end;
+
+// ----------------------------------------------------------------------------
+
 procedure UninstallRelease(CurrentRelease, IniFile: String);
 var
   Uninstaller : String;
@@ -211,8 +224,8 @@ begin
   // only release installed, then its uninstaller will not remove all the
   // LANDIS-II files including installed extensions.  In other words, keep the
   // installed extensions for the new release being installed.
-  TemporaryScript := ExpandConstant('{app}\bin\landis-' + MajorVersion + '.Y.cmd');
-  if SaveStringToFile(TemporaryScript, '(temporary file)' + #13#10, False) then
+  TemporaryScript := PathToTemporaryScript();
+  if SaveStringToFile(TemporaryScript, 'REM temporary file' + #13#10, False) then
     Log('UninstallRelease: created temporary script "' + TemporaryScript + '"')
   else
     begin
@@ -220,15 +233,20 @@ begin
     exit;
     end;
 
-  if Exec(Uninstaller, '/silent', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  if Exec(Uninstaller, '/silent /log', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
     Log('UninstallRelease: uninstaller "' + Uninstaller + '" ran OK; exit code = ' + IntToStr(ResultCode))
   else
     Log('UninstallRelease: uninstaller "' + Uninstaller + '" failed; error code = ' + IntToStr(ResultCode));
 
-  if DeleteFile(TemporaryScript) then
-    Log('UninstallRelease: deleted temporary script')
-  else
-    Log('UninstallRelease: error while trying to delete temporary script');
+  // The documentation for the Exec() function and ewWaitUntilTerminated says
+  // the function returns after the process is terminated.  However, it's
+  // returning while the uninstaller is still running (based on timestamps in
+  // the logs for this installer and the uninstaller).  Perhaps, the uninstaller
+  // spawns another process?  Anyhow, if we delete the temporary script here,
+  // the uninstaller actually doesn't see it, and therefore, removes all of the
+  // corresponding vX/ folder if there's only one minor version of vX installed.
+  // Workaround = delete the temporary script in the post-install step (see
+  // event function CurStepChanged below).
 end;
 
 // ----------------------------------------------------------------------------
@@ -442,6 +460,7 @@ procedure CurStepChanged(CurStep: TSetupStep);
 var
   IniFile : String;
   Uninstaller : String;
+  TemporaryScript : String;
 begin
   if CurStep = ssPostInstall then
     begin
@@ -450,6 +469,13 @@ begin
     SetIniString('LANDIS-II', 'version',     MajorMinor,   IniFile);
     SetIniString('LANDIS-II', 'release',     '{#Release}', IniFile);
     SetIniString('LANDIS-II', 'uninstaller', Uninstaller,  IniFile);
+
+    // Remove the temporary script (see UninstallRelease procedure above).
+    TemporaryScript := PathToTemporaryScript();
+    if DeleteFile(TemporaryScript) then
+      Log('Deleted temporary script "' + TemporaryScript + '"')
+    else
+      Log('Error trying to delete temporary script "' + TemporaryScript + '"')
     end;
 end;
 
