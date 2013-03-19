@@ -193,8 +193,6 @@ end;
 // below.
 
 function PathToTemporaryScript(): String;
-var
-  ConfigDir : String;
 begin
   Result := ExpandConstant('{app}') + '\bin\landis-' + MajorVersion + '.Y.cmd';
 end;
@@ -252,9 +250,10 @@ end;
 // ----------------------------------------------------------------------------
 
 // The installer for LANDIS-II 6.0 RC3 didn't create an INI file.  So check to
-// see if it's installed.  If so, create an INI file for it.
+// see if it's installed.  If so, create an INI file for it.  Returns True if
+// 6.0 RC3 is installed.
 
-procedure CheckFor60RC3();
+function CheckFor60RC3() : Boolean;
 var
   UninstallKey : String;
   RootKey : Integer;
@@ -277,8 +276,12 @@ begin
   else
     begin
     Log('LANDIS-II 6.0 (rc3) is not installed');
+    Result := False;
     exit;
     end;
+
+  // 6.0 RC3 is installed.
+  Result := True;
 
   // Get the uninstall command for the key.
   if RegQueryStringValue(RootKey, UninstallKey, 'UninstallString', UninstallCommand) then
@@ -323,8 +326,30 @@ end;
 
 // ----------------------------------------------------------------------------
 
+// 6.0 RC3 installed its GDAL native files under M.m.R/, but with 6.0 official
+// GDAL now installed under M.m/.  So rename its GDAL folder.procedure CheckFor60RC3();
+
+procedure RenameGDAL191Dir();
+var
+  GDAL191Dir : String;
+  GDAL19Dir : String;
+begin
+  GDAL191Dir := ExpandConstant('{app}') + '\GDAL\1.9.1';
+  GDAL19Dir  := ExpandConstant('{app}') + '\GDAL\1.9';
+  if DirExists(GDAL191Dir) and not DirExists(GDAL19Dir) then
+    begin
+    if RenameFile(GDAL191Dir, GDAL19Dir) then
+      Log('Renamed directory "' + GDAL191Dir + '" as "1.9"')
+    else
+      Log('Error while trying to rename directory "' + GDAL191Dir + '" as "1.9"');
+    end;
+end;
+
+// ----------------------------------------------------------------------------
+
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
+  Is60RC3Installed : Boolean;
   IniFile : String;
   CurrentRelease : String;
   ReplaceResponse : Integer;
@@ -332,7 +357,7 @@ begin
   if CurPageId = wpSelectDir then
     begin
     // Special handling for L-II 6.0 RC3; can be removed in L-II 6.1
-    CheckFor60RC3();
+    Is60RC3Installed := CheckFor60RC3();
 
     IniFile := PathToIniFile();
     if FileExists(IniFile) then
@@ -348,6 +373,8 @@ begin
         ReplaceResponse := MsgBox('LANDIS-II ' + MajorMinor + ' (' + CurrentRelease + ') is already installed.  Replace it?', mbConfirmation, MB_OKCANCEL or MB_DEFBUTTON2);
         if ReplaceResponse = IDOK then
           begin
+          if Is60RC3Installed then
+            RenameGDAL191Dir();
           UninstallRelease(CurrentRelease, IniFile);
           Result := True;
           end
