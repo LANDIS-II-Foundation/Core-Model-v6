@@ -14,15 +14,20 @@ namespace Widgets
 {
     public partial class Launcher : Form
     {
+        // That's our custom to redirect console output to form
+        TextWriter _writer = null;
+        
         public Launcher()
         {
             InitializeComponent();
 
-            // Will this fix my GDAL problem ?
-            string path = Environment.GetEnvironmentVariable("PATH");
-            string newPath = "C:\\Program Files\\LANDIS-II\\GDAL\\1.9;" + path;
-            Environment.SetEnvironmentVariable("PATH", newPath);
+            // Prepend system path with LANDIS GDAL folder so app can find the libraries
+            string path = Environment.GetEnvironmentVariable(Constants.ENV_PATH);
+            string newPath = Constants.GDAL_FOLDER + ";" + path;
+            Environment.SetEnvironmentVariable(Constants.ENV_PATH, newPath);
 
+            // Instantiate text writer
+            _writer = new TextBoxStreamWriter(TxtBoxStatus);
         }
 
         private void BtnClose_Click(object sender, EventArgs e)
@@ -30,65 +35,69 @@ namespace Widgets
             this.Close();
         }
 
-        protected static string GetAppSetting(string settingName)
-        {
-            string setting = System.Configuration.ConfigurationManager.AppSettings[settingName];
-            if (setting == null)
-                throw new Exception("The application setting \"" + settingName + "\" is not set");
-            return setting.Trim(null);
-        }
-
         private void BtnRun_Click(object sender, EventArgs e)
         {
+            WidgetInterface wi = new WidgetInterface();
+            // Set text writer in WidgetInterface
+            wi.TextWriter = _writer;
+
             string workingDirectory = Path.GetDirectoryName(txtFilePath.Text);
             try
             {
+                //Reset the textbox color to black
+                TxtBoxStatus.ForeColor = Color.Black;
+                TxtBoxStatus.Text = "";
+                
                 // The log4net section in the application's configuration file
                 // requires the environment variable WORKING_DIR be set to the
                 // current working directory.
                 // This will be the folder containing the scenario .txt file
-                Environment.SetEnvironmentVariable("WORKING_DIR", workingDirectory);
+                Environment.SetEnvironmentVariable(Constants.ENV_WORKING_DIR, workingDirectory);
                 log4net.Config.XmlConfigurator.Configure();
 
-                WidgetInterface wi = new WidgetInterface();
+                // Set the working directory for the Model
+                Directory.SetCurrentDirectory(workingDirectory);
 
-                //
-                // Create a new TextWriter in the resource acquisition statement.
-                // @ToDo: Check to make sure user has write access to workingDirectory
-                using (TextWriter writer = File.CreateText(workingDirectory + "\\mLog.txt"))
-                {
-                    wi.TextWriter = writer;
-                    string version = GetAppSetting("version");
-                    if (version == "")
-                        throw new Exception("The application setting \"version\" is empty or blank");
-                    string release = GetAppSetting("release");
-                    if (release != "")
-                        release = string.Format(" ({0})", release);
-                    wi.WriteLine("LANDIS-II {0}{1}", version, release);
+                // Get the installed LANDIS version from the console
+                //string version = Landis.App.GetAppSetting("version");
+                string version = LauncherUtil.GetAssemblySetting("version");
+                if (version == "")
+                    throw new Exception("The LANDIS application setting \"version\" is empty or blank");
+                string release = LauncherUtil.GetAssemblySetting("release");
+                if (release != "")
+                    release = string.Format(" ({0})", release);
+                wi.WriteLine("LANDIS-II {0}{1}", version, release);
 
+                // Get the installed Widgets version from the config file
 
-                    Landis.Core.IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate();
-                    RasterFactory rasterFactory = new RasterFactory();
-                    Landis.Landscapes.LandscapeFactory landscapeFactory = new Landis.Landscapes.LandscapeFactory();
-                    Landis.Model model = new Landis.Model(extensions, rasterFactory, landscapeFactory);
-                    model.Run(txtFilePath.Text, wi);
-                }
+                //@ToDo: Is it okay to hard-code this path? If the widget runs from the LANDIS-II bin, shouldn't be needed
+                //Landis.Core.IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate();
+                string extFolder = Constants.EXTENSIONS_FOLDER + Constants.EXTENSIONS_XML;
+                Landis.Core.IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate(extFolder);
+                RasterFactory rasterFactory = new RasterFactory();
+                Landis.Landscapes.LandscapeFactory landscapeFactory = new Landis.Landscapes.LandscapeFactory();
+                Landis.Model model = new Landis.Model(extensions, rasterFactory, landscapeFactory);
+                model.Run(txtFilePath.Text, wi);
+                MessageBox.Show("The end!");
             }
             catch (Exception exc)
             {
-                WidgetInterface wi = new WidgetInterface();
-                using (TextWriter writer = File.CreateText(workingDirectory + "\\errorLog.txt"))
+                //Change the text color to red to alert the user
+                TxtBoxStatus.ForeColor = Color.Red;
+                //Print a warning message
+                string strError = "\r\nA program error occurred.\r\nThe error log is available at " + workingDirectory + Constants.ERROR_LOG;
+                wi.WriteLine(strError);
+                using (TextWriter writer = File.CreateText(workingDirectory + Constants.ERROR_LOG))
                 {
-                    wi.TextWriter = writer;
-                    wi.WriteLine("Internal error occurred within the program:");
-                    wi.WriteLine("  {0}", exc.Message);
+                    writer.WriteLine("Internal error occurred within the program:");
+                    writer.WriteLine("  {0}", exc.Message);
                     if (exc.InnerException != null)
                     {
-                        wi.WriteLine("  {0}", exc.InnerException.Message);
+                        writer.WriteLine("  {0}", exc.InnerException.Message);
                     }
-                    wi.WriteLine();
-                    wi.WriteLine("Stack trace:");
-                    wi.WriteLine(exc.StackTrace);
+                    writer.WriteLine();
+                    writer.WriteLine("Stack trace:");
+                    writer.WriteLine(exc.StackTrace);
                 }
             }
 

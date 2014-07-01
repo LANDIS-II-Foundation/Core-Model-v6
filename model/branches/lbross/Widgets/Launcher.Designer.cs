@@ -40,7 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lblWww = new System.Windows.Forms.LinkLabel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtBoxStatus = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -131,7 +131,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(7, 68);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 16);
+            this.label2.Size = new System.Drawing.Size(97, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "Scenario file";
             // 
@@ -158,14 +158,15 @@
             this.lblWww.Text = "http://sites.google.com/site/landismodel/";
             this.lblWww.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblWww_LinkClicked);
             // 
-            // textBox1
+            // TxtBoxStatus
             // 
-            this.textBox1.Location = new System.Drawing.Point(10, 109);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(421, 249);
-            this.textBox1.TabIndex = 18;
-            this.textBox1.Text = "Ready ...";
+            this.TxtBoxStatus.Location = new System.Drawing.Point(10, 109);
+            this.TxtBoxStatus.Multiline = true;
+            this.TxtBoxStatus.Name = "TxtBoxStatus";
+            this.TxtBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TxtBoxStatus.Size = new System.Drawing.Size(421, 249);
+            this.TxtBoxStatus.TabIndex = 18;
+            this.TxtBoxStatus.Text = "Ready ...";
             // 
             // label4
             // 
@@ -173,7 +174,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(7, 90);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(102, 16);
+            this.label4.Size = new System.Drawing.Size(105, 16);
             this.label4.TabIndex = 19;
             this.label4.Text = "Current status";
             // 
@@ -193,7 +194,7 @@
             this.ClientSize = new System.Drawing.Size(737, 395);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TxtBoxStatus);
             this.Controls.Add(this.lblWww);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -226,7 +227,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.LinkLabel lblWww;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TxtBoxStatus;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
