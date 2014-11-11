@@ -1,0 +1,22 @@
+LandisData  Scenario
+
+
+Duration  0
+
+Species   species.txt
+
+Ecoregions      ecoregions.txt
+EcoregionsMap   ecoregions.gis
+
+CellLength      30
+
+InitialCommunities      not-used
+InitialCommunitiesMap   not-used
+
+
+>> Plug-in                  Initialization File
+>> -------                  -------------------
+
+   "Null Succession"        n/a
+
+   "Null Output"            n/a

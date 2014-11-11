@@ -1,0 +1,12 @@
+>> Example of bad input file for ecoregions
+
+LandisData  Ecoregions
+
+>>         Map
+>> Active  Code    Name   Description
+>> ------  ------  -----  -----------
+       -        1  water   water
+      yes      99  SE-pb   "SE pine barrens"
+       -        3  nf/u    non-forest/urban
+       
+       no  65,536 << Must be = or < 65,535 (unsigned 16-bit integer)

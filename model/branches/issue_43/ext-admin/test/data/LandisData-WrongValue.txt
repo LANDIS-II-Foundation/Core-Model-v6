@@ -1,0 +1,3 @@
+>> Example of bad input file
+
+LandisData  Scenario  << ERROR HERE: Wrong value; should be "Extension"

@@ -1,0 +1,8 @@
+>> Example of good input file for species
+
+LandisData  Species
+
+>>                      Sexual    Shade  Fire  Seed Disperal Dist  Vegetative   Sprout Age  Post-Fire
+>> Name      Longevity  Maturity  Tol.   Tol.  Effective  Maximum  Reprod Prob  Min   Max   Regen
+>> ----      ---------  --------  -----  ----  ---------  -------  -----------  ----------  ---------
+>> No species present

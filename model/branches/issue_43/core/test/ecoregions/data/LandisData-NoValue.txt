@@ -1,0 +1,3 @@
+>> Example of bad input file for ecoregions
+
+LandisData    << Missing value after name

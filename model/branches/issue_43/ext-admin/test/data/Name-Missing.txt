@@ -1,0 +1,5 @@
+>> Example of bad input file
+
+LandisData   Extension
+
+          << ERROR EOF: Missing "Name" parameter

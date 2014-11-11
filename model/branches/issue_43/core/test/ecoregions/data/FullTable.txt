@@ -1,0 +1,13 @@
+LandisData  Ecoregions
+
+>>         Map
+>> Active  Code  Name   Description
+>> ------  ----  -----  -----------
+       -     1   water   water
+       -     2   wetld   "wetland"
+       -     3   nf/u    non-forest/urban
+       -     4   agri    agriculture
+
+      yes   99   SE-pb   "SE pine barrens"
+      yes   26   eco26   ecoregion_#26
+      YES  111    #111   ""               << Empty description
