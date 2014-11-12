@@ -30,6 +30,7 @@
 
 ; Make sure that the Release configuration has been staged
 #define StagedCorePath ReleaseStagingDir + "\v" + Str(Major) + "\bin\" + MajorMinor + "\" + CoreName
+#pragma message "StagedCorePath = " + StagedCorePath
 #if ! FileExists(StagedCorePath)
   #error The Release configuration of the model has not been staged
 #endif
@@ -147,6 +148,7 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Filename: landis-v{#Major}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
 
 [UninstallRun]
+Filename: uninstall-extensions.cmd; Parameters: LANDIS-II {#MajorMinor} ; WorkingDir: {app}\bin;
 Filename: uninstall-landis.cmd; Parameters: {#MajorMinor} ; WorkingDir: {app}\bin; Flags: runhidden
 
 ;-----------------------------------------------------------------------------
