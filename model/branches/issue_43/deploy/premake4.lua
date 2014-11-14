@@ -110,6 +110,7 @@ function installConfig(config)
 
   install { file="bin/uninstall-landis.cmd",  from="deploy/bin/" }
   install { file="bin/uninstall-landis.sh",   from="deploy/bin/" }
+  install { file="bin/uninstall-extensions.cmd",   from="deploy/bin/" }
 
   -- {InstallDir}/vX/bin/
 
