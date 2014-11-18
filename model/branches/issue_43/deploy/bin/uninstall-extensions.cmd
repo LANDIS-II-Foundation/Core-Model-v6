@@ -69,6 +69,8 @@ ECHO Example:  GETUNINSTALL.BAT "LANDIS-II" "6.0"
 ECHO.
 ECHO Written by Rob van der Woude
 ECHO http://www.robvanderwoude.com
+ECHO Adapted from GetUninstall.bat http://www.robvanderwoude.com/sourcecode.php?src=getuninstall_w7
+ECHO Permission received from Rob van der Woude on 18=NOV-2014 to use script in LANDIS-II
 
 :: Set return code for Windows NT 4 or later
 IF "%OS%"=="Windows_NT" COLOR 00
