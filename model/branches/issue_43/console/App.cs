@@ -55,6 +55,17 @@ namespace Landis
                     return 1;
                 }
 
+                //Warn if user's computer is not using United States number format
+                string decimal_separator = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                string period = ".";
+                if (decimal_separator != period)
+                {
+                    ci.WriteLine("Warning: The decimal separator of your system is '" + decimal_separator + "'. Most LANDIS-II");
+                    ci.WriteLine("Warning: scenario files use '" + period + "' for the decimal separator. The scenario");
+                    ci.WriteLine("Warning: files may not run or your results could be inaccurate.");
+                    ci.WriteLine();
+                }
+
                 IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate();
                 RasterFactory rasterFactory = new RasterFactory();
                 LandscapeFactory landscapeFactory = new LandscapeFactory();
