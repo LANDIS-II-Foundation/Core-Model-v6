@@ -62,3 +62,10 @@ Extension Installers with Inno Setup
 
 After you set the variable via the control panel, you'll need to restart
 your Inno Setup IDE (e.g., Inno Setup Studio).
+
+
+Packaging Libraries
+-------------------
+
+The SDK includes the NuGet command-line tool (version 2.8) for creating NuGet
+packages for libraries.  It's located in the tools/ subfolder.
