@@ -4,10 +4,8 @@ setlocal EnableDelayedExpansion
 rem Stage an assembly (LANDIS-II extension or library) in a directory where
 rem the LANDIS-II model can find it.
 
-set STAGING_DIR=C:\Program Files\LANDIS-II\v6\bin\build
-set SCRIPT_DIR=%~dp0
-rem Strip trailing path separator
-set SCRIPT_DIR=%SCRIPT_DIR:~0,-1%
+call %~dp0\initialize-env-vars.cmd
+
 set ARGUMENTS_FILE=%SCRIPT_DIR%\%~n0_args.txt
 set LOG=%SCRIPT_DIR%\log.txt
 call :log Arguments: %*

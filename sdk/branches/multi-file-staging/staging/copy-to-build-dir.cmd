@@ -4,9 +4,7 @@ setlocal EnableDelayedExpansion
 rem  Copy files listed in a text file (LANDIS-II extension and libraries) into
 rem  a directory where the LANDIS-II model can find them.
 
-set BUILD_DIR=C:\Program Files\LANDIS-II\v6\bin\build
-set SCRIPT_DIR=%~dp0
-set SCRIPT_DIR=%SCRIPT_DIR:~,-1%
+call %~dp0\initialize-env-vars.cmd
 
 call :processArgs %*
 if errorlevel 1 exit /b %ERRORLEVEL%
@@ -29,14 +27,13 @@ rem  If we have write access to the build directory, then just run the staging
 rem  script directly.  If no write access, then run the scheduler task that
 rem  runs the script.
 set STAGING_SCRIPT=%SCRIPT_DIR%\stage-files.cmd
-set STAGING_OUTPUT=%STAGING_SCRIPT:.cmd=_out.txt%
 if "%WRITE_ACCESS%" == "yes" (
     call "%STAGING_SCRIPT%"
   ) else (
     call :runTask
   )
 )
-type "%STAGING_OUTPUT%
+if not errorlevel 1 type "%STAGING_OUTPUT%
 goto :eof
 
 rem  ------------------------------------------------------------------------
