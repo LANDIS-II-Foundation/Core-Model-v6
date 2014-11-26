@@ -1,41 +1,82 @@
 @if not "%BATCH_ECHO%" == "on" echo off
 setlocal EnableDelayedExpansion
 
-rem Stage an assembly (LANDIS-II extension or library) in a directory where
-rem the LANDIS-II model can find it.
+rem  Copy files listed in a text file (LANDIS-II extension and libraries) into
+rem  a directory where the LANDIS-II model can find them.
 
 call %~dp0\initialize-env-vars.cmd
 
-set ARGUMENTS_FILE=%SCRIPT_DIR%\%~n0_args.txt
 set LOG=%SCRIPT_DIR%\log.txt
-call :log Arguments: %*
 call :log Working dir: %CD%
 
-if "%~1" == "" (
-  rem The script was started by a scheduled task with elevated privileges.
-  rem The script's arguments were written to a file before the task was run
-  rem (see below).
-  for /f "tokens=* delims=| usebackq" %%A in ("%ARGUMENTS_FILE%") do (
-    call :log Arguments read in: %%A
-    call :stageAssembly %%A
-  )
-) else (
-  set ASSEMBLY_NAME=%~nx1
-  echo Staging !ASSEMBLY_NAME! to "%STAGING_DIR%\"...
-    call :stageAssembly %*
+if not exist "%STAGING_LIST%" (
+  call :log Missing file: %STAGING_LIST%
+  exit /b 1
 )
+
+rem  Create temporary file where staging output will be written
+set STAGING_OUTPUT_TEMP=%STAGING_OUTPUT:.txt=_tmp.txt%
+type nul > "%STAGING_OUTPUT_TEMP%"
+if exist "%STAGING_OUTPUT%" del "%STAGING_OUTPUT%"
+
+rem  Initially, overwriting of files in the build directory is enabled.
+set OVERWRITE=enabled
+
+for /f "tokens=* delims=| usebackq" %%A in ("%STAGING_LIST%") do (
+  call :log Line read from list: %%A
+  call :stageFile %%A
+)
+
+rem  Move the temporary output file into place, so if this script is running
+rem  as a task, then this renaming will signal that the task has finished its
+rem  work.
+move "%STAGING_OUTPUT_TEMP%" "%STAGING_OUTPUT%"
+
 goto :eof
 
 rem  ------------------------------------------------------------------------
-rem  Stage the assembly by copying it to the staging directory.
+rem  Stage a file by copying it to the build directory.
 
-:stageAssembly
-xcopy /q /y /d "%~1" "%STAGING_DIR%"
+:stageFile
+set SOURCE_PATH=%~1
+if "%SOURCE_PATH:~0,2%" == "--" (
+  call :processOption %1
+  exit /b
+)
+if not exist "%SOURCE_PATH%" (
+  echo Missing: %SOURCE_PATH% >> "%STAGING_OUTPUT_TEMP%"
+  exit /b
+)
+set TARGET_PATH=%BUILD_DIR%\%~nx1
+if "%OVERWRITE%" == "disabled" (
+  if exist "%TARGET_PATH%" (
+    echo Skipped: %SOURCE_PATH% >> "%STAGING_OUTPUT_TEMP%"
+    exit /b
+  )
+)
+if exist "%TARGET_PATH%" (
+  set ACTION=Updated
+) else (
+  set ACTION=Created
+)
+xcopy /q /y /d "%SOURCE_PATH%" "%TARGET_PATH%"
 if errorlevel 1 call :log Errorlevel = %ERRORLEVEL% after xcopy with "%~1"
+echo %ACTION%: %TARGET_PATH% >> "%STAGING_OUTPUT_TEMP%"
+exit /b
+
+rem  ------------------------------------------------------------------------
+rem  Process a command line option.
+
+:processOption
+if "%~1" == "--no-overwrite" (
+  set OVERWRITE=disabled
+) else (
+  call :log Unknown option: %1
+)
 exit /b
 
 rem  ------------------------------------------------------------------------
 
 :log
-echo %DATE% %TIME% -- %* >> "%LOG%"
+echo %DATE% %TIME% -- (%~n0) %* >> "%LOG%"
 exit /b
