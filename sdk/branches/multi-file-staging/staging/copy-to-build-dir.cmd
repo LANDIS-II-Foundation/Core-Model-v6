@@ -16,7 +16,7 @@ echo Staging files to "%BUILD_DIR%\"...
 rem  Read the list of file paths and write them as full paths into another
 rem  file that the supporting stage-files.cmd script will read.
 set LIST_WITH_FULL_PATHS=%SCRIPT_DIR%\file_list.txt
-if exist "%LIST_WITH_FULL_PATHS%" del "%LIST_WITH_FULL_PATHS%"
+type nul > "%LIST_WITH_FULL_PATHS%"
 for /f "tokens=* delims=| usebackq" %%A in ("%FILE_WITH_LIST%") do (
   call :writeFullPath "%%A" "%LIST_WITH_FULL_PATHS%"
 )
