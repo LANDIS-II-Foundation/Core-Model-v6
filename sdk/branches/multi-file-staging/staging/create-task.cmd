@@ -15,7 +15,7 @@ rem Strip trailing path separator
 set SCRIPT_DIR=%SCRIPT_DIR:~0,-1%
 set SCRIPT_NAME=%~n0
 
-set TASK_NAME=LANDIS-II\StageAssembly
+set TASK_NAME=LANDIS-II\StageFiles
 schtasks /query /tn %TASK_NAME% 1>"%SCRIPT_DIR%\%SCRIPT_NAME%_log.txt" 2>&1
 if %ERRORLEVEL% == 0 (
     echo ERROR: The task "%TASK_NAME%" has already been created.
@@ -25,7 +25,7 @@ if %ERRORLEVEL% == 0 (
 )
 
 set TASK_TEMPLATE=%SCRIPT_DIR%\task-template.xml
-set TASK_FILENAME=stage-assembly.xml
+set TASK_FILENAME=stage-files.xml
 set TASK_XML=%SCRIPT_DIR%\%TASK_FILENAME%
 echo Creating task definition in "%SCRIPT_DIR%\" ...
 copy /y "%TASK_TEMPLATE%" "%TASK_XML%"
