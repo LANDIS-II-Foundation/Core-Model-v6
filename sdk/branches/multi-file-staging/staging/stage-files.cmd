@@ -44,7 +44,7 @@ if "%SOURCE_PATH:~0,2%" == "--" (
   exit /b
 )
 if not exist "%SOURCE_PATH%" (
-  echo Missing: %SOURCE_PATH% >> "%STAGING_OUTPUT_TEMP%"
+  echo MISSING: %SOURCE_PATH% >> "%STAGING_OUTPUT_TEMP%"
   exit /b
 )
 set TARGET_PATH=%BUILD_DIR%\%~nx1
