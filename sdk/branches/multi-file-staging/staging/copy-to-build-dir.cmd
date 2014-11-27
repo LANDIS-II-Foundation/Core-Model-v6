@@ -33,7 +33,7 @@ if "%WRITE_ACCESS%" == "yes" (
     call :runTask
   )
 )
-if not errorlevel 1 type "%STAGING_OUTPUT%
+if not errorlevel 1 type "%STAGING_OUTPUT%"
 goto :eof
 
 rem  ------------------------------------------------------------------------
@@ -51,7 +51,7 @@ rem    PROJECT_DIR : full path to the directory where the FILE_WITH_LIST is
 rem    OUT_DIR_ABS : full path to current configuration output directory
 
 :processArgs
-set FILE_WITH_LIST=%1
+set FILE_WITH_LIST=%~1
 if "%FILE_WITH_LIST%" == "" (
   call :printError "Missing path to the file with the list of files to copy"
   exit /b 1
