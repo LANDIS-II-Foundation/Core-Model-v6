@@ -171,7 +171,6 @@ rem  privileges.
 
 :runTask
 echo Using a task with elevated privileges to stage the files...
-set TASK_NAME=LANDIS-II\StageFiles
 schtasks /query /tn %TASK_NAME% 1>nul 2>&1
 if errorlevel 1 (
     echo ERROR: The task "%TASK_NAME%" has not been created.
@@ -181,7 +180,7 @@ if errorlevel 1 (
 )
 
 if exist "%STAGING_OUTPUT%" del "%STAGING_OUTPUT%"
-schtasks /run /tn LANDIS-II\StageFiles
+schtasks /run /tn %TASK_NAME%
 call :waitUntilFileExists "%STAGING_OUTPUT%"
 
 exit /b

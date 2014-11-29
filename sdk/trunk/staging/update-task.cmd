@@ -11,12 +11,9 @@ if not defined LANDIS_SDK (
    goto error
 )
 
-set SCRIPT_DIR=%~dp0
-rem Strip trailing path separator
-set SCRIPT_DIR=%SCRIPT_DIR:~0,-1%
+call %~dp0\initialize-env-vars.cmd
 set SCRIPT_NAME=%~n0
 
-set TASK_NAME=LANDIS-II\StageFiles
 schtasks /query /tn %TASK_NAME% 1>"%SCRIPT_DIR%\%SCRIPT_NAME%_log.txt" 2>&1
 if %ERRORLEVEL% == 0 (
     echo ERROR: The task "%TASK_NAME%" has already been created.
