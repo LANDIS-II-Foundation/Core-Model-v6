@@ -37,10 +37,28 @@ staging\create-task.cmd script once.  You must run it as an administrator
 scheduled task with elevated privileges, which can copy files into the
 C:\Program Files\ protected folder. 
 
-To use the staging scripts in a project, edit its Post build event (in Visual
+To use the staging scripts in a project, create a text file called
+"staging-list.txt" with the following contents:
+
+  {OutDir}\NAME.OF.PROJECT.ASSEMBLY.dll
+
+For example, if the project's assembly name "Landis.Library.Example.dll", then
+the staging-list.txt file would contain this line:
+
+  {OutDir}\Landis.Library.Example.dll
+
+This file can list multiple files to be staged.  Continuing the previous
+example, the assembly's symbol and documentation files can also be specified
+if the project's configured to generate them:
+
+  {OutDir}\Landis.Library.Example.dll
+  {OutDir}\Landis.Library.Example.pdb
+  {OutDir}\Landis.Library.Example.xml
+
+After creating this text file, edit the project's Post build event (in Visual
 Studio: Project --> Properties --> Build Events), and enter this command line:
 
-  cmd /c ""%LANDIS_SDK%\staging\stage-assembly.cmd" "$(TargetPath)""  
+  "$(LANDIS_SDK)\staging\copy-to-build-dir.cmd" "$(ProjectDir)staging-list.txt" $(OutDir)  
 
 This event will invokes the appropriate script to copy the project's assembly
 into a specific folder designated for developer use:
