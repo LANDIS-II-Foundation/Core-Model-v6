@@ -1,9 +1,10 @@
 @if not "%BATCH_ECHO%" == "on" echo off
 
-rem Create a scheduled task that runs the stage-command script with highest
-rem privileges.  The task is run on demand when UAC is enabled, in order to
-rem access the protected "C:\Program Files\" folder.  This script must be
-rem "Run as administrator".
+rem Update the scheduled task that runs the stage-command script.  This script
+rem is needed when the LANDIS_SDK environment variable has changed since the
+rem task was created.  For example, a developer installed a newer release of
+rem the SDK in a different directory, and updated the LANDIS_SDK variable to
+rem point to the new directory.  This script must be "Run as administrator".
 
 if not defined LANDIS_SDK (
    echo ERROR: The LANDIS_SDK environment variable must be set first
