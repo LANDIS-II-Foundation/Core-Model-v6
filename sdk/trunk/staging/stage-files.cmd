@@ -19,6 +19,7 @@ rem  If the script directory and the LANDIS_SDK environment variable don't
 rem  match, then the task was created with a different copy of the SDK.
 if not "%SCRIPT_DIR%" == "%LANDIS_SDK%\staging" (
   call :recordError The task was created with a different LANDIS_SDK: %SCRIPT_DIR:~,-8%
+  call :recordError Run the update-task.cmd script in the current LANDIS_SDK: %LANDIS_SDK%
   rem Write the output file to the SDK's staging directory because that's
   rem where its copy-to-build-dir.cmd script will be looking for it.
   copy /y "%STAGING_OUTPUT_TEMP%" "%LANDIS_SDK%\staging\%STAGING_OUTPUT_NAME%"
