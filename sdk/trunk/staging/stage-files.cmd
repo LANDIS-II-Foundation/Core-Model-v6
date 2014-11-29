@@ -13,6 +13,17 @@ rem  Create temporary file where staging output will be written
 set STAGING_OUTPUT_TEMP=%STAGING_OUTPUT:.txt=_tmp.txt%
 type nul > "%STAGING_OUTPUT_TEMP%"
 if exist "%STAGING_OUTPUT%" del "%STAGING_OUTPUT%"
+for %%A in ("%STAGING_OUTPUT%") do set STAGING_OUTPUT_NAME=%%~nxA
+
+rem  If the script directory and the LANDIS_SDK environment variable don't
+rem  match, then the task was created with a different copy of the SDK.
+if not "%SCRIPT_DIR%" == "%LANDIS_SDK%\staging" (
+  call :recordError The task was created with a different LANDIS_SDK: %SCRIPT_DIR:~,-8%
+  rem Write the output file to the SDK's staging directory because that's
+  rem where its copy-to-build-dir.cmd script will be looking for it.
+  copy /y "%STAGING_OUTPUT_TEMP%" "%LANDIS_SDK%\staging\%STAGING_OUTPUT_NAME%"
+  goto exitScript
+)
 
 if not exist "%STAGING_LIST%" (
   call :recordError Missing file: %STAGING_LIST%
