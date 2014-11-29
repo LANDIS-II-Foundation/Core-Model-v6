@@ -15,28 +15,23 @@ call %~dp0\initialize-env-vars.cmd
 set SCRIPT_NAME=%~n0
 
 schtasks /query /tn %TASK_NAME% 1>"%SCRIPT_DIR%\%SCRIPT_NAME%_log.txt" 2>&1
-if %ERRORLEVEL% == 0 (
-    echo ERROR: The task "%TASK_NAME%" has already been created.
-	echo If you want to replace it, first delete it in the Task Scheduler,
-	echo and then run this script again.
+if errorlevel 1 (
+    echo ERROR: The task "%TASK_NAME%" has not been created.
+	echo Please run the create-task.cmd script.
 	goto error
 )
 
-set TASK_TEMPLATE=%SCRIPT_DIR%\task-template.xml
-set TASK_FILENAME=stage-files.xml
-set TASK_XML=%SCRIPT_DIR%\%TASK_FILENAME%
-echo Creating task definition in "%SCRIPT_DIR%\" ...
-copy /y "%TASK_TEMPLATE%" "%TASK_XML%"
-call :updateTaskXML "{USER_ID}" "%USERDOMAIN%\%USERNAME%"
-call :updateTaskXML "{LANDIS_SDK}" "%LANDIS_SDK%"
-echo Task definition ready in "%TASK_FILENAME%"
+set TASK_PROGRAM=%LANDIS_SDK%\staging\stage-files.vbs
 
-echo Creating task with Task Scheduler...
-schtasks /create /tn %TASK_NAME% /xml "%TASK_XML%"
+echo Updating the "%TASK_NAME%" task in Task Scheduler...
+schtasks /change /tn %TASK_NAME% /disable
 if errorlevel 1 (
   echo This script must be "Run as administrator".
   goto error
 )
+schtasks /change /tn %TASK_NAME% /tr "%TASK_PROGRAM%" /enable
+echo The task now runs this program: %TASK_PROGRAM%
+
 call :pause
 exit /b 0
 
@@ -53,17 +48,6 @@ rem  Explorer.
 :pause
 call :runByDoubleClick %CMDCMDLINE%
 if "%RUN_BY_DOUBLE_CLICK%" == "y" pause
-exit /b
-
-rem  ------------------------------------------------------------------------
-rem  Replace a placeholder string in the task's XML file with actual value.
-rem
-rem  Parameters: %1 = placeholder string
-rem              %2 = text to replace placeholder with
-
-:updateTaskXML
-"%SCRIPT_DIR%\Find_And_Replace" "%TASK_XML%" "%~1" "%~2"
-echo Updated definition: "%~1" --^>^ "%~2"
 exit /b
 
 rem  ------------------------------------------------------------------------
