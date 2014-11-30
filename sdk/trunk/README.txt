@@ -75,6 +75,21 @@ The LANDIS-II model is configured to look for extensions and libraries in both
 folders (it looks in build\ first, then in extensions\).
 
 
+Relocating or Updating the SDK
+------------------------------
+
+If you relocate the SDK to a different folder, or want to use a newer version
+that you've installed in a different folder, then the LANDIS_SDK environment
+variable will need to be modified to have the path to this new folder.
+
+After the variable is updated on a Windows system, the scheduled task that's
+associated with the staging scripts needs to also be updated.  This is done
+with the staging\update-task.cmd script in the new SDK location.  This script
+must be "Run as administrator".  Because it's modifying a task with elevated
+privileges, it will prompt you for your password to confirm your access to
+change the task.
+
+
 Extension Installers with Inno Setup
 ------------------------------------
 
