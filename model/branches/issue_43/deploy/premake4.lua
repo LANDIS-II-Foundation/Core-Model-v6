@@ -146,7 +146,7 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
   -- Workaround so that extensions requiring v6.0 will install on v6.1 26-NOV-2014  
-  install { file="v{X}/bin/{X}.0/6-0-placeholder.txt",            from="deploy/", replace={ ["{X}"]=majorVersion,
+  install { file="v{X}/bin/{X}.0/README-6-0.txt",            from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
 
   -- {InstallDir}/GDAL/#.#/
