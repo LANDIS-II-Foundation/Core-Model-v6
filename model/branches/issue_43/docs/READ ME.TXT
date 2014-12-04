@@ -4,4 +4,4 @@ These example files are identical to those used to test extension results.  Ther
 user can download and quickly run new extensions without altering other extension examples.
 
 To see which examples are installed:
-Start -> All Programs -> LANDIS-II -> 6.0 -> Sample Input Files
+Start -> All Programs -> LANDIS-II -> 6.1 -> Sample Input Files
