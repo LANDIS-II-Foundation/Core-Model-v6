@@ -36,7 +36,7 @@ set OVERWRITE=enabled
 
 for /f "tokens=* delims=| usebackq" %%A in ("%STAGING_LIST%") do (
   call :log Line read from list: %%A
-  call :stageFile %%A
+  call :stageFile "%%A"
 )
 
 :exitScript
@@ -52,11 +52,14 @@ rem  ------------------------------------------------------------------------
 rem  Stage a file by copying it to the build directory.
 
 :stageFile
-set SOURCE_PATH=%~1
-if "%SOURCE_PATH:~0,2%" == "--" (
-  call :processOption %1
+set ARG1=%~1
+if "%ARG1:~0,2%" == "--" (
+  call :processOption %~1
   exit /b
 )
+rem Using %~dnx1 below rather than just %~1 ensures the trailing space added
+rem to value of the for loop variable is removed.
+set SOURCE_PATH=%~dnpx1
 if not exist "%SOURCE_PATH%" (
   echo MISSING: %SOURCE_PATH% >> "%STAGING_OUTPUT_TEMP%"
   exit /b
