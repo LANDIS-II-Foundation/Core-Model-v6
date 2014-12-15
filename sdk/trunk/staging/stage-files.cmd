@@ -45,7 +45,7 @@ rem  as a task, then this renaming will signal that the task has finished its
 rem  work.
 move "%STAGING_OUTPUT_TEMP%" "%STAGING_OUTPUT%"
 
-if "%EXIT_CODE%" == "" set EXIT_CODE 0
+if "%EXIT_CODE%" == "" set EXIT_CODE=0
 exit /b %EXIT_CODE%
 
 rem  ------------------------------------------------------------------------
@@ -73,7 +73,10 @@ if exist "%TARGET_PATH%" (
 ) else (
   set ACTION=Created
 )
-xcopy /q /y /d "%SOURCE_PATH%" "%TARGET_PATH%"
+rem  The "F" input to the xcopy command is read as a response to the xcopy
+rem  prompt "Is destination a file (F) or a directory (D)?".  It prompts
+rem  when the destination does not exist.
+echo F | xcopy /q /y /d "%SOURCE_PATH%" "%TARGET_PATH%"
 if errorlevel 1 call :log Errorlevel = %ERRORLEVEL% after xcopy with "%~1"
 echo %ACTION%: %TARGET_PATH% >> "%STAGING_OUTPUT_TEMP%"
 exit /b
