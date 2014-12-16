@@ -88,25 +88,25 @@ set FILE_PATH=%~1
 set OUT_FILE=%~2
 if "%FILE_PATH:~0,2%" == "--" (
   rem  It's a command line option, so write it as is
-  echo %FILE_PATH% >> "%OUT_FILE%"
+  echo %FILE_PATH%>> "%OUT_FILE%"
   exit /b
 )
 if "%FILE_PATH:~0,8%" == "{OutDir}" (
-  echo %OUT_DIR_ABS%\%FILE_PATH:~9% >> "%OUT_FILE%"
+  echo %OUT_DIR_ABS%\%FILE_PATH:~9%>> "%OUT_FILE%"
   exit /b
 )
 if "%FILE_PATH:~0,1%" == "\" (
   rem  Absolute path on the drive with the project directory
-  echo %PROJECT_DIR:~0,2%%FILE_PATH% >> "%OUT_FILE%"
+  echo %PROJECT_DIR:~0,2%%FILE_PATH%>> "%OUT_FILE%"
   exit /b
 )
 if "%FILE_PATH:~1,1%" == ":" (
   rem  Absolute path on another drive
-  echo %FILE_PATH% >> "%OUT_FILE%"
+  echo %FILE_PATH%>> "%OUT_FILE%"
   exit /b
 )
 rem  Argument is the file's relative path from the project directory
-echo %PROJECT_DIR%\%FILE_PATH% >> "%OUT_FILE%"
+echo %PROJECT_DIR%\%FILE_PATH%>> "%OUT_FILE%"
 exit /b
 
 rem  ------------------------------------------------------------------------
