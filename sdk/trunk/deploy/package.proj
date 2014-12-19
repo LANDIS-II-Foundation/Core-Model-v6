@@ -50,7 +50,7 @@
     <Message Text="Release = '$(Release)'" />
 
 	<PropertyGroup>
-	  <ZipName>LANDIS-II SDK $(Version)-r$(Release).zip</ZipName>
+	  <ZipName>LANDIS-II SDK v$(Version)-r$(Release).zip</ZipName>
 	</PropertyGroup>
 
 	<Message Condition="Exists($(ZipName))"

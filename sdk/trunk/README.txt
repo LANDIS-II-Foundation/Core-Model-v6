@@ -1,8 +1,8 @@
 LANDIS-II Software Development Kit (SDK)
 
-This SDK targets version 6.0 of the LANDIS-II model.  It's designed to work
-with release candidate 3 (rc3) and later releases where the extension
-directory is:
+This SDK targets the version 6.X series of the LANDIS-II model.  It's designed
+to work with version 6.0 release candidate 3 (rc3) and later versions where
+the extension directory is:
 
   C:\Program Files\LANDIS-II\v6\bin\extensions
 
@@ -13,7 +13,7 @@ Configuration
 To use this SDK, set the LANDIS_SDK environment variable to the SDK's top
 folder.  For example, if you have release 17 of this SDK in this folder:
 
-  C:\Users\jdoe\Documents\LANDIS-II\sdk\6.0-r17
+  C:\Users\jdoe\Documents\LANDIS-II\sdk\v6-r17
 
 then set the environment variable to that path.
 
