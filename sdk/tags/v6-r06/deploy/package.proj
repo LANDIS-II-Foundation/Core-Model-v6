@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildCommunityTasksLib>MSBuild\MSBuild.Community.Tasks.dll</MSBuildCommunityTasksLib>
+  </PropertyGroup>
+  <UsingTask TaskName="MSBuild.Community.Tasks.RegexReplace"
+             AssemblyFile="$(MSBuildCommunityTasksLib)" />
+  <UsingTask TaskName="MSBuild.Community.Tasks.Zip"
+             AssemblyFile="$(MSBuildCommunityTasksLib)" />
+
+  <!--  ===============================================================  -->
+
+  <Target Name="zip-file">
+    <ReadLinesFromFile File="../version.txt">
+	   <Output TaskParameter="Lines"
+	           ItemName="VersionFileContents" />
+	</ReadLinesFromFile>
+    <RegexReplace Input="@(VersionFileContents, ',')"
+                  Expression=",.URL.*$"
+                  Replacement="">
+      <Output TaskParameter="Output"
+              PropertyName="VersionReleaseInfo" />
+    </RegexReplace>
+    <RegexReplace Input="$(VersionReleaseInfo)"
+                  Expression=",.*$"
+                  Replacement="">
+      <Output TaskParameter="Output"
+              PropertyName="VersionInfo" />
+    </RegexReplace>
+    <RegexReplace Input="$(VersionReleaseInfo)"
+                  Expression=",.*$"
+                  Replacement="">
+      <Output TaskParameter="Output"
+              PropertyName="VersionInfo" />
+    </RegexReplace>
+    <RegexReplace Input="$(VersionInfo)"
+                  Expression="version\s+"
+                  Replacement="">
+      <Output TaskParameter="Output"
+              PropertyName="Version" />
+    </RegexReplace>
+    <RegexReplace Input="$(VersionReleaseInfo)"
+                  Expression="^.*release\s+"
+                  Replacement="">
+      <Output TaskParameter="Output"
+              PropertyName="Release" />
+    </RegexReplace>
+    <Message Text="Version = '$(Version)'" />
+    <Message Text="Release = '$(Release)'" />
+
+	<PropertyGroup>
+	  <ZipName>LANDIS-II SDK v$(Version)-r$(Release).zip</ZipName>
+	</PropertyGroup>
+
+	<Message Condition="Exists($(ZipName))"
+	         Text="The zip file already exists: $(ZipName)" />
+    <ItemGroup>
+      <PackageContents Include="../*.txt" />
+      <PackageContents Include="../licenses/*" />
+      <PackageContents Include="../packaging/*.iss" />
+      <PackageContents Include="../staging/*.cmd" />
+      <PackageContents Include="../staging/*.vbs" />
+      <PackageContents Include="../staging/task-template.xml" />
+      <PackageContents Include="../staging/write-access.txt" />
+	  <PackageContents Include="../tools/*.*" />
+    </ItemGroup>
+    <Zip Condition="!Exists($(ZipName))"
+	     ZipFileName="$(ZipName)"
+	     WorkingDirectory=".."
+         Files="@(PackageContents)" />
+  </Target>
+
+</Project>
