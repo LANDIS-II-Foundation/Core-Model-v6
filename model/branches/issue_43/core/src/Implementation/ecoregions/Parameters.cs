@@ -12,7 +12,7 @@ namespace Landis.Ecoregions
     {
         private string name;
         private string description;
-        private uint largeMapCode;
+        private ushort mapCode;
         private bool active;
 
         //---------------------------------------------------------------------
@@ -38,20 +38,9 @@ namespace Landis.Ecoregions
         public ushort MapCode
         {
             get {
-                return (ushort) largeMapCode;
+                return mapCode;
             }
         }
-
-        //---------------------------------------------------------------------
-
-        public uint LargeMapCode
-        {
-            get
-            {
-                return largeMapCode;
-            }
-        }
-
 
         //---------------------------------------------------------------------
 
@@ -66,12 +55,12 @@ namespace Landis.Ecoregions
 
         public Parameters(string name,
                           string description,
-                          uint mapCode,
+                          ushort mapCode,
                           bool   active)
         {
             this.name        = name;
             this.description = description;
-            this.largeMapCode   = mapCode;
+            this.mapCode     = mapCode;
             this.active      = active;
         }
 
@@ -81,7 +70,7 @@ namespace Landis.Ecoregions
         {
             name        = parameters.Name;
             description = parameters.Description;
-            largeMapCode = parameters.LargeMapCode;
+            mapCode     = parameters.MapCode;
             active      = parameters.Active;
         }
     }

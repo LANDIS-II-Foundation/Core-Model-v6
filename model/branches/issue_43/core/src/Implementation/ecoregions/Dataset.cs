@@ -78,22 +78,10 @@ namespace Landis.Ecoregions
         public IEcoregion Find(ushort mapCode)
         {
             foreach (IEcoregion ecoregion in ecoregions)
-                if (ecoregion.MapCode == (ushort) mapCode)
+                if (ecoregion.MapCode == mapCode)
                     return ecoregion;
             return null;
         }
-
-        //---------------------------------------------------------------------
-
-        public IEcoregion FindLarge(uint mapCode)
-        {
-            foreach (IEcoregion ecoregion in ecoregions)
-                if (ecoregion.LargeMapCode == mapCode)
-                    return ecoregion;
-            return null;
-
-        }
-
 
         //---------------------------------------------------------------------
 

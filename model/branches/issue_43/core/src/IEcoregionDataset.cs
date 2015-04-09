@@ -51,13 +51,5 @@ namespace Landis.Core
         /// The ecoregion's map code.
         /// </param>
         IEcoregion Find(ushort mapCode);
-
-        /// <summary>
-        /// Finds an ecoregion's parameters by its map code for scenarios with > 65,535 ecoregions.
-        /// </summary>
-        /// <param name="mapCode">
-        /// The ecoregion's map code.
-        /// </param>
-        IEcoregion FindLarge(uint mapCode);
     }
 }

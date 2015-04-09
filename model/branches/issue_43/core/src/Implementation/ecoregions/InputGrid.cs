@@ -46,8 +46,8 @@ namespace Landis.Ecoregions
             EcoregionPixel pixel = raster.BufferPixel;
             raster.ReadBufferPixel();
             pixelLocation = RowMajor.Next(pixelLocation, raster.Dimensions.Columns);
-            uint mapCode = (uint) pixel.MapCode.Value;
-            IEcoregion ecoregion = ecoregions.FindLarge(mapCode);
+            ushort mapCode = (ushort) pixel.MapCode.Value;
+            IEcoregion ecoregion = ecoregions.Find(mapCode);
             //Console.WriteLine("  reading in ecoregion {0} which is {1}", ecoregion.Name, ecoregion.Active);
             if (ecoregion != null)
                 return ecoregion.Active;

@@ -84,20 +84,20 @@ namespace Landis.Ecoregions
                 foreach (Site site in landscape.AllSites)
                 {
                     map.ReadBufferPixel();
-                    uint mapCode = (uint)pixel.MapCode.Value;
+                    ushort mapCode = (ushort)pixel.MapCode.Value;
                     if (site.IsActive)
                     {
-                        siteVar[site] = ecoregions.FindLarge(mapCode);
+                        siteVar[site] = ecoregions.Find(mapCode);
                     }
-                    if (!site.IsActive && ecoregions.FindLarge(mapCode).Active) 
+                    if (!site.IsActive && ecoregions.Find(mapCode).Active) 
                     {
-                        String msg = String.Format("  Site not active and ecoregion is active.  Ecoreigon = {0}", ecoregions.FindLarge(mapCode).Name);
+                        String msg = String.Format("  Site not active and ecoregion is active.  Ecoreigon = {0}", ecoregions.Find(mapCode).Name);
                         throw new ApplicationException(msg);
                         //Console.WriteLine("  Site not active"); 
                     }
-                    if (site.IsActive && !ecoregions.FindLarge(mapCode).Active)
+                    if (site.IsActive && !ecoregions.Find(mapCode).Active)
                     {
-                        String msg = String.Format("  Site is active and ecoregion is not active.  Ecoreigon = {0}", ecoregions.FindLarge(mapCode).Name);
+                        String msg = String.Format("  Site is active and ecoregion is not active.  Ecoreigon = {0}", ecoregions.Find(mapCode).Name);
                         throw new ApplicationException(msg);
                     }
                 }
