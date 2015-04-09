@@ -33,11 +33,11 @@ namespace Landis.Ecoregions
             IEditableDataset dataset = new EditableDataset();
 
             Dictionary <string, int> nameLineNumbers = new Dictionary<string, int>();
-            Dictionary <ushort, int> mapCodeLineNumbers = new Dictionary<ushort, int>();
+            Dictionary <uint, int> mapCodeLineNumbers = new Dictionary<uint, int>();
 
             InputVar<string> name = new InputVar<string>("Name");
             InputVar<string> description = new InputVar<string>("Description");
-            InputVar<ushort> mapCode = new InputVar<ushort>("Map Code");
+            InputVar<uint> mapCode = new InputVar<uint>("Map Code");
             InputVar<bool> active = new InputVar<bool>("Active");
 
             while (! AtEndOfInput) {

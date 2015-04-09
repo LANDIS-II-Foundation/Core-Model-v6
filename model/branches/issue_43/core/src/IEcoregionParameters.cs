@@ -33,6 +33,14 @@ namespace Landis.Core
             get;
         }
 
+        /// <summary>
+        /// Code that identifies the ecoregion on a map for scenarios with > 65,535 ecoregions.
+        /// </summary>
+        uint LargeMapCode
+        {
+            get;
+        }
+
         //---------------------------------------------------------------------
 
         /// <summary>

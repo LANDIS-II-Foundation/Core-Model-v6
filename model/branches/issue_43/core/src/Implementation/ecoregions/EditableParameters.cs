@@ -12,7 +12,7 @@ namespace Landis.Ecoregions
     {
         private InputValue<string> name;
         private InputValue<string> description;
-        private InputValue<ushort> mapCode;
+        private InputValue<uint> mapCode;
         private InputValue<bool> active;
 
         //---------------------------------------------------------------------
@@ -47,16 +47,30 @@ namespace Landis.Ecoregions
 
         //---------------------------------------------------------------------
 
-        public InputValue<ushort> MapCode
+        public InputValue<uint> MapCode
         {
             get {
+                //return new InputValue<ushort>((ushort)mapCode.Actual, mapCode.String);
                 return mapCode;
             }
 
             set {
+                //mapCode = new InputValue<uint>((uint) value.Actual,value.String);
                 mapCode = value;
             }
         }
+
+        
+        //public InputValue<uint> BigMapCode
+        //{
+        //    get {
+        //        return mapCode;
+        //    }
+
+        //    set {
+        //        mapCode = value;
+        //    }
+        //}
 
         //---------------------------------------------------------------------
 

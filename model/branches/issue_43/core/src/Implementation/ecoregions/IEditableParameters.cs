@@ -35,7 +35,7 @@ namespace Landis.Ecoregions
         /// <summary>
         /// Code that identifies the ecoregion on a map.
         /// </summary>
-        InputValue<ushort> MapCode
+        InputValue<uint> MapCode
         {
             get;
             set;
