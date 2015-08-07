@@ -30,6 +30,7 @@
 
 ; Make sure that the Release configuration has been staged
 #define StagedCorePath ReleaseStagingDir + "\v" + Str(Major) + "\bin\" + MajorMinor + "\" + CoreName
+#pragma message "StagedCorePath = " + StagedCorePath
 #if ! FileExists(StagedCorePath)
   #error The Release configuration of the model has not been staged
 #endif
@@ -115,8 +116,8 @@ Source: {#ScriptDir}\plugin-admin\Landis.PlugIns.Admin.cmd; DestDir: {app}\6.0\b
 ; Documentation
 ; (Note: Documentation among minor versions can reside in the same folder
 ;        because all the files have version #s in their names.)
-Source: {#DocDir}\LANDIS-II Model v6.0 Description.pdf; DestDir: {app}\v{#Major}\docs
-Source: {#DocDir}\LANDIS-II Model v6.0 User Guide.pdf;  DestDir: {app}\v{#Major}\docs
+Source: {#DocDir}\LANDIS-II Model v6.1 Description.pdf; DestDir: {app}\v{#Major}\docs
+Source: {#DocDir}\LANDIS-II Model v6.1 User Guide.pdf;  DestDir: {app}\v{#Major}\docs
 
 ; No example input files but a read me.
 Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
@@ -147,6 +148,7 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Filename: landis-v{#Major}-extensions.cmd; WorkingDir: {app}\bin; Flags: runhidden
 
 [UninstallRun]
+Filename: uninstall-extensions.cmd; Parameters: LANDIS-II {#MajorMinor} ; WorkingDir: {app}\bin;
 Filename: uninstall-landis.cmd; Parameters: {#MajorMinor} ; WorkingDir: {app}\bin; Flags: runhidden
 
 ;-----------------------------------------------------------------------------

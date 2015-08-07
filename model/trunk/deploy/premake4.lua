@@ -110,6 +110,7 @@ function installConfig(config)
 
   install { file="bin/uninstall-landis.cmd",  from="deploy/bin/" }
   install { file="bin/uninstall-landis.sh",   from="deploy/bin/" }
+  install { file="bin/uninstall-extensions.cmd",   from="deploy/bin/" }
 
   -- {InstallDir}/vX/bin/
 
@@ -122,7 +123,7 @@ function installConfig(config)
 
   install { file="v{X}/bin/Landis.Extensions.exe",        from="build/"..config }
   install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/Landis.Extensions.exe.config" }
-
+  
   -- {InstallDir}/vX/bin/extensions/
 
   install { file="v{X}/bin/extensions/Landis.Extensions.Dataset.dll", from="build/"..config }
@@ -143,6 +144,9 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="third-party/LSML/GDAL/managed/" }
 
   install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
+                                                                                            ["{X.Y}"]=majorMinor } }
+  -- Workaround so that extensions requiring v6.0 will install on v6.1 26-NOV-2014  
+  install { file="v{X}/bin/{X}.0/README-6-0.txt",            from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
 
   -- {InstallDir}/GDAL/#.#/
