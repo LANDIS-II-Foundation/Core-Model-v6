@@ -67,7 +67,7 @@ namespace Landis
                 }
 
                 IExtensionDataset extensions = Landis.Extensions.Dataset.LoadOrCreate();
-                //Pre-pending the GDAL directory is required to run the Console in debug mode
+                //Pre-pending the GDAL directory is required to run the Console project in debug mode
                 //string path = Environment.GetEnvironmentVariable("PATH");
                 //string newPath = "C:\\Program Files\\LANDIS-II\\GDAL\\1.9;" + path;
                 //Environment.SetEnvironmentVariable("PATH", newPath);
