@@ -400,12 +400,17 @@ namespace Landis
         private void InitializeRandomNumGenerator(uint? seed)
         {
             if (seed.HasValue)
+            {
                 Initialize(seed.Value);
-            else {
+                ui.WriteLine("Initialized random number generator with user-supplied seed = {0:#,##0}", seed.Value);
+            }
+            else
+            {
                 uint generatedSeed = GenerateSeed();
                 Initialize(generatedSeed);
                 ui.WriteLine("Initialized random number generator with seed = {0:#,##0}", generatedSeed);
             }
+
         }
 
         //---------------------------------------------------------------------
