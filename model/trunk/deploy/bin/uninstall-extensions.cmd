@@ -1,7 +1,7 @@
 @ECHO OFF
-:: Windows 7 only
+:: Windows 7, 8, 8.1 only; FINDSTR validates Windows version
 IF NOT "%OS%"=="Windows_NT" GOTO Syntax
-VER | FINDSTR /R /E /C:" 6\.[01]\.[0-9\.]*\]" >NUL || GOTO Syntax
+VER | FINDSTR /R /E /C:" 6\.[0-3]\.[0-9\.]*\]" >NUL || GOTO Syntax
 
 :: Check command line arguments
 IF     "%~1"=="" GOTO Syntax
