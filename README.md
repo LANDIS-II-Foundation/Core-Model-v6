@@ -6,6 +6,3 @@ LANDIS-II model provides core framework services and capabilities for the applic
 Changes to the Core-Model are governed by the [**Repository Rules**](https://sites.google.com/site/landismodel/developers/developers-blog/repositoryrulesfromthetechnicaladvisorycommittee) from the Technical Advisory Committee.
 
 Robert Scheller is the custodian of the Core-Model.
-
-* [Roadmap](../../wiki/RoadMap)
-* [Release History](../../wiki/ReleaseHistory)
