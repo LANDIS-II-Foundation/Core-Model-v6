@@ -83,9 +83,6 @@ namespace Landis.Core
         /// <summary>
         /// Initializes the extension with a data file.
         /// </summary>
-        /// <param name="dataFile">
-        /// Path to the file with initialization data.
-        /// </param>
         public abstract void Initialize();
 
         //---------------------------------------------------------------------
@@ -110,16 +107,22 @@ namespace Landis.Core
 
         //---------------------------------------------------------------------
 
-        public void InitializePhase2()
+        /// <summary>
+        /// Performs 2nd phase of extension initialization
+        /// </summary>
+        public virtual void InitializePhase2()
         {
-            // No-op !!!
+            // Available to be implemented by extensions
         }
 
         //---------------------------------------------------------------------
 
-        public void CleanUp()
+        /// <summary>
+        /// Runs after final timestep allowing extensions to release resources
+        /// </summary>
+        public virtual void CleanUp()
         {
-            // No-op !!!
+            // Available to be implemented by extensions
         }
 
         //---------------------------------------------------------------------
