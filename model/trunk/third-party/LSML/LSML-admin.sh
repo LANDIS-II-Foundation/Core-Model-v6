@@ -156,7 +156,7 @@ function GDALadmin()
       ;;
     esac
   else
-    deleteFile GDAL/libgdal.so.20
+    deleteFile GDAL/libgdal.so.*
     deleteFile GDAL/libgdal_wrap.so
     deleteFile GDAL/gdal_csharp.dll
     if [ -d GDAL ] ; then
