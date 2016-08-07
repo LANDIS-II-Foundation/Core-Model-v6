@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # ----------------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ function usageError()
 function setEnvVars()
 {
   #  Read LSML version # and the SHA1 checksum for that version
-  LibraryVer=`awk '{print $1}' version.txt`
-  LibrarySHA1=`awk '{print $2}' version.txt`
+  LibraryVer=`cut -f 1 version.txt`
+  LibrarySHA1=`cut -f 2 version.txt | sed 's/.$//'` # !!!! the sed part removes the WINDOWS file ending
 
   #  Set environment variables for the specific library version
   LibraryFileName=LSML-${LibraryVer}.zip
@@ -81,11 +81,14 @@ function getLibrary()
     fi
     if [ "$ComputedSHA1" != "$LibrarySHA1" ] ; then
       echo ERROR: Invalid checksum
-      echo Expected SHA1 = $LibrarySHA1
-      echo Computed SHA1 = $ComputedSHA1
+      echo Computed SHA1 = $ComputedSHA1 ...
+      echo Expected SHA1 =  $LibrarySHA1 ...
       exit 1
+    else
+      echo Matching checksum, continuing...
     fi
   fi
+
 
   #  Unpack the library if not done already
   if [ -f Landis.SpatialModeling.dll ] ; then
@@ -114,7 +117,7 @@ function cleanFiles()
 function distClean()
 {
   GDALadmin distclean
-  for file in GDAL-version.txt GDAL-admin.* ; do
+  for file in Landis.SpatialModeling.xml GDAL-version.txt GDAL-admin.* ; do
     deleteFile $file
   done
 
@@ -140,13 +143,26 @@ function deleteFile()
 
 function GDALadmin()
 {
-  if [ -f GDAL-admin.sh ] ; then
-    if [ ! -x GDAL-admin.sh ] ; then
-      chmod_GDALadmin_sh="chmod u+x GDAL-admin.sh"
-      echo $chmod_GDALadmin_sh
-      $chmod_GDALadmin_sh
+  if [ "$Action" = "get" ] ; then
+    read -p "Download pre-compiled GDAL binaries for linux (with C# binding, total ~25 MB)? If you choose No, you will need to compile GDAL yourself. [Y/n]" answer
+    case ${answer:0:1} in
+      ""|y|Y )
+         mkdir GDAL
+         # Download pre-compiled binaries from github.
+         curl -L --url https://github.com/jealie/binaries_GDAL_Csharp/blob/master/linux64/gdal.tar.gz?raw=true | tar -zx -C GDAL/
+      ;;
+      * )
+          echo "LSML installer will proceed without downloading GDAL."
+      ;;
+    esac
+  else
+    deleteFile GDAL/libgdal.so.20
+    deleteFile GDAL/libgdal_wrap.so
+    deleteFile GDAL/gdal_csharp.dll
+    if [ -d GDAL ] ; then
+      rmdir GDAL
+      echo Deleted GDAL
     fi
-    ./GDAL-admin.sh $1
   fi
 }
 

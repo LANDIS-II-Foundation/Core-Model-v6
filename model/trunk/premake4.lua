@@ -28,6 +28,11 @@ solution "LANDIS-II"
   configuration "Release"
     flags { "OptimizeSize" }
     targetdir ( buildDir .. "/Release" )
+
+--  configuration { "linux" }
+--     postbuildcommands {
+---- here goes 
+--     }
  
   -- The core's API (referenced by LANDIS-II extensions)
   project "Core"
@@ -187,16 +192,22 @@ afterAction_call(
     --  with paths.
     if string.startswith(_ACTION, "vs") then
       modifyCSprojFiles()
+    end
 
-      -- Fetch LSML and GDAL C# bindings if they're not present
-      if not os.isfile(thirdPartyLibs["LSML"]) then
-        LSMLadmin("get")
-      end
+    -- Fetch LSML and GDAL C# bindings if they're not present
+    if  _ACTION ~= "clean" and not os.isfile(thirdPartyLibs["LSML"]) then
+      LSMLadmin("get")
+    end
 
-	-- If cleaning, then have LSML-admin clean too.
-	elseif _ACTION == "clean" then
-	  LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
-	end
+    -- If cleaning, then have LSML-admin clean too.
+    if _ACTION == "clean" then
+      LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
+    end
+
+    --  Run custom pre-compilation commands on linux
+    if _ACTION == "gmake" then
+      linuxAddons()
+    end
   end
 )
 
@@ -204,7 +215,7 @@ afterAction_call(
 -- changing each Reference that has a path in its Include attribute to use
 -- a HintPath element instead.
 
-require "CSProjFile"
+require "CSprojFile"
 
 function modifyCSprojFiles()
   for i, prj in ipairs(solution().projects) do
@@ -294,4 +305,39 @@ function LSMLadmin(action)
   end
   print("Running " .. adminScript .. " '" .. action .. "'...")
   os.execute(adminScript .. " " .. action)
+end
+
+-- ===========================================================================
+
+-- linux-specific build instructions
+
+function linuxAddons()
+  if not runningOnWindows() then
+     print("Running linux specific commands...")
+     local base_dir = os.getcwd()
+     -- correct faulty makefiles
+     os.execute("find . -name 'Makefile' | xargs sed -i -e 's/gmcs/mcs/g'")
+     os.execute("find . -name 'Makefile' | xargs sed -i -e 's/dll\.dll/dll/g'")
+     -- initialize the build directory
+     for i,conf in pairs(configurations()) do
+       -- create Debug and Release directories
+       os.execute("mkdir -p build/" .. conf)
+       local conf_dir = base_dir .. "/build/" .. conf
+       -- copy the console .config file
+       os.execute("cp console/Landis.Console-X.Y.exe.config " .. conf_dir .. "/Landis.Console.exe.config")
+       -- create symbolic links to the pre-compiled GDAL libraries
+       os.execute("ln -fs " .. base_dir .. "/third-party/LSML/GDAL/libgdal.so.* " .. conf_dir .. "/libgdal.so")
+       os.execute("ln -fs " .. base_dir .. "/third-party/LSML/GDAL/libgdal_wrap.so " .. conf_dir .. "/libgdal_wrap.so")
+       os.execute("ln -fs " .. base_dir .. "/third-party/LSML/GDAL/gdal_csharp.dll " .. conf_dir .. "/gdal_csharp.dll")
+       -- create symbolic links to all other third party libraries
+       for i,lib in pairs(thirdPartyLibs) do
+         os.execute("ln -fs " .. base_dir .. "/" .. lib .. " " .. conf_dir .. "/")
+       end
+       -- build the linux executable script
+       os.execute("echo '#!/bin/bash' > " .. conf_dir .. "/landis_console.sh")
+       os.execute("echo 'LD_PRELOAD=\"" .. conf_dir .. "/libgdal.so " .. conf_dir .. "/libgdal_wrap.so\" exec mono " .. conf_dir .. "/Landis.Console.exe \"$@\"' >> " .. conf_dir .. "/landis_console.sh")
+       os.execute("chmod +x " .. conf_dir .. "/landis_console.sh")
+     end
+     print("Done.")
+  end
 end
