@@ -29,11 +29,6 @@ solution "LANDIS-II"
     flags { "OptimizeSize" }
     targetdir ( buildDir .. "/Release" )
 
---  configuration { "linux" }
---     postbuildcommands {
----- here goes 
---     }
- 
   -- The core's API (referenced by LANDIS-II extensions)
   project "Core"
     location "core/src"
