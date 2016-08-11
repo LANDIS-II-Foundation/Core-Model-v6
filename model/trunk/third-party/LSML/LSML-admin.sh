@@ -149,7 +149,13 @@ function GDALadmin()
       ""|y|Y )
          mkdir GDAL
          # Download pre-compiled binaries from github.
-         curl -L --url https://github.com/jealie/binaries_GDAL_Csharp/blob/master/linux64/gdal.tar.gz?raw=true | tar -zx -C GDAL/
+         if [ `uname -m` == 'x86_64' ] ; then
+           # 64 bits version
+           curl -L --url https://github.com/jealie/binaries_GDAL_Csharp/blob/master/linux64/gdal.tar.gz?raw=true | tar -zx -C GDAL/
+         else
+           # 32 bits version
+           curl -L --url https://github.com/jealie/binaries_GDAL_Csharp/blob/master/linux32/gdal.tar.gz?raw=true | tar -zx -C GDAL/
+         fi
       ;;
       * )
           echo "LSML installer will proceed without downloading GDAL."
