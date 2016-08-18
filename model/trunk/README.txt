@@ -53,3 +53,10 @@ Staging a Configuration For Testing
 
 After a configuration has been built, it can be "staged" for test purposes.
 See the deploy/README.txt file for details.
+
+
+Linux Instructions
+------------------
+
+See the README_LINUX.txt file for instructions on how to build and run
+LANDIS-II on Linux, along with a list of troubleshooting tips.
