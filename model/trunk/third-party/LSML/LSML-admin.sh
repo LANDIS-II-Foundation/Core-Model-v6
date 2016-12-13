@@ -54,7 +54,7 @@ function setEnvVars()
 
   #  Set environment variables for the specific library version
   LibraryFileName=LSML-${LibraryVer}.zip
-  LibraryURL=http://landis-spatial.googlecode.com/files/${LibraryFileName}
+  LibraryURL=https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/landis-spatial/${LibraryFileName}
   DownloadDir=download
   LibraryPackage=${DownloadDir}/${LibraryFileName}
 }
