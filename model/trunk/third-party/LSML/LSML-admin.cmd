@@ -24,7 +24,7 @@ for /f "tokens=1,2" %%i in (version.txt) do (
 
 rem  Set environment variables about specific library version
 set LibraryFileName=LSML-%LibraryVer%.zip
-set LibraryURL=http://landis-spatial.googlecode.com/files/%LibraryFileName%
+set LibraryURL=https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/landis-spatial/%LibraryFileName%
 set DownloadDir=download
 set LibraryPackage=%DownloadDir%\%LibraryFileName%
 
