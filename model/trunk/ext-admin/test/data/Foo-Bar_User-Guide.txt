@@ -1,5 +1,0 @@
-LANDIS-II
-Foo Bar Extension
-User Guide
-
-blah, blah, blah

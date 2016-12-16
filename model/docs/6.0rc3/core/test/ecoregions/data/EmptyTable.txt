@@ -1,0 +1,8 @@
+>> Example of good input file for ecoregions
+
+LandisData  Ecoregions
+
+>>         Map
+>> Active  Code  Name   Description
+>> ------  ----  -----  -----------
+>> No ecoregions present

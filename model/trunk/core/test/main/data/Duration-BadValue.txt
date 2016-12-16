@@ -1,6 +1,0 @@
->> Example of bad input file for scenario
-
-LandisData  Scenario
-
-
-Duration  300.  << Not a valid integer

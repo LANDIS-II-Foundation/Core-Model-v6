@@ -1,0 +1,8 @@
+>> Example of bad input file for scenario
+
+LandisData  Scenario
+
+
+Duration  300
+
+ << Missing Species parameter

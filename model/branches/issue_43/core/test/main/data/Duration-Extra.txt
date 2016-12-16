@@ -1,7 +1,0 @@
->> Example of bad input file for scenario
-
-LandisData  Scenario
-
-
-Duration  300    Four score and seven years ago ...
->> Extra text ---^
