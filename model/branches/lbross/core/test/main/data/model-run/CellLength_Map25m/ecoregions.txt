@@ -1,3 +1,0 @@
-LandisData  Ecoregions
-
->> Empty table; no ecoregions

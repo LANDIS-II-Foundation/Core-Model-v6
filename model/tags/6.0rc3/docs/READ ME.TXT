@@ -1,7 +1,0 @@
-Beginning with LANDIS-II v6.0, examples are provided with each extension.  These examples
-will include a complete set of scenario files with a batch file in a separate sub-directory.
-These example files are identical to those used to test extension results.  Therefore, the
-user can download and quickly run new extensions without altering other extension examples.
-
-To see which examples are installed:
-Start -> All Programs -> LANDIS-II -> 6.0 -> Sample Input Files

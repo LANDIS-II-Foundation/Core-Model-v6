@@ -1,0 +1,8 @@
+>> Example of bad input file
+
+LandisData   Extension
+
+Name         "Foo Bar"
+Type         disturbance:foo-bar
+Assembly     "@DATA_INSTALL_DIR@/Landis.Test.PlugIns.Admin.FooBar.dll"
+Class        ''  << ERROR HERE: Empty string not permitted

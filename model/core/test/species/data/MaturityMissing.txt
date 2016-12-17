@@ -1,0 +1,9 @@
+>> Example of a bad input file for Species
+
+LandisData  Species
+
+>>                      Sexual    Shade  Fire  Seed Disperal Dist  Vegetative   Sprout Age  Post-Fire
+>> Name      Longevity  Maturity  Tol.   Tol.  Effective  Maximum  Reprod Prob  Min   Max   Regen
+>> ----      ---------  --------  -----  ----  ---------  -------  -----------  ----------  ---------
+   abiebals    200        25       5     1        130        160       0.0        0     0   none
+   acerrubr    150           << missing value

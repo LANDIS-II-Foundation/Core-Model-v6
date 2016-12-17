@@ -1,0 +1,20 @@
+LandisData  Scenario
+
+
+Duration  0
+
+Species   species.txt	<< This file does not exist
+
+Ecoregions      not-used
+EcoregionsMap   not-used
+
+InitialCommunities      not-used
+InitialCommunitiesMap   not-used
+
+
+>> Plug-in                  Initialization File
+>> -------                  -------------------
+
+   "Null Succession"        n/a
+
+   "Null Output"            n/a
