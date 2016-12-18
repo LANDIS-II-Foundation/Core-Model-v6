@@ -1,3 +1,0 @@
->> Example of bad input file for ecoregions
-
-LandisData  "Roses are red"  << Wrong value; should be "Ecoregions"

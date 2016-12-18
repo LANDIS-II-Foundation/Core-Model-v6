@@ -1,0 +1,3 @@
+>> Example of bad input file for scenario
+
+LandisData  "A string without its end quote

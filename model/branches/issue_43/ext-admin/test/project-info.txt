@@ -1,6 +1,0 @@
-#  project information
-
-project-name	Landis.Test.PlugIns.Admin
-project-type	library
-version		2.0
-release		official

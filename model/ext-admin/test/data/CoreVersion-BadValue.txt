@@ -1,0 +1,11 @@
+>> Example of bad input file
+
+LandisData   Extension
+
+Name         "Foo Bar"
+Type         disturbance:foo-bar
+Assembly     "C:\Documents and Settings\domingo\My Documents\software\testing\data\Landis.Test.PlugIns.Admin/Landis.Test.PlugIns.Admin.FooBar.dll"
+Class        Landis.Test.PlugIns.Admin.FooBarPlugIn
+Description  "Compute foo-bar metrics across landscape"
+UserGuide    "C:\Documents and Settings\domingo\My Documents\software\testing\data\Landis.Test.PlugIns.Admin/Foo-Bar_User-Guide.txt"
+CoreVersion  5.3.4.  << ERROR HERE: Badly formatted value

@@ -1,3 +1,0 @@
->> Example of bad input file for scenario
-
-LandisData  Ecoregions  << Wrong value; should be "Scenario"

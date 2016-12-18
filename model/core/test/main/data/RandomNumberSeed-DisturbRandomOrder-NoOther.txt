@@ -1,0 +1,29 @@
+>> Example of a good input file for scenario
+
+LandisData  Scenario
+
+
+Duration  300
+
+Species   ./species.txt
+
+Ecoregions      "./ecoregions.txt"
+EcoregionsMap   "./ecoregions.gis"
+CellLength      25.0
+
+InitialCommunities      "./init-communities.txt"
+InitialCommunitiesMap   "./init-communities.gis"
+
+
+>> Plug-in                  Initialization File
+>> -------                  -------------------
+
+   "Age-only succession"    succession.txt
+
+   Age-only.Wind            "age only/wind.txt"
+   Harvest                  //server/our-group/shared-inputs/HARVEST.txt
+
+   DisturbancesRandomOrder  yes
+
+
+RandomNumberSeed  4,357
