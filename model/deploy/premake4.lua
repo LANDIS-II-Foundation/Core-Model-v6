@@ -1,5 +1,5 @@
 -- Copyright 2012,2013 Green Code LLC
--- All rights reserved. 
+-- All rights reserved.
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -34,14 +34,15 @@ function main()
 	return 0
   end
 
+
   installDir = "../build/install"
 
   majorVersion, minorVersion = readMajorMinor("../SharedAssemblyInfo.cs")
   majorMinor = majorVersion..'.'..minorVersion
   releaseStatus = readFirstLine("release-status.txt")
-  GDALversion = readFirstLine("../third-party/LSML/GDAL-version.txt")
+  GDALversion = readFirstLine("../libs/GDAL/GDAL-version.txt")
   GDALmajorMinor = string.match(GDALversion, "^(%d+\.%d+)")
-  print("Installing LANDIS-II "..majorMinor.." ("..releaseStatus..") with GDAL "..GDALversion)
+  print("Installing LANDIS-II "..majorMinor.." ("..releaseStatus..") with GDAL")
 
   for _, config in ipairs(_ARGS) do
     configInstallDir = installDir.."/"..config
@@ -114,7 +115,7 @@ function installConfig(config)
 
   -- {InstallDir}/vX/bin/
 
-  GDALcsharpVersion = getAssemblyVersion("../third-party/LSML/GDAL/managed/gdal_csharp.dll")  
+  GDALcsharpVersion = getAssemblyVersion("../libs/GDAL/managed/gdal_csharp.dll")
 
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console-"..majorMinor..".exe" }
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/Landis.Console-X.Y.exe.config",
@@ -123,7 +124,7 @@ function installConfig(config)
 
   install { file="v{X}/bin/Landis.Extensions.exe",        from="build/"..config }
   install { file="v{X}/bin/Landis.Extensions.exe.config", from="ext-admin/Landis.Extensions.exe.config" }
-  
+
   -- {InstallDir}/vX/bin/extensions/
 
   install { file="v{X}/bin/extensions/Landis.Extensions.Dataset.dll", from="build/"..config }
@@ -133,19 +134,19 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/Landis.Core.dll",                from="build/"..config }
   install { file="v{X}/bin/{X.Y}/Landis.Core.Implementation.dll", from="build/"..config }
 
-  install { file="v{X}/bin/{X.Y}/log4net.dll",                    from="third-party/log4net/bin/" }
-  install { file="v{X}/bin/{X.Y}/Edu.Wisc.Forest.Flel.Util.dll",  from="third-party/FLEL/util/bin/" }
-  install { file="v{X}/bin/{X.Y}/Troschuetz.Random.dll",          from="third-party/Troschuetz/" }
+  install { file="v{X}/bin/{X.Y}/log4net.dll",                    from="libs/" }
+  install { file="v{X}/bin/{X.Y}/Edu.Wisc.Forest.Flel.Util.dll",  from="libs/" }
+  install { file="v{X}/bin/{X.Y}/Troschuetz.Random.dll",          from="libs/" }
 
-  install { file="v{X}/bin/{X.Y}/Landis.SpatialModeling.dll",     from="third-party/LSML/" }
-  install { file="v{X}/bin/{X.Y}/Landis.Landscapes.dll",          from="third-party/LSML/" }
-  install { file="v{X}/bin/{X.Y}/Landis.RasterIO.dll",            from="third-party/LSML/" }
-  install { file="v{X}/bin/{X.Y}/Landis.RasterIO.Gdal.dll",       from="third-party/LSML/" }
-  install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="third-party/LSML/GDAL/managed/" }
+  install { file="v{X}/bin/{X.Y}/Landis.SpatialModeling.dll",     from="libs/" }
+  install { file="v{X}/bin/{X.Y}/Landis.Landscapes.dll",          from="libs/" }
+  install { file="v{X}/bin/{X.Y}/Landis.RasterIO.dll",            from="libs/" }
+  install { file="v{X}/bin/{X.Y}/Landis.RasterIO.Gdal.dll",       from="libs/" }
+  install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="libs/" }
 
   install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
-  -- Workaround so that extensions requiring v6.0 will install on v6.1 26-NOV-2014  
+  -- Workaround so that extensions requiring v6.0 will install on v6.1 26-NOV-2014
   install { file="v{X}/bin/{X}.0/README-6-0.txt",            from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
 
@@ -256,7 +257,7 @@ function installFile(srcPath, destPath, textReplacements)
 
   print("Installed "..destPath)
   if printFrom then
-    print("     from "..srcPath) 
+    print("     from "..srcPath)
   end
 
   installCount = installCount + 1
@@ -277,7 +278,7 @@ function copyDir(srcDir, destDir)
     copyDir(srcPath, destPath)
   end
 end
- 
+
 -- ============================================================================
 
 function makeDir(dirPath)
