@@ -1,3 +1,0 @@
->> Example of bad input file for ecoregions
-
-Landis    << This name should be "LandisData"

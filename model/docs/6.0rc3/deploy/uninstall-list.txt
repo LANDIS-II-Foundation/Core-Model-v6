@@ -1,5 +1,0 @@
-v{X}/bin/Landis.Console-{X.Y}.exe
-v{X}/bin/Landis.Console-{X.Y}.exe.config
-bin/landis-{X.Y}.cmd
-bin/landis-{X.Y}.sh
-v{X}/bin/{X.Y}

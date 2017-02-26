@@ -1,3 +1,0 @@
->> Example of bad input file for species
-
-LandisData    << Missing value after name
