@@ -190,15 +190,17 @@ afterAction_call(
       modifyCSprojFiles()
     end
 
+    -- Due to migration of from google code to github, LSMLadmin has been depercated
+    -- ============================================================================
     -- Fetch LSML and GDAL C# bindings if they're not present
-    if  _ACTION ~= "clean" and not os.isfile(thirdPartyLibs["LSML"]) then
-      LSMLadmin("get")
-    end
+    --if  _ACTION ~= "clean" and not os.isfile(thirdPartyLibs["LSML"]) then
+    --  LSMLadmin("get")
+    --end
 
     -- If cleaning, then have LSML-admin clean too.
-    if _ACTION == "clean" then
-      LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
-    end
+    --if _ACTION == "clean" then
+    --LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
+    --end
 
     --  Run custom pre-compilation commands on linux
     if _ACTION == "gmake" then
