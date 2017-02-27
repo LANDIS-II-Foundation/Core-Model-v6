@@ -1,4 +1,0 @@
-nunit.framework.dll
-Edu.Wisc.Forest.Flel.Util.dll
-Landis.Core.dll
-Landis.PlugIns.Admin.exe

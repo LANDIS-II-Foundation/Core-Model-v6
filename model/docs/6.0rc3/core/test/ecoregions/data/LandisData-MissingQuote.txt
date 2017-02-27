@@ -1,3 +1,0 @@
->> Example of bad input file for ecoregions
-
-LandisData  "A string without its end quote

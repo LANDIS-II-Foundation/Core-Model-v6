@@ -40,7 +40,7 @@ function main()
   majorVersion, minorVersion = readMajorMinor("../SharedAssemblyInfo.cs")
   majorMinor = majorVersion..'.'..minorVersion
   releaseStatus = readFirstLine("release-status.txt")
-  GDALversion = readFirstLine("../libs/GDAL/GDAL-version.txt")
+  GDALversion = readFirstLine("../third-party/GDAL/GDAL-version.txt")
   GDALmajorMinor = string.match(GDALversion, "^(%d+\.%d+)")
   print("Installing LANDIS-II "..majorMinor.." ("..releaseStatus..") with GDAL")
 
@@ -115,7 +115,7 @@ function installConfig(config)
 
   -- {InstallDir}/vX/bin/
 
-  GDALcsharpVersion = getAssemblyVersion("../libs/GDAL/managed/gdal_csharp.dll")
+  GDALcsharpVersion = getAssemblyVersion("../third-party/GDAL/managed/gdal_csharp.dll")
 
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe",        from="build/"..config.."/Landis.Console-"..majorMinor..".exe" }
   install { file="v{X}/bin/Landis.Console-{X.Y}.exe.config", from="console/Landis.Console-X.Y.exe.config",
@@ -142,7 +142,7 @@ function installConfig(config)
   install { file="v{X}/bin/{X.Y}/Landis.Landscapes.dll",          from="libs/" }
   install { file="v{X}/bin/{X.Y}/Landis.RasterIO.dll",            from="libs/" }
   install { file="v{X}/bin/{X.Y}/Landis.RasterIO.Gdal.dll",       from="libs/" }
-  install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="libs/" }
+  install { file="v{X}/bin/{X.Y}/gdal_csharp.dll",                from="third-party/GDAL/managed" }
 
   install { file="v{X}/bin/{X.Y}/uninstall-list.txt",             from="deploy/", replace={ ["{X}"]=majorVersion,
                                                                                             ["{X.Y}"]=majorMinor } }
@@ -152,7 +152,7 @@ function installConfig(config)
 
   -- {InstallDir}/GDAL/#.#/
 
-  install { dir="GDAL/"..GDALmajorMinor, source="third-party/LSML/GDAL/native/" }
+  install { dir="GDAL/"..GDALmajorMinor, source="third-party/GDAL/native/" }
 
   -- {InstallDir}/vX/licenses/
 

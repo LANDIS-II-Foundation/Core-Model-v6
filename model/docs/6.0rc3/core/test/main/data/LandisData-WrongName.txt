@@ -1,3 +1,0 @@
->> Example of bad input file for scenario
-
-Landis    << This name should be "LandisData"
