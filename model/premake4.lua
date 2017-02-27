@@ -1,12 +1,13 @@
 thirdPartyDir = "third-party"
+libsDir = "libs"
 thirdPartyLibs = {
-  FLEL          = thirdPartyDir .. "/FLEL/util/bin/Edu.Wisc.Forest.Flel.Util.dll",
-  LSML          = thirdPartyDir .. "/LSML/Landis.SpatialModeling.dll",
-  Landscapes    = thirdPartyDir .. "/LSML/Landis.Landscapes.dll",
-  RasterIO      = thirdPartyDir .. "/LSML/Landis.RasterIO.dll",
-  RasterIO_Gdal = thirdPartyDir .. "/LSML/Landis.RasterIO.Gdal.dll",
-  log4net       = thirdPartyDir .. "/log4net/bin/log4net.dll",
-  Troschuetz    = thirdPartyDir .. "/Troschuetz/Troschuetz.Random.dll"
+  FLEL          = libsDir .. "/Edu.Wisc.Forest.Flel.Util.dll",
+  LSML          = libsDir .. "/Landis.SpatialModeling.dll",
+  Landscapes    = libsDir .. "/Landis.Landscapes.dll",
+  RasterIO      = libsDir .. "/Landis.RasterIO.dll",
+  RasterIO_Gdal = libsDir .. "/Landis.RasterIO.Gdal.dll",
+  log4net       = libsDir .. "/log4net.dll",
+  Troschuetz    = libsDir .. "/Troschuetz.Random.dll"
 }
 
 buildDir = "build"
@@ -19,12 +20,12 @@ solution "LANDIS-II"
   framework "3.5"
 
   configurations { "Debug", "Release" }
- 
+
   configuration "Debug"
     defines { "DEBUG" }
     flags { "Symbols" }
     targetdir ( buildDir .. "/Debug" )
- 
+
   configuration "Release"
     flags { "OptimizeSize" }
     targetdir ( buildDir .. "/Release" )
@@ -189,15 +190,17 @@ afterAction_call(
       modifyCSprojFiles()
     end
 
+    -- Due to migration of from google code to github, LSMLadmin has been depercated
+    -- ============================================================================
     -- Fetch LSML and GDAL C# bindings if they're not present
-    if  _ACTION ~= "clean" and not os.isfile(thirdPartyLibs["LSML"]) then
-      LSMLadmin("get")
-    end
+    --if  _ACTION ~= "clean" and not os.isfile(thirdPartyLibs["LSML"]) then
+    --  LSMLadmin("get")
+    --end
 
     -- If cleaning, then have LSML-admin clean too.
-    if _ACTION == "clean" then
-      LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
-    end
+    --if _ACTION == "clean" then
+    --LSMLadmin(iif(_OPTIONS["dist"], "distclean", "clean"))
+    --end
 
     --  Run custom pre-compilation commands on linux
     if _ACTION == "gmake" then
