@@ -36,12 +36,12 @@ namespace Landis.Extensions.Admin
                     if (extension.Name.Length > maxNameLen)
                         maxNameLen = extension.Name.Length;
                 }
-                string format = string.Format("{{0,{0}}}  {{1}}", -maxNameLen);
-
-                Console.WriteLine(format, nameHeading,                         "Description");
-                Console.WriteLine(format, new string('-', nameHeading.Length), "-----------");
+                string format = string.Format("{{0,{0}}}  {{1, -22}} {{2}}", -maxNameLen);
+                
+                Console.WriteLine(format, nameHeading, "Version", "Description");
+                Console.WriteLine(format, new string('-', nameHeading.Length),"-------", "-----------");
                 foreach (ExtensionInfo extension in extensions)
-                    Console.WriteLine(format, extension.Name, extension.Description);
+                    Console.WriteLine(format, extension.Name, extension.Version, extension.Description);
             }
         }
     }
