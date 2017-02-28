@@ -54,17 +54,17 @@ namespace Landis.Species
                     if (maturity != null) {
                         if (value.Actual < maturity)
                             throw new InputValueException(value.String,
-                                                          "Longevity must be = or > sexual maturity");
+                                                          "Longevity must be = or > sexual maturity. Species Name: " + name.ToString());
                     }
                     if (maxSproutAge != null) {
                         if (value.Actual < maxSproutAge)
                             throw new InputValueException(value.String,
-                                                          "Longevity must be = or > maximum sprouting age");
+                                                          "Longevity must be = or > maximum sprouting age. Species Name: " + name.ToString());
                     }
                     if (maturity == null && maxSproutAge == null) {
                         if (value.Actual < 0)
                             throw new InputValueException(value.String,
-                                                          "Longevity must be = or > 0");
+                                                          "Longevity must be = or > 0. Species Name: " + name.ToString());
                     }
                 }
                 longevity = value;
@@ -87,11 +87,11 @@ namespace Landis.Species
                     if (longevity != null) {
                         if (value.Actual > longevity)
                             throw new InputValueException(value.String,
-                                                          "Sexual maturity must be < or = longevity");
+                                                          "Sexual maturity must be < or = longevity. Species Name: " + name.ToString());
                     }
                     if (value.Actual < 0)
                         throw new InputValueException(value.String,
-                                                      "Sexual maturity must be = or > 0");
+                                                      "Sexual maturity must be = or > 0. Species Name: " + name.ToString());
                 }
                 maturity = value;
             }
@@ -140,7 +140,7 @@ namespace Landis.Species
             if (1 <= tolerance.Actual && tolerance.Actual <= 5)
                 return;
             throw new InputValueException(tolerance.String,
-                                          tolerance.String + " is not between 1 and 5");
+                                          tolerance.String + " is not between 1 and 5. Species Name: " + name.ToString());
         }
 
         //---------------------------------------------------------------------
@@ -159,12 +159,12 @@ namespace Landis.Species
                     if (maxSeedDist != null) {
                         if (value.Actual > maxSeedDist.Actual)
                             throw new InputValueException(value.String,
-                                                          "Effective seed distance must be < or = maximum seed distance");
+                                                          "Effective seed distance must be < or = maximum seed distance. Species Name: " + name.ToString());
                     }
                     else {
                         if (value.Actual <= 0)
                             throw new InputValueException(value.String,
-                                                          "Effective seed distance must be > 0");
+                                                          "Effective seed distance must be > 0. Species Name: " + name.ToString());
                     }
                 }
                 effectiveSeedDist = value;
@@ -187,12 +187,12 @@ namespace Landis.Species
                     if (effectiveSeedDist != null && effectiveSeedDist.Actual != Landis.Species.EffectiveSeedDist.Universal) {
                         if (value.Actual < effectiveSeedDist.Actual)
                             throw new InputValueException(value.String,
-                                                          "Maximum seed distance must be = or > effective seed distance");
+                                                          "Maximum seed distance must be = or > effective seed distance. Species Name: " + name.ToString());
                     }
                     else {
                         if (value.Actual < 0)
                             throw new InputValueException(value.String,
-                                                          "Maximum seed distance must be = or > 0");
+                                                          "Maximum seed distance must be = or > 0. Species Name: " + name.ToString());
                     }
                 }
                 maxSeedDist = value;
@@ -214,7 +214,7 @@ namespace Landis.Species
                 if (value != null) {
                     if (value.Actual < 0.0 || value.Actual > 1.0)
                         throw new InputValueException(value.String,
-                                                      value.String + " is not between 0 and 1.0");
+                                                      value.String + " is not between 0 and 1.0. Species Name: " + name.ToString());
                 }
                 vegReprodProb = value;
             }
@@ -236,16 +236,16 @@ namespace Landis.Species
                     if (maxSproutAge != null) {
                         if (value.Actual > maxSproutAge)
                             throw new InputValueException(value.String,
-                                                          "Minimum sprouting age must be < or = maximum sprouting age");
+                                                          "Minimum sprouting age must be < or = maximum sprouting age. Species Name: " + name.ToString());
                     }
                     else if (longevity != null) {
                         if (value.Actual > longevity)
                             throw new InputValueException(value.String,
-                                                          "Minimum sprouting age must be < or = longevity");
+                                                          "Minimum sprouting age must be < or = longevity. Species Name: " + name.ToString());
                     }
                     if (value.Actual < 0)
                         throw new InputValueException(value.String,
-                                                      "Minimum sprouting age must be < or = 0");
+                                                      "Minimum sprouting age must be < or = 0. Species Name: " + name.ToString());
                 }
                 minSproutAge = value;
             }
@@ -267,16 +267,16 @@ namespace Landis.Species
                     if (longevity != null) {
                         if (value.Actual > longevity)
                             throw new InputValueException(value.String,
-                                                          "Maximum sprouting age must be < or = longevity");
+                                                          "Maximum sprouting age must be < or = longevity. Species Name: " + name.ToString());
                     }
                     if (minSproutAge != null) {
                         if (value.Actual < minSproutAge)
                             throw new InputValueException(value.String,
-                                                          "Maximum sprouting age must be = or > minimum sprouting age");
+                                                          "Maximum sprouting age must be = or > minimum sprouting age. Species Name: " + name.ToString());
                     }
                     else if (value.Actual < 0)
                         throw new InputValueException(value.String,
-                                                      "Maximum sprouting age must be = or > 0");
+                                                      "Maximum sprouting age must be = or > 0. Species Name: " + name.ToString());
                 }
                 maxSproutAge = value;
             }
