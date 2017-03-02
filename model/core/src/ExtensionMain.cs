@@ -110,14 +110,14 @@ namespace Landis.Core
 
         //---------------------------------------------------------------------
 
-        public void InitializePhase2()
+        public virtual void InitializePhase2()
         {
             // No-op !!!
         }
 
         //---------------------------------------------------------------------
 
-        public void CleanUp()
+        public virtual void CleanUp()
         {
             // No-op !!!
         }
