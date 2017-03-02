@@ -321,6 +321,7 @@ namespace Landis
                 ui.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
                 succession = Loader.Load<SuccessionMain>(scenario.Succession.Info);
                 succession.LoadParameters(scenario.Succession.InitFile, this);
+                // look here for succession initialization VINCENT
                 succession.Initialize();
 
                 ExtensionMain[] disturbanceExtensions = LoadExtensions(scenario.Disturbances);
