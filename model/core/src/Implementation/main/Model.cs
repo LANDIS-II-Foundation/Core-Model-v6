@@ -95,7 +95,6 @@ namespace Landis
             BindExtensionToFormat(".tif", "GTiff");
             BindExtensionToFormat(".ingr", "INGR");
             BindExtensionToFormat(".vrt",  "VRT" );
-            
  
             ui = null;
         }
@@ -318,7 +317,6 @@ namespace Landis
 
             disturbAndOtherExtensions = new List<ExtensionMain>();
 
-     
 
             try {
                 ui.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
