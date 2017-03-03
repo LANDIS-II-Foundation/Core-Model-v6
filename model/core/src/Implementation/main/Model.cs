@@ -14,7 +14,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Landis.SpatialModeling;
 
 using Troschuetz.Random;
-using Landis.SpatialModeling.CoreServices;
 
 namespace Landis
 {
@@ -96,7 +95,7 @@ namespace Landis
             BindExtensionToFormat(".tif", "GTiff");
             BindExtensionToFormat(".ingr", "INGR");
             BindExtensionToFormat(".vrt",  "VRT" );
-            BindExtensionToFormat(".xyz", "XYZ"); 
+            
  
             ui = null;
         }
@@ -108,24 +107,9 @@ namespace Landis
         private void BindExtensionToFormat(string fileExtension,
                                            string formatCode)
         {
-            try
-            {
-
-
-                RasterFormat rasterFormat = rasterFactory.GetFormat(formatCode);
-                if (rasterFormat != null)
-                {
-                    rasterFactory.BindExtensionToFormat(fileExtension, rasterFormat);
-                }
-                else
-                {
-                    throw new ArgumentNullException("format code: {0}", formatCode);
-                }
-            }
-            catch (ArgumentNullException F)
-            {
-                ui.WriteLine("{0}", F);
-            }
+            RasterFormat rasterFormat = rasterFactory.GetFormat(formatCode);
+            if (rasterFormat != null)
+                rasterFactory.BindExtensionToFormat(fileExtension, rasterFormat);
         }
 
          //---------------------------------------------------------------------
