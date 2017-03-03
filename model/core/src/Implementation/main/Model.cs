@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Landis.SpatialModeling;
 
 using Troschuetz.Random;
-
+using Landis.SpatialModeling.CoreServices;
 
 namespace Landis
 {
@@ -96,6 +96,7 @@ namespace Landis
             BindExtensionToFormat(".tif", "GTiff");
             BindExtensionToFormat(".ingr", "INGR");
             BindExtensionToFormat(".vrt",  "VRT" );
+            BindExtensionToFormat(".xyz", "XYZ"); 
  
             ui = null;
         }
@@ -107,9 +108,24 @@ namespace Landis
         private void BindExtensionToFormat(string fileExtension,
                                            string formatCode)
         {
-            RasterFormat rasterFormat = rasterFactory.GetFormat(formatCode);
-            if (rasterFormat != null)
-                rasterFactory.BindExtensionToFormat(fileExtension, rasterFormat);
+            try
+            {
+
+
+                RasterFormat rasterFormat = rasterFactory.GetFormat(formatCode);
+                if (rasterFormat != null)
+                {
+                    rasterFactory.BindExtensionToFormat(fileExtension, rasterFormat);
+                }
+                else
+                {
+                    throw new ArgumentNullException("format code: {0}", formatCode);
+                }
+            }
+            catch (ArgumentNullException F)
+            {
+                ui.WriteLine("{0}", F);
+            }
         }
 
          //---------------------------------------------------------------------
@@ -289,11 +305,12 @@ namespace Landis
             endTime = scenario.EndTime;
             timeSinceStart = 0;
             currentTime = startTime;
+           
             InitializeRandomNumGenerator(scenario.RandomNumberSeed);
 
             LoadSpecies(scenario.Species);
             LoadEcoregions(scenario.Ecoregions);
-
+            
             ui.WriteLine("Initializing landscape from ecoregions map \"{0}\" ...", scenario.EcoregionsMap);
             Ecoregions.Map ecoregionsMap = new Ecoregions.Map(scenario.EcoregionsMap,
                                                               ecoregions,
@@ -317,19 +334,22 @@ namespace Landis
 
             disturbAndOtherExtensions = new List<ExtensionMain>();
 
+     
+
             try {
                 ui.WriteLine("Loading {0} extension ...", scenario.Succession.Info.Name);
                 succession = Loader.Load<SuccessionMain>(scenario.Succession.Info);
                 succession.LoadParameters(scenario.Succession.InitFile, this);
-                // look here for succession initialization VINCENT
-                succession.Initialize();
-
+                
+                succession.Initialize(); 
+                
                 ExtensionMain[] disturbanceExtensions = LoadExtensions(scenario.Disturbances);
                 InitExtensions(disturbanceExtensions);
-
+                
                 ExtensionMain[] otherExtensions = LoadExtensions(scenario.OtherExtensions);
                 InitExtensions(otherExtensions);
 
+                OutputExtensionInfo(scenario.Succession, scenario.Disturbances, scenario.OtherExtensions);
 
                 //  Perform 2nd phase of initialization for non-succession extensions.
                 foreach (ExtensionMain extension in disturbanceExtensions)
@@ -385,6 +405,27 @@ namespace Landis
                     extension.CleanUp();
             }
             ui.WriteLine("Model run is complete.");
+        }
+
+        //---------------------------------------------------------------------
+
+        private void OutputExtensionInfo(ExtensionAndInitFile succession, ExtensionAndInitFile[] disturbances, ExtensionAndInitFile[] otherExtensions)
+        {
+            string toDisplay = "Using the following extensions ...\n";
+            string format = "   {0,-25} {1,-25}\n";
+
+            toDisplay += string.Format(format, "Extension Name", "Extension Filename");
+            toDisplay += string.Format(format, "--------------", "------------------");
+
+            toDisplay += string.Format(format, succession.Info.Name, succession.InitFile);
+            
+            foreach (ExtensionAndInitFile extension in disturbances)
+                toDisplay += string.Format(format, extension.Info.Name, extension.InitFile); 
+
+            foreach (ExtensionAndInitFile extension in otherExtensions)
+                toDisplay += string.Format(format, extension.Info.Name, extension.InitFile);
+            
+            ui.WriteLine("{0}", toDisplay);
         }
 
         //---------------------------------------------------------------------
