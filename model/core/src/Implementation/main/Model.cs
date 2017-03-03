@@ -333,7 +333,9 @@ namespace Landis
                 ExtensionMain[] otherExtensions = LoadExtensions(scenario.OtherExtensions);
                 InitExtensions(otherExtensions);
 
-                OutputExtensionInfo(scenario.Succession, scenario.Disturbances, scenario.OtherExtensions);
+                OutputExtensionInfo(scenario.Succession, 
+                                    scenario.Disturbances, 
+                                    scenario.OtherExtensions);
 
                 //  Perform 2nd phase of initialization for non-succession extensions.
                 foreach (ExtensionMain extension in disturbanceExtensions)
@@ -393,7 +395,9 @@ namespace Landis
 
         //---------------------------------------------------------------------
 
-        private void OutputExtensionInfo(ExtensionAndInitFile succession, ExtensionAndInitFile[] disturbances, ExtensionAndInitFile[] otherExtensions)
+        private void OutputExtensionInfo(ExtensionAndInitFile succession, 
+                                         ExtensionAndInitFile[] disturbances, 
+                                         ExtensionAndInitFile[] otherExtensions)
         {
             string toDisplay = "Using the following extensions ...\n";
             string format = "   {0,-25} {1,-25}\n";
