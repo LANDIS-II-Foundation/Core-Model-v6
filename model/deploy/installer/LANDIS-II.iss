@@ -1,19 +1,21 @@
-#define ScriptDir    ExtractFilePath(SourcePath)
-#define DeployDir    ExtractFilePath(ScriptDir)
-#define SolutionDir  ExtractFilePath(DeployDir)
+;#define ScriptDir    ExtractFilePath(SourcePath)
+;#define DeployDir    ExtractFilePath(ScriptDir)
+;#define SolutionDir  ExtractFilePath(DeployDir)
 
-#define DocDir           SolutionDir + "\docs"
+;#define DocDir           SolutionDir + "\docs"
 
-#define BuildDir         SolutionDir + "\build"
-#define ReleaseConfigDir BuildDir + "\Release"
+;#define BuildDir         SolutionDir + "\build"
+#define BuildDir         "..\..\build"
+#define ReleaseConfigDir BuildDir + "\Debug"
 
 #define StagingDir         BuildDir + "\install"
-#define ReleaseStagingDir  StagingDir + "\Release"
+#define ReleaseStagingDir  StagingDir + "\Debug"
 
 ;-----------------------------------------------------------------------------
 ; Fetch the version # from the core assembly
 #define CoreName "Landis.Core.dll"
 #define CorePath ReleaseConfigDir + "\" + CoreName
+
 #pragma message 'Getting version from "' + CorePath + '" ...'
 #if ! FileExists(CorePath)
   #error The Release configuration of the model has not been built

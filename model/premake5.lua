@@ -1,13 +1,13 @@
 thirdPartyDir = "third-party"
 libsDir = "libs"
 thirdPartyLibs = {
-  FLEL          = libsDir .. "/Edu.Wisc.Forest.Flel.Util.dll",
-  LSML          = libsDir .. "/Landis.SpatialModeling.dll",
-  Landscapes    = libsDir .. "/Landis.Landscapes.dll",
-  RasterIO      = libsDir .. "/Landis.RasterIO.dll",
-  RasterIO_Gdal = libsDir .. "/Landis.RasterIO.Gdal.dll",
-  log4net       = libsDir .. "/log4net.dll",
-  Troschuetz    = libsDir .. "/Troschuetz.Random.dll"
+  FLEL          = "libs/Edu.Wisc.Forest.Flel.Util.dll",
+  LSML          = "libs/Landis.SpatialModeling.dll",
+  Landscapes    = "libs/Landis.Landscapes.dll",
+  RasterIO      = "libs/Landis.RasterIO.dll",
+  RasterIO_Gdal = "libs/Landis.RasterIO.Gdal.dll",
+  log4net       = "libs/log4net.dll",
+  Troschuetz    = "libs/Troschuetz.Random.dll"
 }
 
 buildDir = "build"
@@ -180,7 +180,7 @@ newoption {
 -- Hook in a custom function that it's called *after*
 -- the selected action is executed.
 
-require "premake4_util"
+require "premake5_util"
 
 afterAction_call(
   function()

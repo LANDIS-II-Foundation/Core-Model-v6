@@ -15,11 +15,13 @@ where (#) is an integer = or > 1.  For example:
     beta release 2
     release candidate 1
 
-NOTE FOR DEBUG MODE: in App.cs 3 lines must be uncommented. Search for this string "Pre-pending the GDAL directory is required to run the Console project in debug mode" and uncomment out the following 3 lines before building in Visual Studio:
+NOTE FOR DEBUG MODE: in App.cs 3 lines must be uncommented. Search for this string 
+"Pre-pending the GDAL directory is required to run the Console project in debug mode" 
+and uncomment out the following 3 lines before building in Visual Studio:
 
-                // string path = Environment.GetEnvironmentVariable("PATH");
-                // string newPath = "C:\\Program Files\\LANDIS-II\\GDAL\\1.9;" + path;
-                // Environment.SetEnvironmentVariable("PATH", newPath);
+     // string path = Environment.GetEnvironmentVariable("PATH");
+    // string newPath = "C:\\Program Files\\LANDIS-II\\GDAL\\1.9;" + path;
+    // Environment.SetEnvironmentVariable("PATH", newPath);
 
 
 
@@ -35,9 +37,9 @@ How-to Stage Configuration:
 --------------------------------
 Download https://github.com/LANDIS-II-Foundation/Support-Library-Dlls and place contents in some/path/model/libs
 
-2. run premake4.4 script
+2. run premake5 script
 ------------------------
-in the directory with this README file, run the premake4 script.  For example, 
+in the directory with this README file, run the premake5 script.  For example, 
 
   premake4.4 install Debug
 
