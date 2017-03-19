@@ -19,6 +19,8 @@ and 2) a command script called by the program.  The script calls the
 current extension administration tool, and moves files & folders from
 LANDIS-II\6.0\ into their counterparts in LANDIS-II\v6\.
 
-To build the executable, run MSBuild in this folder:
 
-  C:\WINDOWS\Microsoft.NET\Framework\v3.5\MSBuild.exe
+To build the executable, run MSBuild on "Landis.PlugIns.Admin.proj"
+C:\Windows\Microsoft.NET\Framework\v3.5>MSBuild ...\Core-Model\model\deploy\installer\plugin-admin\Landis.PlugIns.Admin.proj
+
+

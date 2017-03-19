@@ -1,4 +1,4 @@
-;#define ScriptDir    ExtractFilePath(SourcePath)
+#define ScriptDir    ExtractFilePath(SourcePath)
 ;#define DeployDir    ExtractFilePath(ScriptDir)
 ;#define SolutionDir  ExtractFilePath(DeployDir)
 
@@ -111,18 +111,18 @@ Source: *; DestDir: {app}; Flags: recursesubdirs uninsneveruninstall; Excludes: 
 
 ; An interim version of the old plug-in admin tool for current extension
 ; installers (until they are updated to call the landis-v6-extensions.cmd
-; script).
+; script). Still needed? [bmarron 18 Mar 2017]
 Source: {#ScriptDir}\plugin-admin\Landis.PlugIns.Admin.exe; DestDir: {app}\6.0\bin
 Source: {#ScriptDir}\plugin-admin\Landis.PlugIns.Admin.cmd; DestDir: {app}\6.0\bin
 
-; Documentation
+; Documentation [no longer included in installer bmarron 18 Mar 2017]
 ; (Note: Documentation among minor versions can reside in the same folder
 ;        because all the files have version #s in their names.)
-Source: {#DocDir}\LANDIS-II Model v6.1 Description.pdf; DestDir: {app}\v{#Major}\docs
-Source: {#DocDir}\LANDIS-II Model v6.1 User Guide.pdf;  DestDir: {app}\v{#Major}\docs
+;Source: {#DocDir}\LANDIS-II Model v6.1 Description.pdf; DestDir: {app}\v{#Major}\docs
+;Source: {#DocDir}\LANDIS-II Model v6.1 User Guide.pdf;  DestDir: {app}\v{#Major}\docs
 
 ; No example input files but a read me.
-Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
+;Source: {#DocDir}\READ ME.TXT; DestDir: {app}\v{#Major}\examples
 
 ; INI file with information about this release
 Source: {#ScriptDir}\LANDIS-II X.Y.ini; DestDir: {app}\config; DestName: LANDIS-II {#MajorMinor}.ini

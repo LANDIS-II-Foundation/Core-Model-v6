@@ -12,9 +12,22 @@ The procedure below describes building, staging, and testing Core Model in Windo
 See the README_LINUX.txt file for instructions on how to build and run
 LANDIS-II on Linux, along with a list of troubleshooting tips.
 
+NB. The unit tests can be run directly within MonoDevelop. 
+To run the unit tests with Visual Studio, you'll need to install a third-party add-in such
+as:
+  Visual Nunit   -- https://sourceforge.net/projects/visualnunit/
+  TestDriven.Net -- http://www.testdriven.net/
+
+It is also possible to run the unit tests with NUnit's GUI.  Open the GUI, and then in the File menu,
+select "Open Project...".  Navigate to one of the configuration build directories (build/Debug, build/Release), 
+and select one of the test assemblies (e.g., Landis.*.Tests.dll).  After NUnit loads the tests, click
+the "Run" button.
+
+
+
 
 #############################################
-Stage One Rebuild -- Support libraries
+Stage One Rebuild -- Add support libraries
 #############################################
 
 NB. Building the Core Model requires various .dll dependencies.
@@ -26,9 +39,9 @@ C:\Users\...\Core-Model\model>install-libs_CoreModel.cmd
 
 
 
-################################
-Stage Two Rebuild -- Premake
-#################################
+####################################################################
+Stage Two Rebuild -- Generate .sln and .csproj file with Premake
+####################################################################
 
 Useful Premake websites:
 https://github.com/premake/premake-4.x/wiki
@@ -77,50 +90,77 @@ C:\Users\...\CoreModel\Core-Model\model>premake5 vs2015
  
 	
 
-############################################
-Stage Three Rebuild -- Visual Studio build
-############################################
-
+#####################################################
+Stage Three Rebuild -- Perform a Visual Studio build
+#####################################################
 
 NB. The "LANDIS-II.sln" file can be opened in a variety of IDE environments including,
-Visual Studio, Visual C# Express, SharpDevelop, MonoDevelop.
+Visual Studio (VS) and MonoDevelop.
+
+NB. If the post-build goal is staging for Debug testing, see the file,
+...\model\deploy\README_Debug-testing-the-build.txt PRIOR to building the .sln file.
 
 
-	a. Open the LANDIS-II.sln file in Visual Studio 2015
+	a. Open the LANDIS-II.sln file in VS 2015
 
-	b. Build the solution; seven, .csproj files are built. VS output:
+	b. Build the LANDIS-II.sln
+	   NB. Building the solution actually builds seven, .csproj files. 
+
+	b1. Expected VS output:
 
 ========== Build: 7 succeeded, 0 failed, 0 up-to-date, 0 skipped ========== 
 
 
 
-############################################
-Stage Four Rebuild -- Staging
-############################################
+############################################################
+Stage Four Rebuild -- Staging for Installer Prep or Testing
+############################################################
 
-After a solution has been built, it is called a "configuration". A configuration can 
-be "staged" for test purposes. When staged, all of a configuration's files are copied into a directory 
-structure that will be used for a LANDIS-II installation. 
+After a solution has been built, the newly-minted Landis.Core.dll (plus all of its attendant files) is 
+called a "configuration". A configuration is organized for the subsequent installer (Stage Five Rebuild below)
+but also can be "staged" for test purposes. Whether a subsequent step is generating an installer or staging for 
+immediate testing, a configuration's files are organized into the same directory structure that is produced by 
+a LANDIS-II installation. If the subsequent step is generating an installer, see Stage Five Rebuild -- Installer 
+below. If the next step is Debug testing, see ...\model\deploy\README_Debug-testing-the-build.txt. 
 
-NB. Running the following .lua script will install all of the ...\model\buildDebug configuration's files, 
-along with other files, into the ..\build\install\Debug\ directory.  This directory is subsequently accessed
-by the InnoSetup installer (LANDIS-II.iss) to create an .exe installer.
+Running the following .lua script will install all of the ...\model\build\Debug files (the configuration), 
+plus some additional files, into the ..\build\install\Debug\ directory.  The final ..\build\install\Debug\ 
+directory has the same directory structure as that produced by a LANDIS-II installation. 
 
 
-	a. run the ...\model\deploy\premake5.lua script
-	a1. run the following at the (ADM) command line prompt:
+	a. designate the LANDIS-II (ie, Core Model) release status. 
+	a1. Enter the software's release status on the first line of the file called
+	  "release-status.txt".  The format of the release status is one of these:
+
+	    alpha release (#)
+ 	    beta release (#)
+	    release candidate (#)
+	    official release
+
+	  where (#) is an integer >= 1.  Examples:
+		"alpha release 3" 	OR  
+		"beta release 2" 	OR 
+		"release candidate 2" 	OR
+		"official release"
+
+
+	b. run the ...\model\deploy\premake5.lua script
+	b1. at the (ADM) command line prompt:
 C:\Users\...\Core-Model\model\deploy>premake5 install Debug
 
 
 
 ############################################
-Stage Five Rebuild -- Installer
+Stage Five Rebuild -- Create the installer
 ############################################
-
+is subsequently accessed
+by the InnoSetup installer (LANDIS-II.iss) to create an .exe installer.
 
 	a. open "...\model\deploy\installer\LANDIS-II.iss" in Inno Script Studio
 
-	b. compile LANDIS-II.iss script (F9)
+	b. compile the LANDIS-II.iss script (Ctrl-F9)
+
+	c. the expected output: "LANDIS-II-X.Y-setup64.exe"
 
 
 
@@ -129,20 +169,6 @@ Stage Five Rebuild -- Installer
 
 
 
-
-The unit tests can be run within SharpDevelop and MonoDevelop.  To run the
-tests with Visual Studio, you'll need to install a third-party add-in such
-as:
-
-  Visual Nunit   -- https://sourceforge.net/projects/visualnunit/
-  TestDriven.Net -- http://www.testdriven.net/
-
-Note that Visual C# Express does not allow add-ins, so you will have to run
-the unit tests with NUnit's GUI.  Open the GUI, and then in the File menu,
-select "Open Project...".  Navigate to one of the configuration build
-directories (build/Debug, build/Release), and select one of the test
-assemblies (e.g., Landis.*.Tests.dll).  After NUnit loads the tests, click
-the "Run" button.
 
 
 
