@@ -1,13 +1,13 @@
 thirdPartyDir = "third-party"
 libsDir = "libs"
 thirdPartyLibs = {
-  FLEL          = "libs/Edu.Wisc.Forest.Flel.Util.dll",
-  LSML          = "libs/Landis.SpatialModeling.dll",
-  Landscapes    = "libs/Landis.Landscapes.dll",
-  RasterIO      = "libs/Landis.RasterIO.dll",
-  RasterIO_Gdal = "libs/Landis.RasterIO.Gdal.dll",
-  log4net       = "libs/log4net.dll",
-  Troschuetz    = "libs/Troschuetz.Random.dll"
+  FLEL          = libsDir .. "/Edu.Wisc.Forest.Flel.Util.dll",
+  LSML          = libsDir .. "/Landis.SpatialModeling.dll",
+  Landscapes    = libsDir .. "/Landis.Landscapes.dll",
+  RasterIO      = libsDir .. "/Landis.RasterIO.dll",
+  RasterIO_Gdal = libsDir .. "/Landis.RasterIO.Gdal.dll",
+  log4net       = libsDir .. "/log4net.dll",
+  Troschuetz    = libsDir .. "/Troschuetz.Random.dll"
 }
 
 buildDir = "build"
