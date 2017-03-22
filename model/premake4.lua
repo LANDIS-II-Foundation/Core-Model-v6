@@ -180,7 +180,7 @@ newoption {
 -- Hook in a custom function that it's called *after*
 -- the selected action is executed.
 
-require "premake4_util"
+require "premake5_util"
 
 afterAction_call(
   function()
