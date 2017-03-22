@@ -105,14 +105,14 @@ function installConfig(config)
   -- {InstallDir}/bin/
 
 -- [../bin directory deleted during SDK purge; 17 Mar 2017, bmarron]
-  install { file="bin/landis.cmd",            from="deploy/bin/" }	
+  -- install { file="bin/landis.cmd",            from="deploy/bin/" }
   install { file="bin/landis-ii.cmd",         from="deploy/bin/" }
-  -- install { file="bin/landis-{X.Y}.cmd",      from="deploy/bin/landis-X.Y.cmd", replace={ ["{VERSION}"]=GDALmajorMinor } }
+  install { file="bin/landis-{X.Y}.cmd",      from="deploy/bin/landis-X.Y.cmd", replace={ ["{VERSION}"]=GDALmajorMinor } }
   install { file="bin/landis-extensions.cmd",      from="deploy/bin/" }
-  -- install { file="bin/landis-v{X}-extensions.cmd", from="deploy/bin/landis-vX-extensions.cmd" }
+  install { file="bin/landis-v{X}-extensions.cmd", from="deploy/bin/landis-vX-extensions.cmd" }
 
   install { file="bin/uninstall-landis.cmd",  from="deploy/bin/" }
-  -- install { file="bin/uninstall-landis.sh",   from="deploy/bin/" }
+  install { file="bin/uninstall-landis.sh",   from="deploy/bin/" }
   install { file="bin/uninstall-extensions.cmd",   from="deploy/bin/" }
 
 
