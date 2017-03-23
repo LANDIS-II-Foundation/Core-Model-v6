@@ -9,7 +9,7 @@
 #define ReleaseConfigDir BuildDir + "\Debug"
 
 #define StagingDir         BuildDir + "\install"
-#define ReleaseStagingDir  StagingDir + "\Debug"
+#define ReleaseStagingDir  StagingDir + "\Release"
 
 ;-----------------------------------------------------------------------------
 ; Fetch the version # from the core assembly
@@ -672,4 +672,3 @@ begin
       end; // if SiblingVersionsLeft = 0
     end; // if CurUninstallStep = usPostUninstall
 end;
-
