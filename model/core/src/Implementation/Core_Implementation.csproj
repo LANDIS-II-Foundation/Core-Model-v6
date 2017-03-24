@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{131C8A74-7F7D-6782-08EB-AD34744B9E41}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Landis.Core.Implementation</RootNamespace>
+    <AssemblyName>Landis.Core.Implementation</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\build\Debug\</OutputPath>
+    <BaseIntermediateOutputPath>obj\Debug\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\build\Release\</OutputPath>
+    <BaseIntermediateOutputPath>obj\Release\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Edu.Wisc.Forest.Flel.Util">
+      <HintPath>..\..\..\libs\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.SpatialModeling">
+      <HintPath>..\..\..\libs\Landis.SpatialModeling.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\libs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Troschuetz.Random">
+      <HintPath>..\..\..\libs\Troschuetz.Random.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\..\..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ecoregions\AuxParm.cs" />
+    <Compile Include="ecoregions\Dataset.cs" />
+    <Compile Include="ecoregions\DatasetParser.cs" />
+    <Compile Include="ecoregions\Ecoregion.cs" />
+    <Compile Include="ecoregions\EcoregionPixel.cs" />
+    <Compile Include="ecoregions\EditableDataset.cs" />
+    <Compile Include="ecoregions\EditableParameters.cs" />
+    <Compile Include="ecoregions\IEditableDataset.cs" />
+    <Compile Include="ecoregions\IEditableParameters.cs" />
+    <Compile Include="ecoregions\InputGrid.cs" />
+    <Compile Include="ecoregions\Map.cs" />
+    <Compile Include="ecoregions\Parameters.cs" />
+    <Compile Include="main\EditableExtension.cs" />
+    <Compile Include="main\EditableExtensionList.cs" />
+    <Compile Include="main\EditableScenario.cs" />
+    <Compile Include="main\ExtensionAndInitFile.cs" />
+    <Compile Include="main\ExtensionInfoIO.cs" />
+    <Compile Include="main\ListOfEditable.cs" />
+    <Compile Include="main\Model.cs" />
+    <Compile Include="main\Scenario.cs" />
+    <Compile Include="main\ScenarioParser.cs" />
+    <Compile Include="main\SiteVarRegistry.cs" />
+    <Compile Include="species\AuxParm.cs" />
+    <Compile Include="species\Dataset.cs" />
+    <Compile Include="species\DatasetParser.cs" />
+    <Compile Include="species\EditableDataset.cs" />
+    <Compile Include="species\EditableParameters.cs" />
+    <Compile Include="species\EffectiveSeedDist.cs" />
+    <Compile Include="species\IEditableDataset.cs" />
+    <Compile Include="species\IEditableParameters.cs" />
+    <Compile Include="species\Parameters.cs" />
+    <Compile Include="species\PostFireRegenerationUtil.cs" />
+    <Compile Include="species\Species.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core.csproj">
+      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
