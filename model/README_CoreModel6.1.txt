@@ -4,7 +4,7 @@ Project Component:	Core Model
 Component Deposition:	https://github.com/LANDIS-II-Foundation/Core-Model
 Author:			LANDIS-II Foundation
 Origin Date:		17 Mar 2017
-Final Date:		
+Final Date:		23 Mar 2017
 
 
 
@@ -30,7 +30,7 @@ the "Run" button.
 Stage One Rebuild -- Add support libraries
 #############################################
 
-NB. Building the Core Model requires various .dll dependencies.
+Building the Core Model requires various .dll dependencies.
 To ensure the latest versions, these libraries are downloaded
 just prior to build and placed in a new folder called, "Libs".
 
@@ -49,8 +49,8 @@ http://premake.github.io/
 
 
 The Premake build configuration tool is needed to generate the C# solution file 
-(.sln) and project files (.csproj) for rebuilding Core Model. Premake will generate 
-the requisite Visual Studio files ( the .csproj files and a .sln file) for a rebuild.
+(.sln) and the project files (.csproj) for rebuilding Core Model. Premake will generate 
+the requisite Visual Studio files (the .sln file the .csproj files) for a rebuild.
 Premake itself is built on Lua, a fast, light-weight scripting language. Premake 
 scripts are actually Lua programs (.lua files). Using Visual Studio 2015 or greater is
 highly recommended. 
@@ -79,6 +79,7 @@ C:\Users\...\CoreModel\Core-Model\model>premake5 vs2015
 
 
 	c. the following files will be created:
+
  	model/LANDIS-II.sln
         model/console/Console.csproj
         model/core/src/Core.csproj
@@ -90,12 +91,12 @@ C:\Users\...\CoreModel\Core-Model\model>premake5 vs2015
  
 	
 
-#####################################################
-Stage Three Rebuild -- Perform a Visual Studio build
-#####################################################
+################################################################
+Stage Three Rebuild -- Perform a Visual Studio (Release) build
+#################################################################
 
 NB. The "LANDIS-II.sln" file can be opened in a variety of IDE environments including,
-Visual Studio (VS) and MonoDevelop.
+Visual Studio (VS) and MonoDevelop. VS2015 is recommended.
 
 NB. If the post-build goal is staging for Debug testing, see the file,
 ...\model\deploy\README_Debug-testing-the-build.txt PRIOR to building the .sln file in Debug mode.
@@ -105,14 +106,40 @@ NB. If the post-build goal is staging for Debug testing, see the file,
 
 	a. Open the LANDIS-II.sln file in VS 2015
 
-	b. Build the LANDIS-II.sln in Release Mode
-	   NB. You may need to change the configuration for it to not build the ../core/test/../.csproj files during Release build
-	   NB. Building the solution actually builds five.csproj files.
-	   NB.  
+	b. Use the pull down menu that currently shows, "Debug" and select, "Release"
 
-	b1. Expected VS output:
+	c. In the Solution Explorer tab, highlight " Solution "LANDIS-II" " and select the
+	   Properties icon (the wrench)
+	c1. Under Solution "LANDIS-II" Property Pages, select Configuration Properties ==> Configuration
+	c2. Unselect Ecoregions_Tests and Species_Tests (ie, do not build these .csproj files)  
 
-========== Build: 5 succeeded, 0 failed, 0 up-to-date, 0 skipped ========== 
+	d. Build the LANDIS-II.sln in Release Mode (ie, NOT Debug)
+	d1. Expected VS output:
+
+========== Build: 5 succeeded, 0 failed, 0 up-to-date, 2 skipped ==========
+
+	e. expected contents of C:\Users\...\...\model\build\Release 
+
+Edu.Wisc.Forest.Flel.Util.dll
+Landis.Console-6.1.exe
+Landis.Console-6.1.pdb
+Landis.Core.dll
+Landis.Core.Implementation.dll
+Landis.Core.Implementation.pdb
+Landis.Core.pdb
+Landis.Core.xml
+Landis.Extensions.Dataset.dll
+Landis.Extensions.Dataset.pdb
+Landis.Extensions.exe
+Landis.Extensions.pdb
+Landis.Landscapes.dll
+Landis.RasterIO.dll
+Landis.RasterIO.Gdal.dll
+Landis.SpatialModeling.dll
+log4net.dll
+Troschuetz.Random.dll
+
+
 
 
 
@@ -121,12 +148,13 @@ Stage Four Rebuild -- Staging for Installer Prep or Testing
 ############################################################
 
 After a solution has been built, the newly-minted Landis.Core.dll (plus all of its attendant files) is 
-called a "configuration". A configuration is organized for the subsequent installer (Stage Five Rebuild below)
-but also can be "staged" for test purposes. If the subsequent step is generating an installer, see Stage Five Rebuild -- Installer 
-below. If the next step is Debug testing, see ...\model\deploy\README_Debug-testing-the-build.txt. 
+called a "configuration". A configuration is then re-organized for the subsequent installer (Stage Five Rebuild below)
+but also can be "staged" for test purposes.
+	Option1: If the subsequent step is generating an installer, see Stage Five Rebuild -- Installer below. 
+	Option2: If the subsequent step is Debug testing, see ...\model\deploy\README_Debug-testing-the-build.txt. 
 
-Running the following .lua script will install all of the ...\model\build\Release files (the configuration), 
-plus some additional files, into the ..\build\install\Release\ directory.  The final ..\build\install\Release\ 
+NB. Running the following .lua script will install all of the ...\model\build\Release files (the configuration), 
+plus some additional files, into the ...\build\install\Release\ directory.  The final ...\build\install\Release\ 
 directory has the same directory structure as that produced by a LANDIS-II installation. 
 
 
@@ -148,24 +176,41 @@ directory has the same directory structure as that produced by a LANDIS-II insta
 
 	b. run the ...\model\deploy\premake5.lua script
 	b1. at the (ADM) command line prompt:
-
 C:\Users\...\Core-Model\model\deploy>premake5 install Release
+
+
+	c. expected contents of C:\Users\...\...\model\build\install\Release
+
+bin\
+landis-6.1.cmd         landis-v6-extensions.cmd  uninstall-landis.sh
+landis-extensions.cmd  uninstall-extensions.cmd
+landis-ii.cmd          uninstall-landis.cmd
+
+GDAL\
+  \1.9
+
+v6\
+  \bin
+  \licenses
+
 
 
 
 ############################################
 Stage Five Rebuild -- Create the installer
 ############################################
-is subsequently accessed
+
+The contents of C:\Users\...\...\model\build\install\Release is subsequently accessed
 by the InnoSetup installer (LANDIS-II.iss) to create an .exe installer.
 
 	a. open "...\model\deploy\installer\LANDIS-II.iss" in Inno Script Studio
 
 	b. compile the LANDIS-II.iss script (Ctrl-F9)
 
-	c. the expected output: "LANDIS-II-X.Y-setup64.exe"
+	c. the expected output is a newly-minted installer found in the same directory as LANDIS-II.iss.
+	c1. For the LANDIS-II (official release) 6.1, the installer is, 
 
-
+LANDIS-II-6.1-setup64.exe
 
 
 

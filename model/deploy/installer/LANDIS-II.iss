@@ -6,7 +6,7 @@
 
 ;#define BuildDir         SolutionDir + "\build"
 #define BuildDir         "..\..\build"
-#define ReleaseConfigDir BuildDir + "\Debug"
+#define ReleaseConfigDir BuildDir + "\Release"
 
 #define StagingDir         BuildDir + "\install"
 #define ReleaseStagingDir  StagingDir + "\Release"
@@ -78,7 +78,7 @@
 [Setup]
 AppName=LANDIS-II {#VersionReleaseName}
 AppVerName=LANDIS-II {#VersionReleaseFull}
-AppPublisher=LANDIS-II Core Development Team
+AppPublisher=LANDIS-II Foundation
 DefaultDirName={pf}\LANDIS-II
 UsePreviousAppDir=no
 DefaultGroupName=LANDIS-II\v{#Major}
