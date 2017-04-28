@@ -1,6 +1,6 @@
 //  Author: Jimm Domingo, UW-Madison, FLEL
 
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using System;
 
 namespace Landis.Core

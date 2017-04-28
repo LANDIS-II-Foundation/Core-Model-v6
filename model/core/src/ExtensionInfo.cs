@@ -4,7 +4,7 @@ namespace Landis.Core
     /// Information about an extension.
     /// </summary>
     public class ExtensionInfo
-        : Edu.Wisc.Forest.Flel.Util.PlugIns.Info
+        : Landis.Utilities.PlugIns.Info
     {
         ExtensionType type;
 
