@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Edu.Wisc.Forest.Flel.Util
+namespace Landis.Utilities
 {
     /// <summary>
     /// List of editable items.

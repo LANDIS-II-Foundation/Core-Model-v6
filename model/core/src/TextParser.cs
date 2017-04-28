@@ -1,4 +1,4 @@
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using Landis.Core;
 
 namespace Landis
@@ -7,7 +7,7 @@ namespace Landis
     /// A text parser for Landis data.
     /// </summary>
     public abstract class TextParser<T>
-        : Edu.Wisc.Forest.Flel.Util.TextParser<T>
+        : Landis.Utilities.TextParser<T>
     {
         /// <summary>
         /// The expected value for the LandisData InputVariable.

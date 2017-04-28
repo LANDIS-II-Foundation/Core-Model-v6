@@ -18,7 +18,7 @@
 //   James Domingo, UW-Madison, Forest Landscape Ecology Lab
 //   Srinivas S., Portland State University
 
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using System;
 using System.Reflection;
 using System.Text;

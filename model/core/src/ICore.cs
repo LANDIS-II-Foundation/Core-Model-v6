@@ -10,7 +10,7 @@
 using Landis.SpatialModeling;
 using System.IO;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using Troschuetz.Random;
 
 namespace Landis.Core
