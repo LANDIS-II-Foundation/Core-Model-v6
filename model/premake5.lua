@@ -17,7 +17,7 @@ buildDir = "build"
 solution "LANDIS-II"
 
   language "C#"    -- by default, Premake uses "Any CPU" for platform
-  framework "3.5"
+  framework "4.0"
 
   configurations { "Debug", "Release" }
 
