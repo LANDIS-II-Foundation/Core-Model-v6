@@ -1,6 +1,6 @@
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using Flel = Edu.Wisc.Forest.Flel;
-using Loader = Edu.Wisc.Forest.Flel.Util.PlugIns.Loader;
+using Loader = Landis.Utilities.PlugIns.Loader;
 using log4net;
 using Landis.Core;
 
@@ -127,7 +127,7 @@ namespace Landis
             try {
                 string dir = System.IO.Path.GetDirectoryName(path);
                 if (dir.Length > 0)
-                    Edu.Wisc.Forest.Flel.Util.Directory.EnsureExists(dir);
+                    Landis.Utilities.Directory.EnsureExists(dir);
                 return rasterFactory.CreateRaster<TPixel>(path, dimensions);
             }
             catch (System.IO.IOException exc) {

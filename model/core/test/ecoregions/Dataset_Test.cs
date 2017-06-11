@@ -1,6 +1,6 @@
 using Landis.Core;
 using Landis.Ecoregions;
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using NUnit.Framework;
 using System.Collections.Generic;
 
