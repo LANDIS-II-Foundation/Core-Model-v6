@@ -1,5 +1,5 @@
 using Landis.Species;
-using Edu.Wisc.Forest.Flel.Util;
+using Landis.Utilities;
 using NUnit.Framework;
 
 namespace Landis.Test.Species
