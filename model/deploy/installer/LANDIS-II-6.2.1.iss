@@ -196,7 +196,6 @@ end;
 // release of the same LANDIS-II version.  See the procedure UninstallRelease
 // below.
 
-
 function PathToTemporaryScript(): String;
 begin
   Result := ExpandConstant('{app}') + '\bin\landis-' + MajorVersion + '.Y.cmd';
@@ -206,8 +205,7 @@ end;
 
 procedure UninstallRelease(CurrentRelease, IniFile: String);
 var
-
-Uninstaller : String;
+  Uninstaller : String;
   ResultCode : Integer;
   TemporaryScript : String;
 begin
