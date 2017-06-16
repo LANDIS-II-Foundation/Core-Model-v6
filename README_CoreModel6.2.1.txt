@@ -1,10 +1,10 @@
-2.1Title:			README_CoreModel6.2.1
+Title:			README_CoreModel6.2.1
 Project:		LANDIS-II Landscape Change Model
 Project Component:	Core Model
 Component Deposition:	https://github.com/LANDIS-II-Foundation/Core-Model
 Author:			LANDIS-II Foundation
 Origin Date:		17 Mar 2017
-Final Date:		23 Mar 2017
+Final Date:		16 Jun 2017
 
 
 
@@ -113,7 +113,7 @@ NB. If the post-build goal is staging for Debug testing, see the file,
 	c1. Under Solution "LANDIS-II" Property Pages, select Configuration Properties ==> Configuration
 	c2. Unselect Ecoregions_Tests and Species_Tests (ie, do not build these .csproj files)  
 
-	d. Build the LANDIS-II.sln in Release Mode (ie, NOT Debug)
+	d. Build the LANDIS-II.sln in Release mode (ie, NOT Debug mode)
 	d1. Expected VS output:
 
 ========== Build: 5 succeeded, 0 failed, 0 up-to-date, 2 skipped ==========
@@ -150,9 +150,10 @@ Stage Four Rebuild -- Staging for Installer Prep or Testing
 After a solution has been built, the newly-minted Landis.Core.dll (plus all of its attendant files) is 
 called a "configuration". A configuration is then re-organized for the subsequent installer (Stage Five Rebuild below)
 but also can be "staged" for test purposes.
+
 	Option1: If the subsequent step is generating an installer, see Stage Five Rebuild -- Installer below. 
 	Option2: If the subsequent step is Debug testing, see ...\model\deploy\README_Debug-testing-the-build.txt. 
-2
+
 NB. Running the following .lua script will install all of the ...\model\build\Release files (the configuration), 
 plus some additional files, into the ...\build\install\Release\ directory.  The final ...\build\install\Release\ 
 directory has the same directory structure as that produced by a LANDIS-II installation. 
@@ -201,16 +202,16 @@ Stage Five Rebuild -- Create the installer
 ############################################
 
 The contents of C:\Users\...\...\model\build\install\Release is subsequently accessed
-by the InnoSetup installer (LANDIS-II.iss) to create an .exe installer.
+by the InnoSetup installer (LANDIS-II-6.2.1.iss) to create an .exe installer.
 
-	a. open "...\model\deploy\installer\LANDIS-II.iss" in Inno Script Studio
+	a. open "...\model\deploy\installer\LANDIS-II-6.2.1.iss" in Inno Script Studio
 
-	b. compile the LANDIS-II.iss script (Ctrl-F9)
+	b. compile the LANDIS-II-6.2.1.iss script (Ctrl-F9)
 
 	c. the expected output is a newly-minted installer found in the same directory as LANDIS-II.iss.
 	c1. For the LANDIS-II (official release) 6.2.1, the installer is, 
 
-LANDIS-II-6.1-setup64.exe
+LANDIS-II-6.2-setup64.exe
 
 
 
