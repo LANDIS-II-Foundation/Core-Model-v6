@@ -1,4 +1,4 @@
-Title:			README_CoreModel6.1
+2.1Title:			README_CoreModel6.2.1
 Project:		LANDIS-II Landscape Change Model
 Project Component:	Core Model
 Component Deposition:	https://github.com/LANDIS-II-Foundation/Core-Model
@@ -132,7 +132,7 @@ Landis.Extensions.Dataset.dll
 Landis.Extensions.Dataset.pdb
 Landis.Extensions.exe
 Landis.Extensions.pdb
-Landis.Landscapes.dll
+1Landis.Landscapes.dll
 Landis.RasterIO.dll
 Landis.RasterIO.Gdal.dll
 Landis.SpatialModeling.dll
@@ -142,7 +142,7 @@ Troschuetz.Random.dll
 
 
 
-
+.
 ############################################################
 Stage Four Rebuild -- Staging for Installer Prep or Testing
 ############################################################
@@ -152,7 +152,7 @@ called a "configuration". A configuration is then re-organized for the subsequen
 but also can be "staged" for test purposes.
 	Option1: If the subsequent step is generating an installer, see Stage Five Rebuild -- Installer below. 
 	Option2: If the subsequent step is Debug testing, see ...\model\deploy\README_Debug-testing-the-build.txt. 
-
+2
 NB. Running the following .lua script will install all of the ...\model\build\Release files (the configuration), 
 plus some additional files, into the ...\build\install\Release\ directory.  The final ...\build\install\Release\ 
 directory has the same directory structure as that produced by a LANDIS-II installation. 
@@ -182,7 +182,7 @@ C:\Users\...\Core-Model\model\deploy>premake5 install Release
 	c. expected contents of C:\Users\...\...\model\build\install\Release
 
 bin\
-landis-6.1.cmd         landis-v6-extensions.cmd  uninstall-landis.sh
+landis-6..cmd         landis-v6-extensions.cmd  uninstall-landis.sh
 landis-extensions.cmd  uninstall-extensions.cmd
 landis-ii.cmd          uninstall-landis.cmd
 
@@ -208,7 +208,7 @@ by the InnoSetup installer (LANDIS-II.iss) to create an .exe installer.
 	b. compile the LANDIS-II.iss script (Ctrl-F9)
 
 	c. the expected output is a newly-minted installer found in the same directory as LANDIS-II.iss.
-	c1. For the LANDIS-II (official release) 6.1, the installer is, 
+	c1. For the LANDIS-II (official release) 6.2.1, the installer is, 
 
 LANDIS-II-6.1-setup64.exe
 
