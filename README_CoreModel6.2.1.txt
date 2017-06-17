@@ -111,7 +111,8 @@ NB. If the post-build goal is staging for Debug testing, see the file,
 	c. In the Solution Explorer tab, highlight " Solution "LANDIS-II" " and select the
 	   Properties icon (the wrench)
 	c1. Under Solution "LANDIS-II" Property Pages, select Configuration Properties ==> Configuration
-	c2. Unselect Ecoregions_Tests and Species_Tests (ie, do not build these .csproj files)  
+	c2. Unselect Ecoregions_Tests and Species_Tests (ie, do not build these .csproj files); hit "Apply"
+	    and then "OK"  
 
 	d. Build the LANDIS-II.sln in Release mode (ie, NOT Debug mode)
 	d1. Expected VS output:
