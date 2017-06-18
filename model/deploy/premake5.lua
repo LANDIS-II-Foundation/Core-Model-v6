@@ -160,7 +160,7 @@ function installConfig(config)
 
   -- {InstallDir}/vX/licenses/
 
-  install { file="v{X}/licenses/+NOTICE.txt",                                from="+NOTICE.txt" }
+--  install { file="v{X}/licenses/+NOTICE.txt",                                from="+NOTICE.txt" }
   install { file="v{X}/licenses/Apache License 2.0.txt",                     from="third-party/log4net/LICENSE.txt" }
   install { file="v{X}/licenses/GNU Lesser General Public License 2.1.txt",  from="third-party/Troschuetz/LICENSE.txt" }
 --  install { file="v{X}/licenses/LANDIS-II Binary License.rtf",               from="deploy/windows/LANDIS-II_Binary_license.rtf" }
