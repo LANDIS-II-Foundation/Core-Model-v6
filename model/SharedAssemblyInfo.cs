@@ -1,7 +1,7 @@
 using System.Reflection;
 
 [assembly: AssemblyProduct("LANDIS-II")]
-[assembly: AssemblyVersion("6.2.*")]
+[assembly: AssemblyVersion("7.0.*")]
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
