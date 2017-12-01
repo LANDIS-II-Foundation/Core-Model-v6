@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{131C8A74-7F7D-6782-08EB-AD34744B9E41}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{389F3134-A47E-B0CF-AD96-3BA619F51631}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Landis.Core.Implementation</RootNamespace>
-    <AssemblyName>Landis.Core.Implementation</AssemblyName>
+    <RootNamespace>Landis.Console</RootNamespace>
+    <AssemblyName>Landis.Console-6.2</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\build\Debug\</OutputPath>
+    <OutputPath>..\build\Debug\</OutputPath>
     <BaseIntermediateOutputPath>obj\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants>DEBUG</DefineConstants>
@@ -28,7 +28,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\build\Release\</OutputPath>
+    <OutputPath>..\build\Release\</OutputPath>
     <BaseIntermediateOutputPath>obj\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
@@ -37,63 +37,46 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
-      <HintPath>..\..\..\libs\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
+      <HintPath>..\libs\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
     </Reference>
     <Reference Include="Landis.SpatialModeling">
-      <HintPath>..\..\..\libs\Landis.SpatialModeling.dll</HintPath>
+      <HintPath>..\libs\Landis.SpatialModeling.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Landscapes">
+      <HintPath>..\libs\Landis.Landscapes.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.RasterIO">
+      <HintPath>..\libs\Landis.RasterIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.RasterIO.Gdal">
+      <HintPath>..\libs\Landis.RasterIO.Gdal.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\libs\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Troschuetz.Random">
-      <HintPath>..\..\..\libs\Troschuetz.Random.dll</HintPath>
+      <HintPath>..\libs\log4net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="..\..\..\SharedAssemblyInfo.cs">
+    <Compile Include="App.cs" />
+    <Compile Include="ConsoleInterface.cs" />
+    <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ecoregions\AuxParm.cs" />
-    <Compile Include="ecoregions\Dataset.cs" />
-    <Compile Include="ecoregions\DatasetParser.cs" />
-    <Compile Include="ecoregions\Ecoregion.cs" />
-    <Compile Include="ecoregions\EcoregionPixel.cs" />
-    <Compile Include="ecoregions\EditableDataset.cs" />
-    <Compile Include="ecoregions\EditableParameters.cs" />
-    <Compile Include="ecoregions\IEditableDataset.cs" />
-    <Compile Include="ecoregions\IEditableParameters.cs" />
-    <Compile Include="ecoregions\InputGrid.cs" />
-    <Compile Include="ecoregions\Map.cs" />
-    <Compile Include="ecoregions\Parameters.cs" />
-    <Compile Include="main\EditableExtension.cs" />
-    <Compile Include="main\EditableExtensionList.cs" />
-    <Compile Include="main\EditableScenario.cs" />
-    <Compile Include="main\ExtensionAndInitFile.cs" />
-    <Compile Include="main\ExtensionInfoIO.cs" />
-    <Compile Include="main\ListOfEditable.cs" />
-    <Compile Include="main\Model.cs" />
-    <Compile Include="main\Scenario.cs" />
-    <Compile Include="main\ScenarioParser.cs" />
-    <Compile Include="main\SiteVarRegistry.cs" />
-    <Compile Include="species\AuxParm.cs" />
-    <Compile Include="species\Dataset.cs" />
-    <Compile Include="species\DatasetParser.cs" />
-    <Compile Include="species\EditableDataset.cs" />
-    <Compile Include="species\EditableParameters.cs" />
-    <Compile Include="species\EffectiveSeedDist.cs" />
-    <Compile Include="species\IEditableDataset.cs" />
-    <Compile Include="species\IEditableParameters.cs" />
-    <Compile Include="species\Parameters.cs" />
-    <Compile Include="species\PostFireRegenerationUtil.cs" />
-    <Compile Include="species\Species.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core.csproj">
+    <ProjectReference Include="..\core\src\Core.csproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\core\src\Implementation\Core_Implementation.csproj">
+      <Project>{131C8A74-7F7D-6782-08EB-AD34744B9E41}</Project>
+      <Name>Core_Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ext-dataset\src\Extension_Dataset.csproj">
+      <Project>{672865C4-D33E-635A-1CB6-EE7B880B34E2}</Project>
+      <Name>Extension_Dataset</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
